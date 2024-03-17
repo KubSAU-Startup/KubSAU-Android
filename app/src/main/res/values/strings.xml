@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">DataCampusHub</string>
+
+    <string name="login_label" translatable="false">Login info</string>
+    <string name="password_label" translatable="false">Password info</string>
+
+    <string name="button_login" translatable="false">Login</string>
+    <string name="button_account" translatable="false">Account</string>
+    <string name="button_set_user" translatable="false">Set new user</string>
+    <string name="button_get_users" translatable="false">Get all users</string>
+    <string name="button_delete_user" translatable="false">Delete user</string>
+
+    <string name="error_wrong_login_or_password" translatable="false">Wrong login or password</string>
+    <string name="journal_element_student">Student: %s</string>
+    <string name="journal_element_student_status">Status: %d</string>
+    <string name="journal_element_discipline">Discipline: %s</string>
+    <string name="journal_element_student_group">Group: %s</string>
+    <string name="journal_element_teacher">Teacher: %s</string>
+    <string name="journal_element_work_type">Work type: %s</string>
+    <string name="journal_element_registration_date">Registration date: %s</string>
+
+    <string name="registration_pattern" translatable="false">dd/MM/yyyy HH:mm</string>
+</resources>

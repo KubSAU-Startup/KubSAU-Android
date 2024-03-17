@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DataCampusHub</string>
+    <string name="journal_element_student">Студент: %s</string>
+    <string name="journal_element_student_status">Статус: %s</string>
+    <string name="journal_element_discipline">Дисциплина: %s</string>
+    <string name="journal_element_student_group">Группа:  %s</string>
+    <string name="journal_element_teacher">Преподаватель:  %s</string>
+    <string name="journal_element_work_type">Тип работы:  %s</string>
+    <string name="journal_element_registration_date">Дата регистрации:  %s</string>
+</resources>
