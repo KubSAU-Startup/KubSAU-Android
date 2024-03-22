@@ -8,4 +8,9 @@
     <string name="journal_element_teacher">Преподаватель:  %s</string>
     <string name="journal_element_work_type">Тип работы:  %s</string>
     <string name="journal_element_registration_date">Дата регистрации:  %s</string>
+    <string name="filter_work_type">Тип работы</string>
+    <string name="filter_discipline">Дисциплина</string>
+    <string name="filter_teacher">Преподаватель</string>
+    <string name="filter_group">Группа</string>
+    <string name="filter_department">Кафедра</string>
 </resources>

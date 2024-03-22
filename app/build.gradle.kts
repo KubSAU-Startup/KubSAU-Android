@@ -99,4 +99,7 @@ dependencies {
     implementation("androidx.camera:camera-extensions:$camerax_version")
 
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
+    implementation ("me.saket.cascade:cascade:2.3.0")
+    implementation ("me.saket.cascade:cascade-compose:2.3.0")
 }
