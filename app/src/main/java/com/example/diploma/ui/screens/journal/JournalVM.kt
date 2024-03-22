@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.filter.FilterElement
+import com.example.diploma.network.models.journal.inner.JournalElement
 import kotlinx.coroutines.launch
 
 @SuppressLint("MutableCollectionMutableState")
@@ -16,44 +17,37 @@ class JournalVM(private val repo: NetworkRepo) : ViewModel() {
     var filters by mutableStateOf(Filter())
         private set
 
-    var workTypeFilters by mutableStateOf<List<FilterElement>>(listOf())
-        private set
-    var disciplineFilters by mutableStateOf<List<FilterElement>>(listOf())
-        private set
-    var teacherFilters by mutableStateOf<List<FilterElement>>(listOf())
-        private set
-    var groupFilters by mutableStateOf<List<FilterElement>>(listOf())
-        private set
-    var departmentFilters by mutableStateOf<List<FilterElement>>(listOf())
-        private set
-
     var selectedFilters by mutableStateOf<MutableMap<String, Int>>(mutableMapOf())
         private set
-    var displayedFilters by mutableStateOf<List<Pair<String, FilterElement>>>(listOf())
+    var displayedFilters by mutableStateOf<MutableMap<String, FilterElement>>(mutableMapOf())
         private set
+    var displayedFiltersList by mutableStateOf<List<Pair<String, FilterElement>>>(listOf())
+        private set
+
+    var journal by mutableStateOf<List<JournalElement>>(listOf())
 
     init {
         viewModelScope.launch {
             filters = repo.getFilters()
-            workTypeFilters = filters.workTypes
-            disciplineFilters = filters.disciplines
-            teacherFilters = filters.teachers
-            groupFilters = filters.groups
-            departmentFilters = filters.departments
+        }
+        getJournal()
+    }
 
-            selectedFilters += Pair("Test1", 0)
-            selectedFilters += Pair("Test2", 1)
-            selectedFilters += Pair("Test3", 2)
-            selectedFilters += Pair("Test4", 3)
+    fun getJournal() {
+        viewModelScope.launch {
+            journal = repo.getJournal(selectedFilters).journal
         }
     }
 
-    fun addFilter(key: String, element: FilterElement) {
-        selectedFilters += Pair(key, element.id)
-        displayedFilters += Pair(key, element)
+    fun addFilter(filterKey: String, element: FilterElement) {
+        selectedFilters += Pair(filterKey, element.id)
+        displayedFilters += Pair(filterKey, element)
+        displayedFiltersList = displayedFilters.toList()
     }
 
     fun deleteFilter(key: String) {
-        selectedFilters.remove(key = key)
+        selectedFilters.remove(key)
+        displayedFilters.remove(key)
+        displayedFiltersList = displayedFilters.toList()
     }
 }

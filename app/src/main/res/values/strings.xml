@@ -20,4 +20,16 @@
     <string name="journal_element_registration_date">Registration date: %s</string>
 
     <string name="registration_pattern" translatable="false">dd/MM/yyyy HH:mm</string>
+
+    <string name="filter_element" translatable="false">%s</string>
+    <string name="filter_work_type">Work type</string>
+    <string name="filter_discipline">Discipline</string>
+    <string name="filter_teacher">Teacher</string>
+    <string name="filter_group">Group</string>
+    <string name="filter_department">Department</string>
+    <string name="filter_work_type_id" translatable="false">workTypeId</string>
+    <string name="filter_discipline_id" translatable="false">disciplineId</string>
+    <string name="filter_teacher_id" translatable="false">teacherId</string>
+    <string name="filter_department_id" translatable="false">departmentId</string>
+    <string name="filter_group_id" translatable="false">groupId</string>
 </resources>

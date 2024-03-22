@@ -1,6 +1,7 @@
 package com.example.diploma.ui.screens.camera
 
 import android.util.Size
+import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
@@ -14,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.diploma.common.AppGlobal
 import com.example.diploma.ui.screens.camera.analyzer.QrAnalyzer
 
 @Composable
@@ -40,6 +42,7 @@ fun CameraPreview(
             ContextCompat.getMainExecutor(factoryContext),
             QrAnalyzer { result ->
                 resultCallback(result)
+                Toast.makeText(AppGlobal.Instance, result, Toast.LENGTH_SHORT).show()
             })
         try {
             cameraProviderFuture.get().bindToLifecycle(
