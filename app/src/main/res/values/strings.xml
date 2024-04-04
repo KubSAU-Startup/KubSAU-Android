@@ -32,4 +32,14 @@
     <string name="filter_teacher_id" translatable="false">teacherId</string>
     <string name="filter_department_id" translatable="false">departmentId</string>
     <string name="filter_group_id" translatable="false">groupId</string>
+
+    <string name="scan_qr">Scan QR-code</string>
+    <string name="scan_qr_error_format_title">Wrong format</string>
+    <string name="scan_qr_error_format_text">Scanned QR-code with wrong format of content</string>
+    <string name="scan_qr_content_format_title">Wrong content</string>
+    <string name="scan_qr_content_format_text">Scanned QR-code with wrong content</string>
+    <string name="scan_qr_content_department_title">Wrong department</string>
+    <string name="scan_qr_content_department_text">Scanned QR-code from other department</string>
+
+    <string name="logout">Logout</string>
 </resources>

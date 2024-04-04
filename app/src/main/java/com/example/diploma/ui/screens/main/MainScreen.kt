@@ -2,6 +2,7 @@ package com.example.diploma.ui.screens.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,9 +35,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.diploma.common.navigation.graphs.RegistrationRoute
+import com.example.diploma.R
 import com.example.diploma.common.navigation.graphs.JournalRoute
+import com.example.diploma.common.navigation.graphs.RegistrationRoute
+import com.example.diploma.common.storage.AccountConfig
+import com.example.diploma.common.storage.NetworkConfig
 import kotlinx.coroutines.launch
 
 data class NavObject(
@@ -131,6 +137,17 @@ fun MainScreen(
 
                     if (selectedItemIndex == 1)
                         RegistrationRoute()
+                }
+                Row {
+                    Button(
+                        onClick = {
+                            logout()
+                            NetworkConfig.logout()
+                            AccountConfig.logout()
+                        },
+                    ) {
+                        Text(text = stringResource(id = R.string.logout))
+                    }
                 }
             }
         }

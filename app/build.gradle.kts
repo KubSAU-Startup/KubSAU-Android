@@ -89,8 +89,6 @@ dependencies {
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-    implementation("com.google.zxing:core:3.5.3")
-
     val camerax_version = "1.4.0-alpha04"
     implementation("androidx.camera:camera-core:$camerax_version")
     implementation("androidx.camera:camera-camera2:$camerax_version")
@@ -100,7 +98,6 @@ dependencies {
     implementation("androidx.camera:camera-extensions:$camerax_version")
     implementation("androidx.camera:camera-mlkit-vision:$camerax_version")
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
-
 
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 

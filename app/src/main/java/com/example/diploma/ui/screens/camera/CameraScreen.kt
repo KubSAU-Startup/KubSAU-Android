@@ -1,7 +1,6 @@
 package com.example.diploma.ui.screens.camera
 
 import android.Manifest
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.diploma.common.AppGlobal
 import com.example.diploma.ui.screens.camera.components.CameraPreview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -28,7 +26,7 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
     if (cameraPermissionState.status.isGranted) {
 
         CameraPreview {
-            Toast.makeText(AppGlobal.Instance, it, Toast.LENGTH_SHORT).show()
+            returnQrContent(it)
         }
 
     } else {
