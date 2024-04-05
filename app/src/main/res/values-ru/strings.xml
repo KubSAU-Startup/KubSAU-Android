@@ -13,4 +13,12 @@
     <string name="filter_teacher">Преподаватель</string>
     <string name="filter_group">Группа</string>
     <string name="filter_department">Кафедра</string>
+    <string name="scan_qr">Отсканировать QR-код</string>
+    <string name="scan_qr_error_format_title">Неверный формат</string>
+    <string name="scan_qr_error_format_text">Сканирован QR-код с неверным форматом</string>
+    <string name="scan_qr_content_format_title">Неверный контент</string>
+    <string name="scan_qr_content_format_text">Сканирован QR-код с неверным содержимым</string>
+    <string name="scan_qr_content_department_title">Неверная кафедра</string>
+    <string name="scan_qr_content_department_text">Сканирован QR-код на другую кафедру</string>
+    <string name="logout">Выйти</string>
 </resources>

@@ -12,11 +12,18 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.diploma.R
+import com.example.diploma.common.storage.AccountConfig
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -25,6 +32,18 @@ import com.google.mlkit.vision.barcode.common.Barcode
 fun CameraPreview(
     onResult: (String) -> Unit
 ) {
+
+    var showFormatError by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var showContentError by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var showDepartmentError by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -65,23 +84,32 @@ fun CameraPreview(
         when (val type = barcode.valueType) {
 
             Barcode.TYPE_TEXT -> {
-                val x = barcode.displayValue ?: "null"
-                Log.d("Camera", "Camera: result $x")
-                Toast.makeText(context, x, Toast.LENGTH_SHORT).show()
+                val barcodeResult = barcode.displayValue ?: "null"
+                Log.d("Camera", "Camera: result $barcodeResult")
 
-                cameraProvider?.unbindAll()
-                cameraProvider = null
+                if (checkContentTemplate(barcodeResult)) {
 
-                onResult(x)
+                    val (main, department) = barcodeResult.split(";")
+
+                    if (department.toInt() == AccountConfig.department) {
+
+                        cameraProvider?.unbindAll()
+                        cameraProvider = null
+
+                        onResult(main)
+                    } else showDepartmentError = true
+
+                } else showContentError = true
+
             }
 
             else -> {
-                val x = barcode.displayValue ?: "null"
-                Log.e("Camera", "Camera: result $x $type")
-                Toast.makeText(context, x, Toast.LENGTH_SHORT).show()
+                val barcodeResult = barcode.displayValue ?: "null"
+                Log.e("Camera", "Camera: result $barcodeResult $type")
 
-                cameraProvider?.unbindAll()
-                cameraProvider = null
+                Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
+
+                showFormatError = true
             }
 
         }
@@ -128,6 +156,36 @@ fun CameraPreview(
         )
     }
 
+    if (showFormatError) {
+        Alert(
+            onDismiss = {
+                showFormatError = false
+            },
+            title = stringResource(id = R.string.scan_qr_error_format_title),
+            text = stringResource(id = R.string.scan_qr_error_format_title)
+        )
+    }
+
+    if (showContentError) {
+        Alert(
+            onDismiss = {
+                showContentError = false
+            },
+            title = stringResource(id = R.string.scan_qr_content_format_title),
+            text = stringResource(id = R.string.scan_qr_content_format_text)
+        )
+    }
+
+    if (showDepartmentError) {
+        Alert(
+            onDismiss = {
+                showDepartmentError = false
+            },
+            title = stringResource(id = R.string.scan_qr_content_department_title),
+            text = stringResource(id = R.string.scan_qr_content_department_text)
+        )
+    }
+
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = {
@@ -138,4 +196,11 @@ fun CameraPreview(
         }
     )
 
+}
+
+//    studentId, subjectId, typeOfWorkId, editable (true | false); departmentId
+private fun checkContentTemplate(content: String): Boolean {
+    val template = Regex("""\d+,\d+,\d+,\d;\d+""")
+
+    return content.matches(template)
 }
