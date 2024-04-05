@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,15 +33,15 @@ fun CameraPreview(
     onResult: (String) -> Unit
 ) {
 
-    var showFormatError by remember {
+    var showFormatError by rememberSaveable {
         mutableStateOf(false)
     }
 
-    var showContentError by remember {
+    var showContentError by rememberSaveable {
         mutableStateOf(false)
     }
 
-    var showDepartmentError by remember {
+    var showDepartmentError by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -84,12 +84,12 @@ fun CameraPreview(
         when (val type = barcode.valueType) {
 
             Barcode.TYPE_TEXT -> {
-                val x = barcode.displayValue ?: "null"
-                Log.d("Camera", "Camera: result $x")
+                val barcodeResult = barcode.displayValue ?: "null"
+                Log.d("Camera", "Camera: result $barcodeResult")
 
-                if (checkContentTemplate(x)) {
+                if (checkContentTemplate(barcodeResult)) {
 
-                    val (main, department) = x.split(";")
+                    val (main, department) = barcodeResult.split(";")
 
                     if (department.toInt() == AccountConfig.department) {
 
@@ -104,8 +104,8 @@ fun CameraPreview(
             }
 
             else -> {
-                val x = barcode.displayValue ?: "null"
-                Log.e("Camera", "Camera: result $x $type")
+                val barcodeResult = barcode.displayValue ?: "null"
+                Log.e("Camera", "Camera: result $barcodeResult $type")
 
                 Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
 
