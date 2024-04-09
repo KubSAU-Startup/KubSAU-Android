@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class WorkType(
     @Json(name = "id") val id: Int,
     @Json(name = "title") val title: String,
-    @Json(name = "editable") val editable: Boolean
+    @Json(name = "editable") val editable: Boolean? = null
 )

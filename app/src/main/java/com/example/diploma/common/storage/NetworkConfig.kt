@@ -1,6 +1,7 @@
-package com.example.diploma.common
+package com.example.diploma.common.storage
 
 import android.content.Context
+import com.example.diploma.common.EMPTY_TOKEN
 import kotlin.properties.Delegates
 
 object NetworkConfig {
@@ -10,14 +11,16 @@ object NetworkConfig {
     private const val AUTH_TOKEN = "token"
 
     fun attachContext(context: Context) {
-        this.context = context
+        NetworkConfig.context = context
     }
 
-    private val data by lazy { context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE) }
+    private val data by lazy {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
 
     fun logout() = data.edit().clear().commit()
 
-    val isEmpty get() = data.getString(AUTH_TOKEN, EMPTY_TOKEN) == EMPTY_TOKEN
+    val isTokenEmpty get() = data.getString(AUTH_TOKEN, EMPTY_TOKEN) == EMPTY_TOKEN
 
     var token
         set(value) = data.edit().putString(AUTH_TOKEN, value).apply()

@@ -1,6 +1,6 @@
 package com.example.diploma.common.di
 
-import com.example.diploma.common.NetworkConfig
+import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.Api
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.calladapter.NetworkResponseAdapterFactory
