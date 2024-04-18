@@ -11,11 +11,12 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-private const val BASE_URL = "https://testbackend.melod1n.dedyn.io/"
+private const val BASE_URL = "https://kubsau-backend.melod1n.dedyn.io/"
+private const val TEST_URL = "https://kubsau-testbackend.melod1n.dedyn.io/"
 
 val networkModule = module {
     single {
-        Retrofit.Builder().baseUrl(BASE_URL)
+        Retrofit.Builder().baseUrl(TEST_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .client(

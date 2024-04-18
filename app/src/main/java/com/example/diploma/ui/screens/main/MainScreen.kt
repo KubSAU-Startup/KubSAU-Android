@@ -74,7 +74,9 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        println("Before scope")
         val scope = rememberCoroutineScope()
+        println("After scope")
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(value = 0)
         }

@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.common.navigation.AUTH_ROUTE
 import com.example.diploma.common.navigation.MAIN_ROUTE
 import com.example.diploma.common.navigation.ROOT_GRAPH
+import com.example.diploma.common.storage.NetworkConfig
 
 @Composable
 fun RootGraph(navController: NavHostController = rememberNavController()) {

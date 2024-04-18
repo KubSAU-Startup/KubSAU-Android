@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.diploma.R
+import com.example.diploma.common.QR_CONTENT_FORMAT
 import com.example.diploma.common.storage.AccountConfig
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -198,9 +199,6 @@ fun CameraPreview(
 
 }
 
-//    studentId, subjectId, typeOfWorkId, editable (true | false); departmentId
-private fun checkContentTemplate(content: String): Boolean {
-    val template = Regex("""\d+,\d+,\d+,\d;\d+""")
-
-    return content.matches(template)
-}
+//    studentId, subjectId, editable (1 | 0); departmentId
+private fun checkContentTemplate(content: String): Boolean =
+    content.matches(Regex(QR_CONTENT_FORMAT))
