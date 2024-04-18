@@ -10,7 +10,6 @@ import com.example.diploma.common.EMPTY_STRING
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.models.work.Work
 import kotlinx.coroutines.launch
-import kotlin.system.measureTimeMillis
 
 class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
@@ -28,8 +27,6 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
         private set
     var workTitle by mutableStateOf(EMPTY_STRING)
 
-    var student by mutableStateOf(EMPTY_STRING)
-
     fun fetchData(data: String) {
 
         val (student, discipline, edit) = data.split(',').map { it.toInt() }
@@ -38,27 +35,18 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
         editable = edit.toBoolean()
 
         viewModelScope.launch {
-            val executeTime = measureTimeMillis {
-                val disciplineApi = repo.getDisciplineTitle(disciplineId = disciplineId)
+            val disciplineApi = repo.getDisciplineTitle(disciplineId = disciplineId)
 
-                disciplineDisplay = disciplineApi?.title.toString()
-                workTypeId = disciplineApi?.workTypeId!!
-            }
-            println("Discipline request in ${executeTime}ms")
+            disciplineDisplay = disciplineApi?.title.toString()
+            workTypeId = disciplineApi?.workTypeId!!
         }
 
         viewModelScope.launch {
-            val executeTime = measureTimeMillis {
-                workTypeDisplay = repo.getWorkTypeTitle(workTypeId = workTypeId).toString()
-            }
-            println("Work type request in ${executeTime}ms")
+            workTypeDisplay = repo.getWorkTypeTitle(workTypeId = workTypeId).toString()
         }
 
         viewModelScope.launch {
-            val executeTime = measureTimeMillis {
-                studentDisplay = repo.getStudent(studentId = studentId).toString()
-            }
-            println("Student request in ${executeTime}ms")
+            studentDisplay = repo.getStudent(studentId = studentId).toString()
         }
 
     }
