@@ -37,7 +37,7 @@ class NetworkResponseCall<S : Any, E : Any>(
                 val code = response.code()
                 val error = response.errorBody()
 
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     if (body != null)
                         callback.onResponse(
                             this@NetworkResponseCall,
@@ -47,21 +47,21 @@ class NetworkResponseCall<S : Any, E : Any>(
                         this@NetworkResponseCall,
                         Response.success(NetworkResponse.UnknownError(null))
                     )
-                }else{
-                    val errorBody = when{
-                        error==null->null
-                        error.contentLength() == 0L->null
+                } else {
+                    val errorBody = when {
+                        error == null -> null
+                        error.contentLength() == 0L -> null
                         else -> try {
                             errorConverter.convert(error)
-                        }catch (e:Exception){
+                        } catch (e: Exception) {
                             null
                         }
                     }
-                     if (errorBody != null)
-                         callback.onResponse(
-                             this@NetworkResponseCall,
-                             Response.success(NetworkResponse.ApiError(errorBody, code))
-                         )
+                    if (errorBody != null)
+                        callback.onResponse(
+                            this@NetworkResponseCall,
+                            Response.success(NetworkResponse.ApiError(errorBody, code))
+                        )
                     else
                         callback.onResponse(
                             this@NetworkResponseCall,

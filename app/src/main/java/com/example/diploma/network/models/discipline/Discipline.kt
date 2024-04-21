@@ -1,11 +1,11 @@
-package com.example.diploma.network.models.worktype
+package com.example.diploma.network.models.discipline
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class WorkType(
+data class Discipline(
     @Json(name = "id") val id: Int,
     @Json(name = "title") val title: String,
-    @Json(name = "isEditable") val editable: Boolean
+    @Json(name = "workTypeId") val workTypeId: Int,
 )
