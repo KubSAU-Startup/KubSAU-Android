@@ -84,7 +84,7 @@ fun JournalScreen() {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             DropMenu(
-                                elements = viewModel.filters.workTypes,
+                                elements = viewModel.workTypes,
                                 label = stringResource(id = R.string.filter_work_type)
                             ) {
                                 viewModel.addFilter(
@@ -94,7 +94,7 @@ fun JournalScreen() {
                             }
                             Spacer(modifier = Modifier.height(filterSpace))
                             DropMenu(
-                                elements = viewModel.filters.disciplines,
+                                elements = viewModel.disciplines,
                                 label = stringResource(id = R.string.filter_discipline)
                             ) {
                                 viewModel.addFilter(
@@ -104,17 +104,17 @@ fun JournalScreen() {
                             }
                             Spacer(modifier = Modifier.height(filterSpace))
                             DropMenu(
-                                elements = viewModel.filters.teachers,
+                                elements = viewModel.employees,
                                 label = stringResource(id = R.string.filter_teacher)
                             ) {
                                 viewModel.addFilter(
-                                    filterKey = AppGlobal.Instance.getString(R.string.filter_teacher_id),
+                                    filterKey = AppGlobal.Instance.getString(R.string.filter_employee_id),
                                     element = it
                                 )
                             }
                             Spacer(modifier = Modifier.height(filterSpace))
                             DropMenu(
-                                elements = viewModel.filters.groups,
+                                elements = viewModel.groups,
                                 label = stringResource(id = R.string.filter_group)
                             ) {
                                 viewModel.addFilter(

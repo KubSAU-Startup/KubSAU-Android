@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Journal(
-    @Json(name = "count") val count: Int = 0,
+    @Json(name = "count") val count: Int = 1,
     @Json(name = "offset") val offset: Int = 0,
-    @Json(name = "journal") val journal: List<JournalElement> = listOf()
+    @Json(name = "entries") val journal: List<JournalElement> = listOf()
 )

@@ -10,5 +10,5 @@ data class Student(
     @Json(name = "lastName") val lastName: String,
     @Json(name = "middleName") val middleName: String,
     @Json(name = "groupId") val groupId: Int = 1,
-    @Json(name = "status") val status: Int = 1,
+    @Json(name = "statusId") val statusId: Int = 1,
 )

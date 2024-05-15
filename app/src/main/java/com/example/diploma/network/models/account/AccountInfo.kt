@@ -8,5 +8,5 @@ data class AccountInfo(
     @Json(name = "id") val id: Int,
     @Json(name = "type") val type: Int,
     @Json(name = "login") val login: String,
-    @Json(name = "departmentId") val departmentId: Int
+    @Json(name = "departmentIds") val departmentIds: List<Int>
 )

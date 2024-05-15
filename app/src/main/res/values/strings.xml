@@ -12,7 +12,7 @@
 
     <string name="error_wrong_login_or_password" translatable="false">Wrong login or password</string>
     <string name="journal_element_student">Student: %s</string>
-    <string name="journal_element_student_status">Status: %d</string>
+    <string name="journal_element_student_status">Status: %s</string>
     <string name="journal_element_discipline">Discipline: %s</string>
     <string name="journal_element_student_group">Group: %s</string>
     <string name="journal_element_teacher">Teacher: %s</string>
@@ -29,7 +29,7 @@
     <string name="filter_department">Department</string>
     <string name="filter_work_type_id" translatable="false">workTypeId</string>
     <string name="filter_discipline_id" translatable="false">disciplineId</string>
-    <string name="filter_teacher_id" translatable="false">teacherId</string>
+    <string name="filter_employee_id" translatable="false">employeeId</string>
     <string name="filter_department_id" translatable="false">departmentId</string>
     <string name="filter_group_id" translatable="false">groupId</string>
 

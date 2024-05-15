@@ -1,11 +1,9 @@
 package com.example.diploma.network
 
 import android.util.Log
-import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.calladapter.NetworkResponse
 import com.example.diploma.network.models.discipline.Discipline
-import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.Journal
 import com.example.diploma.network.models.work.Work
 
@@ -38,8 +36,9 @@ class NetworkRepo(private val api: Api) {
         }
     }
 
-    suspend fun getJournal(filters: Map<String, Int>) =
-        when (val response = api.journals(filters)) {
+    suspend fun getJournal(filters: Map<String, Int>): Journal {
+        println("Token is " + NetworkConfig.token)
+        return when (val response = api.journals(filters)) {
             is NetworkResponse.ApiError -> {
                 Log.d(TAG, "Error ${response.body.error}")
                 Journal()
@@ -58,29 +57,6 @@ class NetworkRepo(private val api: Api) {
             is NetworkResponse.UnknownError -> {
                 Log.d(TAG, "UnknownError ${response.error}")
                 Journal()
-            }
-        }
-
-    suspend fun getFilters(): Filter {
-        return when (val response = api.filters()) {
-            is NetworkResponse.ApiError -> {
-                Log.d(TAG, "Error ${response.body.error}")
-                Filter()
-            }
-
-            is NetworkResponse.NetworkError -> {
-                Log.d(TAG, "NetworkError")
-                Filter()
-            }
-
-            is NetworkResponse.Success -> {
-                Log.d(TAG, "Success ${response.body}")
-                response.body.response
-            }
-
-            is NetworkResponse.UnknownError -> {
-                Log.d(TAG, "UnknownError ${response.error}")
-                Filter()
             }
         }
     }
@@ -96,7 +72,7 @@ class NetworkRepo(private val api: Api) {
             }
 
             is NetworkResponse.Success -> {
-                AccountConfig.department = accountInfo.body.response.departmentId
+                //TODO: refactor SharedPreferences to DataStore
             }
 
             is NetworkResponse.UnknownError -> {
@@ -191,5 +167,81 @@ class NetworkRepo(private val api: Api) {
             is NetworkResponse.UnknownError -> Log.d(TAG, x.toString())
         }
     }
+
+    suspend fun getFilterDiscipline() =
+        when (val response = api.filterDisciplines()) {
+            is NetworkResponse.ApiError -> {
+                Log.d(TAG, "Api error ${response.body}")
+                emptyList()
+            }
+
+            is NetworkResponse.NetworkError -> {
+                Log.d(TAG, "Api error ${response.error}")
+                emptyList()
+            }
+
+            is NetworkResponse.Success -> response.body.response
+            is NetworkResponse.UnknownError -> {
+                Log.d(TAG, "Unknown error ${response.error}")
+                emptyList()
+            }
+        }
+
+    suspend fun getFilterWorkType() =
+        when (val response = api.filterWorkTypes()) {
+            is NetworkResponse.ApiError -> {
+                Log.d(TAG, "Api error ${response.body}")
+                emptyList()
+            }
+
+            is NetworkResponse.NetworkError -> {
+                Log.d(TAG, "Api error ${response.error}")
+                emptyList()
+            }
+
+            is NetworkResponse.Success -> response.body.response
+            is NetworkResponse.UnknownError -> {
+                Log.d(TAG, "Unknown error ${response.error}")
+                emptyList()
+            }
+        }
+
+    suspend fun getFilterEmployee() =
+        when (val response = api.filterEmployees()) {
+            is NetworkResponse.ApiError -> {
+                Log.d(TAG, "Api error ${response.body}")
+                emptyList()
+            }
+
+            is NetworkResponse.NetworkError -> {
+                Log.d(TAG, "Api error ${response.error}")
+                emptyList()
+            }
+
+            is NetworkResponse.Success -> response.body.response
+            is NetworkResponse.UnknownError -> {
+                Log.d(TAG, "Unknown error ${response.error}")
+                emptyList()
+            }
+        }
+
+    suspend fun getFilterGroup() =
+        when (val response = api.filterGroups()) {
+            is NetworkResponse.ApiError -> {
+                Log.d(TAG, "Api error ${response.body}")
+                emptyList()
+            }
+
+            is NetworkResponse.NetworkError -> {
+                Log.d(TAG, "Api error ${response.error}")
+                emptyList()
+            }
+
+            is NetworkResponse.Success -> response.body.response
+            is NetworkResponse.UnknownError -> {
+                Log.d(TAG, "Unknown error ${response.error}")
+                emptyList()
+            }
+        }
 
 }

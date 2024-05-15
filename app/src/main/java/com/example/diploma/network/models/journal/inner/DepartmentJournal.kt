@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class GroupJournal(
+data class DepartmentJournal(
     @Json(name = "id") val id: Int,
     @Json(name = "title") val title: String,
-    @Json(name = "directivityId") val directivityId: Int
+    @Json(name = "phone") val phone: String,
 )

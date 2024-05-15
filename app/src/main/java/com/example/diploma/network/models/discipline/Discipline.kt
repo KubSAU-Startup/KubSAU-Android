@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class Discipline(
     @Json(name = "id") val id: Int,
     @Json(name = "title") val title: String,
-    @Json(name = "workTypeId") val workTypeId: Int,
+    @Json(name = "departmentId") val departmentId: Int,
 )

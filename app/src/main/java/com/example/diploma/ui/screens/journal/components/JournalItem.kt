@@ -66,7 +66,7 @@ fun JournalItem(
                 Text(
                     text = stringResource(
                         id = R.string.journal_element_student_status,
-                        record.student.status
+                        record.student.status.title
                     )
                 )
             }
@@ -85,7 +85,7 @@ fun JournalItem(
                 Text(
                     text = stringResource(
                         id = R.string.journal_element_teacher,
-                        with(record.teacher) {
+                        with(record.employee) {
                             "$lastName $firstName $middleName"
                         }
                     )

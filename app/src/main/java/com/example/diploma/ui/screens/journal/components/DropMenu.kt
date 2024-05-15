@@ -13,14 +13,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.diploma.network.models.filter.FilterElement
+import com.example.diploma.network.models.filter.Filter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropMenu(
-    elements: List<FilterElement>,
+    elements: List<Filter>,
     label: String,
-    addFilters: (FilterElement) -> Unit
+    addFilters: (Filter) -> Unit
 ) {
     var isExpended by remember {
         mutableStateOf(false)

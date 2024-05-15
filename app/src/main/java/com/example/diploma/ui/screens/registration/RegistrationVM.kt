@@ -29,37 +29,10 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
     fun fetchData(data: String) {
 
-        val (student, discipline, edit) = data.split(',').map { it.toInt() }
-        studentId = student
-        disciplineId = discipline
-        editable = edit.toBoolean()
-
-        viewModelScope.launch {
-            val disciplineApi = repo.getDisciplineTitle(disciplineId = disciplineId)
-
-            disciplineDisplay = disciplineApi?.title.toString()
-            workTypeId = disciplineApi?.workTypeId!!
-        }
-
-        viewModelScope.launch {
-            workTypeDisplay = repo.getWorkTypeTitle(workTypeId = workTypeId).toString()
-        }
-
-        viewModelScope.launch {
-            studentDisplay = repo.getStudent(studentId = studentId).toString()
-        }
-
     }
 
     fun registration() {
-        viewModelScope.launch {
-            val work = if (editable)
-                Work(disciplineId = disciplineId, studentId = studentId, title = workTitle)
-            else
-                Work(disciplineId = disciplineId, studentId = studentId)
 
-            repo.workRegistration(work = work)
-        }
     }
 
 }

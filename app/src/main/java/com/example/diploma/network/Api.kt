@@ -12,6 +12,7 @@ import com.example.diploma.network.models.student.Student
 import com.example.diploma.network.models.work.Work
 import com.example.diploma.network.models.worktype.WorkType
 import retrofit2.http.Field
+import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,29 +22,39 @@ import retrofit2.http.QueryMap
 typealias Response<T> = NetworkResponse<ResponseSuccess<T>, ResponseFail<T>>
 
 interface Api {
-    @GET("auth")
-    suspend fun auth(@QueryMap authInfo: Map<String, String>): Response<Account>
+    @POST("auth")
+    @FormUrlEncoded
+    suspend fun auth(@FieldMap authInfo: Map<String, String>): Response<Account>
 
     @GET("account")
     suspend fun accountInfo(): Response<AccountInfo>
 
-    @GET("/journals")
-    suspend fun journals(@QueryMap filters: Map<String, Int>): Response<Journal>
+    @GET("works/latest")
+    suspend fun journals(@QueryMap searchParams: Map<String, Int>): Response<Journal>
 
-    @GET("/journals/filters")
-    suspend fun filters(): Response<Filter>
+    @GET("works/latest/filters/worktypes")
+    suspend fun filterWorkTypes(): Response<List<Filter>>
 
-    @GET("/disciplines/{id}")
+    @GET("works/latest/filters/disciplines")
+    suspend fun filterDisciplines(): Response<List<Filter>>
+
+    @GET("works/latest/filters/employees")
+    suspend fun filterEmployees(): Response<List<Filter>>
+
+    @GET("works/latest/filters/groups")
+    suspend fun filterGroups(): Response<List<Filter>>
+
+    @GET("disciplines/{id}")
     suspend fun discipline(@Path("id") disciplineId: Int): Response<Discipline>
 
-    @GET("/worktypes/{id}")
+    @GET("worktypes/{id}")
     suspend fun workTypes(@Path("id") workTypeId: Int): Response<WorkType>
 
-    @GET("/students/{id}")
+    @GET("student/{id}")
     suspend fun student(@Path("id") studentID: Int): Response<Student>
 
     @FormUrlEncoded
-    @POST("/works")
+    @POST("works")
     suspend fun workRegistration(
         @Field("disciplineId") disciplineId: Int,
         @Field("studentId") studentId: Int,

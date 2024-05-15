@@ -36,8 +36,8 @@ class LoginVM(private val repo: NetworkRepo) : ViewModel() {
 
             val response = repo.auth(
                 mapOf(
-                    "login" to loginInfo,
-                    "password" to passwordInfo
+                    "login" to loginInfo.trim(),
+                    "password" to passwordInfo.trim()
                 )
             )
 
