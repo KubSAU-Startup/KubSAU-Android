@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.camera.components
+package com.example.diploma.ui.screens.registration.camera.components
 
 import android.util.Log
 import android.widget.Toast
@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import com.example.diploma.R
 import com.example.diploma.common.QR_CONTENT_FORMAT
 import com.example.diploma.common.storage.AccountConfig
+import com.example.diploma.common.toListInt
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -86,18 +87,20 @@ fun CameraPreview(
 
             Barcode.TYPE_TEXT -> {
                 val barcodeResult = barcode.displayValue ?: "null"
+                println("Departments: " + AccountConfig.departmentList)
                 Log.d("Camera", "Camera: result $barcodeResult")
 
                 if (checkContentTemplate(barcodeResult)) {
 
-                    val (main, department) = barcodeResult.split(";")
+                    val (departmentId, notNeed) =
+                        barcodeResult.split(',').map { it.trim() }
 
-                    if (department.toInt() == AccountConfig.department) {
+                    if (departmentId.toInt() in AccountConfig.departmentList!!.toListInt()) {
 
                         cameraProvider?.unbindAll()
                         cameraProvider = null
 
-                        onResult(main)
+                        onResult(barcodeResult)
                     } else showDepartmentError = true
 
                 } else showContentError = true
@@ -199,6 +202,6 @@ fun CameraPreview(
 
 }
 
-//    studentId, subjectId, editable (1 | 0); departmentId
+//  departmentId, disciplineId, studentId, workTypeId
 private fun checkContentTemplate(content: String): Boolean =
     content.matches(Regex(QR_CONTENT_FORMAT))

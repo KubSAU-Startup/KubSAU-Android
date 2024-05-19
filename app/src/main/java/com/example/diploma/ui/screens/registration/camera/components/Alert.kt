@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.camera.components
+package com.example.diploma.ui.screens.registration.camera.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.AlertDialog

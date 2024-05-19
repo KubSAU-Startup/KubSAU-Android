@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DataCampusHub</string>
+    <string name="button_login">Авторизация</string>
     <string name="journal_element_student">Студент: %s</string>
     <string name="journal_element_student_status">Статус: %s</string>
     <string name="journal_element_discipline">Дисциплина: %s</string>
@@ -20,5 +21,7 @@
     <string name="scan_qr_content_format_text">Сканирован QR-код с неверным содержимым</string>
     <string name="scan_qr_content_department_title">Неверная кафедра</string>
     <string name="scan_qr_content_department_text">Сканирован QR-код на другую кафедру</string>
+    <string name="hint_work_title">Название работы</string>
     <string name="logout">Выйти</string>
+    <string name="registration">Зарегистрировать</string>
 </resources>

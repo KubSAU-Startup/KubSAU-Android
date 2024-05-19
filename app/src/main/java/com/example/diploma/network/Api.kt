@@ -4,11 +4,10 @@ import com.example.diploma.network.calladapter.NetworkResponse
 import com.example.diploma.network.models.ResponseFail
 import com.example.diploma.network.models.ResponseSuccess
 import com.example.diploma.network.models.account.Account
-import com.example.diploma.network.models.account.AccountInfo
 import com.example.diploma.network.models.discipline.Discipline
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.Journal
-import com.example.diploma.network.models.student.Student
+import com.example.diploma.network.models.student.X
 import com.example.diploma.network.models.work.Work
 import com.example.diploma.network.models.worktype.WorkType
 import retrofit2.http.Field
@@ -25,9 +24,6 @@ interface Api {
     @POST("auth")
     @FormUrlEncoded
     suspend fun auth(@FieldMap authInfo: Map<String, String>): Response<Account>
-
-    @GET("account")
-    suspend fun accountInfo(): Response<AccountInfo>
 
     @GET("works/latest")
     suspend fun journals(@QueryMap searchParams: Map<String, Int>): Response<Journal>
@@ -50,15 +46,17 @@ interface Api {
     @GET("worktypes/{id}")
     suspend fun workTypes(@Path("id") workTypeId: Int): Response<WorkType>
 
-    @GET("student/{id}")
-    suspend fun student(@Path("id") studentID: Int): Response<Student>
+    @GET("students/{id}")
+    suspend fun student(@Path("id") studentID: Int): Response<X>
 
     @FormUrlEncoded
     @POST("works")
     suspend fun workRegistration(
         @Field("disciplineId") disciplineId: Int,
         @Field("studentId") studentId: Int,
-        @Field("registrationDate") registrationDate: Int,
-        @Field("title") title: String?
+        @Field("title") title: String?,
+        @Field("workTypeId") workTypeId: Int,
+        @Field("departmentId") departmentId: Int,
+        @Field("employeeId") employeeId: Int
     ): Response<Work>
 }

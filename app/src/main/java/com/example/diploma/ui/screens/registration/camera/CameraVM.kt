@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.camera
+package com.example.diploma.ui.screens.registration.camera
 
 import android.graphics.Bitmap
 import android.widget.Toast

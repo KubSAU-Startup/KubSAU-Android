@@ -186,20 +186,17 @@ fun JournalScreen() {
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
+
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-
                 items(viewModel.journal) {
                     JournalItem(it)
                 }
-
             }
-
         }
     }
 }

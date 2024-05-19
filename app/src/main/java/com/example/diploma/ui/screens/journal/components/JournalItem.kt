@@ -22,7 +22,6 @@ import java.util.Locale
 fun JournalItem(
     record: JournalElement
 ) {
-
     val dateFormat = stringResource(id = R.string.registration_pattern)
     val sdf = SimpleDateFormat(dateFormat, Locale.getDefault())
 
@@ -32,7 +31,6 @@ fun JournalItem(
             .border(width = 2.dp, color = Color.Gray, shape = RoundedCornerShape(size = 16.dp))
             .padding(8.dp)
     ) {
-
         Row {
             record.work.title?.let {
                 Text(
@@ -74,7 +72,6 @@ fun JournalItem(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-
                 Text(
                     text = stringResource(
                         id = R.string.journal_element_student_group,
@@ -97,13 +94,11 @@ fun JournalItem(
                         record.work.type.title
                     )
                 )
-
             }
         }
 
         Row {
             Text(text = sdf.format(record.work.registrationDate * 1000))
         }
-
     }
 }

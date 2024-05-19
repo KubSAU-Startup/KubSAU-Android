@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.common.navigation.CAMERA_ROUTE
 import com.example.diploma.common.navigation.Screens
-import com.example.diploma.ui.screens.camera.CameraScreen
+import com.example.diploma.ui.screens.registration.camera.CameraScreen
 import com.example.diploma.ui.screens.registration.RegistrationScreen
 
 @Composable

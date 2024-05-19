@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.camera
+package com.example.diploma.ui.screens.registration.camera
 
 import android.Manifest
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.diploma.ui.screens.camera.components.CameraPreview
+import com.example.diploma.ui.screens.registration.camera.components.CameraPreview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

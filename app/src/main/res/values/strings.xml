@@ -4,7 +4,7 @@
     <string name="login_label" translatable="false">Login info</string>
     <string name="password_label" translatable="false">Password info</string>
 
-    <string name="button_login" translatable="false">Login</string>
+    <string name="button_login">Login</string>
     <string name="button_account" translatable="false">Account</string>
     <string name="button_set_user" translatable="false">Set new user</string>
     <string name="button_get_users" translatable="false">Get all users</string>
@@ -40,6 +40,9 @@
     <string name="scan_qr_content_format_text">Scanned QR-code with wrong content</string>
     <string name="scan_qr_content_department_title">Wrong department</string>
     <string name="scan_qr_content_department_text">Scanned QR-code from other department</string>
+
+    <string name="hint_work_title">Work title</string>
+    <string name="registration">Register</string>
 
     <string name="logout">Logout</string>
 </resources>

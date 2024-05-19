@@ -1,7 +1,7 @@
 package com.example.diploma.common.storage
 
 import android.content.Context
-import com.example.diploma.common.EMPTY_DEPARTMENT
+import com.example.diploma.common.EMPTY_STRING
 import kotlin.properties.Delegates
 
 object AccountConfig {
@@ -20,7 +20,7 @@ object AccountConfig {
 
     fun logout() = data.edit().clear().commit()
 
-    var department
-        set(value) = data.edit().putInt(DEPARTMENT_KEY, value).apply()
-        get() = data.getInt(DEPARTMENT_KEY, EMPTY_DEPARTMENT)
+    var departmentList
+        set(value) = data.edit().putString(DEPARTMENT_KEY, value).apply()
+        get() = data.getString(DEPARTMENT_KEY, EMPTY_STRING)
 }
