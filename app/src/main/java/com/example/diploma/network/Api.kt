@@ -10,7 +10,6 @@ import com.example.diploma.network.models.journal.Journal
 import com.example.diploma.network.models.student.X
 import com.example.diploma.network.models.work.Work
 import com.example.diploma.network.models.worktype.WorkType
-import retrofit2.http.Field
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -52,11 +51,6 @@ interface Api {
     @FormUrlEncoded
     @POST("works")
     suspend fun workRegistration(
-        @Field("disciplineId") disciplineId: Int,
-        @Field("studentId") studentId: Int,
-        @Field("title") title: String?,
-        @Field("workTypeId") workTypeId: Int,
-        @Field("departmentId") departmentId: Int,
-        @Field("employeeId") employeeId: Int
+        @FieldMap map: Map<String, String>
     ): Response<Work>
 }

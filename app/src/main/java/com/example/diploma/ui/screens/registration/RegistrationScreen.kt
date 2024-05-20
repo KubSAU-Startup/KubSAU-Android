@@ -1,5 +1,6 @@
 package com.example.diploma.ui.screens.registration
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +31,10 @@ import com.example.diploma.common.EMPTY_STRING
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RegistrationScreen(qrResult: String?, goToCamera: () -> Unit) {
+fun RegistrationScreen(
+    viewModel: RegistrationVM = koinViewModel(),
+    qrResult: String?, goToCamera: () -> Unit,
+) {
     Surface(
         modifier = Modifier
             .padding(16.dp)
@@ -49,8 +53,9 @@ fun RegistrationScreen(qrResult: String?, goToCamera: () -> Unit) {
                 }
             }
         } else {
-            val viewModel = koinViewModel<RegistrationVM>()
             viewModel.fetchData(data = qrResult)
+
+            Log.e("Reg_screen_render", "Render occur")
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -131,5 +136,6 @@ fun RegistrationScreen(qrResult: String?, goToCamera: () -> Unit) {
 @Preview
 @Composable
 fun RegPrev(modifier: Modifier = Modifier) {
-    RegistrationScreen(qrResult = "3,1,1,1") {}
+//    departmentId, disciplineId, studentId, workTypeId
+    RegistrationScreen(qrResult = "3,1,1,2") {}
 }

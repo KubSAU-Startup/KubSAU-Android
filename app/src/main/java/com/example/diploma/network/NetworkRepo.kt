@@ -142,21 +142,9 @@ class NetworkRepo(private val api: Api) {
     }
 
     suspend fun workRegistration(
-        disciplineId: Int,
-        studentId: Int,
-        title: String?,
-        workTypeId: Int,
-        departmentId: Int,
-        employeeId: Int
+        map: Map<String, String>
     ) {
-        when (val x = api.workRegistration(
-            disciplineId = disciplineId,
-            studentId = studentId,
-            title = title,
-            workTypeId = workTypeId,
-            departmentId = departmentId,
-            employeeId = employeeId
-        )) {
+        when (val x = api.workRegistration(map)) {
             is NetworkResponse.ApiError -> Log.d(TAG, x.toString())
             is NetworkResponse.NetworkError -> Log.d(TAG, x.toString())
             is NetworkResponse.Success -> Log.d(TAG, x.toString())

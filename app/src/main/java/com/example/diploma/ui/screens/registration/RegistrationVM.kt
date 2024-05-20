@@ -18,17 +18,17 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
     private var departmentId by mutableIntStateOf(0)
     private var workTypeId by mutableIntStateOf(0)
 
+    private var needDataToGet = true
+
     var discipline by mutableStateOf(EMPTY_STRING)
         private set
 
     private var disciplineId by mutableIntStateOf(0)
-        private set
 
     var student by mutableStateOf(EMPTY_STRING)
         private set
 
     private var studentId by mutableIntStateOf(0)
-        private set
 
     var needTitle by mutableStateOf(false)
         private set
@@ -43,51 +43,63 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
     var selectedEmployee by mutableStateOf(EMPTY_STRING)
 
     fun fetchData(data: String) {
-        val (departmentId, disciplineId, studentId, workTypeId) = data.toListInt()
-        this.departmentId = departmentId
+        if (needDataToGet) {
+            val (departmentId, disciplineId, studentId, workTypeId) = data.toListInt()
+            this.departmentId = departmentId
 
-        viewModelScope.launch {
-            val discipline = repo.getDisciplineTitle(disciplineId = disciplineId)
-            this@RegistrationVM.disciplineId = disciplineId
+            viewModelScope.launch {
+                Log.e("Reconnect employee", "For some reason disciplines run over and over again")
+                val discipline = repo.getDisciplineTitle(disciplineId = disciplineId)
+                this@RegistrationVM.disciplineId = disciplineId
 
-            if (discipline != null) {
-                this@RegistrationVM.discipline = discipline.title
-            } else this@RegistrationVM.discipline = "Error"
-        }
+                if (discipline != null) {
+                    this@RegistrationVM.discipline = discipline.title
+                } else this@RegistrationVM.discipline = "Error"
+            }
 
-        viewModelScope.launch {
-            val student = repo.getStudent(studentId = studentId)
-            this@RegistrationVM.studentId = studentId
+            viewModelScope.launch {
+                val student = repo.getStudent(studentId = studentId)
+                this@RegistrationVM.studentId = studentId
 
-            if (student != null) {
-                this@RegistrationVM.student = student
-            } else this@RegistrationVM.student = "Error"
-        }
+                if (student != null) {
+                    this@RegistrationVM.student = student
+                } else this@RegistrationVM.student = "Error"
+            }
 
-        viewModelScope.launch {
-            val workType = repo.getWorkType(workTypeId = workTypeId)
-            this@RegistrationVM.workTypeId = workTypeId
+            viewModelScope.launch {
+                val workType = repo.getWorkType(workTypeId = workTypeId)
+                this@RegistrationVM.workTypeId = workTypeId
 
-            if (workType != null) {
-                this@RegistrationVM.needTitle = workType.needTitle
-            } else Log.d("RegVM_WorkType_error", "Some api error")
-        }
+                if (workType != null) {
+                    this@RegistrationVM.needTitle = workType.needTitle
+                } else Log.d("RegVM_WorkType_error", "Some api error")
+            }
 
-        viewModelScope.launch {
-            employeeList = repo.getFilterEmployee()
+            viewModelScope.launch {
+                employeeList = repo.getFilterEmployee()
+                Log.e("Reconnect employee", "For some reason its run over and over again")
+            }
+
+            needDataToGet = false
         }
     }
 
     fun registration() {
         viewModelScope.launch {
-            repo.workRegistration(
-                disciplineId = disciplineId,
-                workTypeId = workTypeId,
-                studentId = studentId,
-                departmentId = departmentId,
-                employeeId = employeeId,
-                title = workTitle?.trim()
-            )
+            val map =
+                mutableMapOf(
+                    "disciplineId" to disciplineId.toString(),
+                    "studentId" to studentId.toString(),
+                    "workTypeId" to workTypeId.toString(),
+                    "departmentId" to departmentId.toString(),
+                    "employeeId" to employeeId.toString(),
+                )
+
+            if (workTitle != null)
+                map += Pair("title", workTitle.toString())
+
+            "title" to workTitle
+            repo.workRegistration(map)
         }
     }
 }
