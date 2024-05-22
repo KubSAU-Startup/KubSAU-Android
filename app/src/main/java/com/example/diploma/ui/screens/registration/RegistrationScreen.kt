@@ -137,5 +137,5 @@ fun RegistrationScreen(
 @Composable
 fun RegPrev(modifier: Modifier = Modifier) {
 //    departmentId, disciplineId, studentId, workTypeId
-    RegistrationScreen(qrResult = "3,1,1,2") {}
+    RegistrationScreen(qrResult = "3,1,1,1") {}
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.diploma.common.intToString
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
+import com.example.diploma.common.toToast
 import com.example.diploma.network.calladapter.NetworkResponse
 import com.example.diploma.network.models.discipline.Discipline
 import com.example.diploma.network.models.journal.Journal
@@ -145,10 +146,24 @@ class NetworkRepo(private val api: Api) {
         map: Map<String, String>
     ) {
         when (val x = api.workRegistration(map)) {
-            is NetworkResponse.ApiError -> Log.d(TAG, x.toString())
-            is NetworkResponse.NetworkError -> Log.d(TAG, x.toString())
-            is NetworkResponse.Success -> Log.d(TAG, x.toString())
-            is NetworkResponse.UnknownError -> Log.d(TAG, x.toString())
+            is NetworkResponse.ApiError -> {
+                "Api error $x".toToast()
+            }
+
+            is NetworkResponse.NetworkError -> {
+                "Network error $x".toToast()
+            }
+
+            is NetworkResponse.Success -> {
+                if (x.body.success)
+                    "Success reg".toToast()
+                else
+                    "Reg error ${x.body.error?.errorMessage}".toToast()
+            }
+
+            is NetworkResponse.UnknownError -> {
+                "Unknown error $x".toToast()
+            }
         }
     }
 

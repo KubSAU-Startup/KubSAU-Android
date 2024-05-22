@@ -1,7 +1,6 @@
 package com.example.diploma.ui.screens.registration.camera.components
 
 import android.util.Log
-import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -111,8 +110,6 @@ fun CameraPreview(
                 val barcodeResult = barcode.displayValue ?: "null"
                 Log.e("Camera", "Camera: result $barcodeResult $type")
 
-                Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
-
                 showFormatError = true
             }
 
@@ -166,7 +163,7 @@ fun CameraPreview(
                 showFormatError = false
             },
             title = stringResource(id = R.string.scan_qr_error_format_title),
-            text = stringResource(id = R.string.scan_qr_error_format_title)
+            text = stringResource(id = R.string.scan_qr_error_format_text)
         )
     }
 

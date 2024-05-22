@@ -68,9 +68,7 @@ fun DropMenu(
                         addFilters(it)
                         isExpended = false
                     },
-                    interactionSource = interactionSource.apply {
-
-                    }
+                    interactionSource = interactionSource.apply { }
                 )
             }
         }

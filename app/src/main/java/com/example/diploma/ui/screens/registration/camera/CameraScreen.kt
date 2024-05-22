@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.diploma.R
 import com.example.diploma.ui.screens.registration.camera.components.CameraPreview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -38,17 +40,16 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
             val textToShow = if (cameraPermissionState.status.shouldShowRationale) {
                 // If the user has denied the permission but the rationale can be shown,
                 // then gently explain why the app requires this permission
-                "The camera is important for this app. Please grant the permission."
+                stringResource(id = R.string.camera_permission_require)
             } else {
                 // If it's the first time the user lands on this feature, or the user
                 // doesn't want to be asked again for this permission, explain that the
                 // permission is required
-                "Camera permission required for this feature to be available. " +
-                        "Please grant the permission"
+                stringResource(id = R.string.permission_need)
             }
             Text(textToShow)
             Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
-                Text("Request permission")
+                Text(text = stringResource(id = R.string.request_permission))
             }
         }
     }

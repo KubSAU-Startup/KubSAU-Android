@@ -7,8 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.diploma.R
 import com.example.diploma.common.EMPTY_STRING
+import com.example.diploma.common.getString
 import com.example.diploma.common.toListInt
+import com.example.diploma.common.toToast
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.models.filter.Filter
 import kotlinx.coroutines.launch
@@ -86,6 +89,12 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
     fun registration() {
         viewModelScope.launch {
+
+            if (employeeId == 0) {
+                getString(id = R.string.employee_id_error).toToast()
+                return@launch
+            }
+
             val map =
                 mutableMapOf(
                     "disciplineId" to disciplineId.toString(),
@@ -96,7 +105,7 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
                 )
 
             if (workTitle != null)
-                map += Pair("title", workTitle.toString())
+                map += Pair("title", workTitle.toString().trim())
 
             "title" to workTitle
             repo.workRegistration(map)
