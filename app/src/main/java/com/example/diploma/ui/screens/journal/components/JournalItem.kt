@@ -2,18 +2,27 @@ package com.example.diploma.ui.screens.journal.components
 
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.diploma.R
 import com.example.diploma.network.models.journal.inner.JournalElement
 import java.util.Locale
@@ -25,6 +34,8 @@ fun JournalItem(
     val dateFormat = stringResource(id = R.string.registration_pattern)
     val sdf = SimpleDateFormat(dateFormat, Locale.getDefault())
 
+    val spacerHeight = 12.dp
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -32,73 +43,92 @@ fun JournalItem(
             .padding(8.dp)
     ) {
         Row {
-            record.work.title?.let {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    textAlign = TextAlign.Center,
-                    text = it,
-                    modifier = Modifier.fillMaxWidth(),
+                    text = record.work.type.title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row {
-
             Column(
-                modifier = Modifier.weight(1f)
-            ) {
-
-                Text(
-                    text = stringResource(
-                        id = R.string.journal_element_student,
-                        record.student.fullName
-                    ),
-                )
-
-                Text(
-                    text = stringResource(
-                        id = R.string.journal_element_discipline,
-                        record.discipline.title
-                    )
-                )
-
-                Text(
-                    text = stringResource(
-                        id = R.string.journal_element_student_status,
-                        record.student.status.title
-                    )
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Start
             ) {
                 Text(
-                    text = stringResource(
-                        id = R.string.journal_element_student_group,
-                        record.group.title
-                    ),
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                            append(stringResource(id = R.string.journal_item_discipline))
+                        }
+                        append(": ${record.discipline.title}")
+                    }
                 )
 
-                Text(
-                    text = stringResource(
-                        id = R.string.journal_element_teacher,
-                        with(record.employee) {
-                            "$lastName $firstName $middleName"
+                Spacer(modifier = Modifier.height(4.dp))
+
+                if (record.work.title != null) {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                                append(stringResource(id = R.string.journal_item_title))
+                            }
+                            append(": ${record.work.title}")
                         }
                     )
-                )
+                }
+
+                Spacer(modifier = Modifier.height(spacerHeight))
 
                 Text(
-                    text = stringResource(
-                        id = R.string.journal_element_work_type,
-                        record.work.type.title
-                    )
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                            append(stringResource(id = R.string.journal_item_student))
+                        }
+                        append(": ${record.student.fullName}")
+                    }
                 )
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                            append(stringResource(id = R.string.journal_item_group))
+                        }
+                        append(": ${record.group.title}")
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                Text(buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                        append(stringResource(id = R.string.journal_item_teacher))
+                    }
+                    append(": " + with(record.employee) {
+                        "$lastName $firstName $middleName"
+                    })
+                })
             }
         }
 
-        Row {
-            Text(text = sdf.format(record.work.registrationDate * 1000))
+        Spacer(modifier = Modifier.height(spacerHeight))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = sdf.format(record.work.registrationDate),
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

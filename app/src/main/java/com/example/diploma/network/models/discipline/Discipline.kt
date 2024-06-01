@@ -1,6 +1,5 @@
 package com.example.diploma.network.models.discipline
 
-import com.example.diploma.common.EMPTY_STRING
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

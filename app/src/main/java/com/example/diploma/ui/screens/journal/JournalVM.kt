@@ -2,10 +2,12 @@ package com.example.diploma.ui.screens.journal
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.diploma.common.toToast
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.inner.JournalElement
@@ -33,6 +35,8 @@ class JournalVM(private val repo: NetworkRepo) : ViewModel() {
 
     var journal by mutableStateOf<List<JournalElement>>(emptyList())
 
+    var offset by mutableIntStateOf(0)
+
     init {
         viewModelScope.launch {
             disciplines = repo.getFilterDiscipline()
@@ -45,7 +49,17 @@ class JournalVM(private val repo: NetworkRepo) : ViewModel() {
 
     fun getJournal() {
         viewModelScope.launch {
-            journal += repo.getJournal(selectedFilters).journal
+            val response = repo.getJournal(selectedFilters, offset)
+            journal = response.journal
+            offset += response.count
+        }
+    }
+
+    fun addToJournal() {
+        viewModelScope.launch {
+            val response = repo.getJournal(selectedFilters, offset)
+            journal += response.journal
+            offset += response.count
         }
     }
 

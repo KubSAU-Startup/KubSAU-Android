@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
@@ -57,12 +59,12 @@ fun MainScreen(
 ) {
     val items = listOf(
         NavObject(
-            title = "Journal",
+            title = stringResource(id = R.string.nav_drawer_journal),
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
         ),
         NavObject(
-            title = "Camera",
+            title = stringResource(id = R.string.nav_drawer_registration),
             selectedIcon = Icons.Filled.AccountBox,
             unselectedIcon = Icons.Outlined.AccountBox
         )
@@ -84,30 +86,54 @@ fun MainScreen(
         ModalNavigationDrawer(
             drawerContent = {
                 ModalDrawerSheet {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    items.forEachIndexed { index, item ->
-                        NavigationDrawerItem(
-                            label = {
-                                Text(text = item.title)
-                            },
-                            selected = index == selectedItemIndex,
-                            onClick = {
-                                selectedItemIndex = index
-                                scope.launch {
-                                    drawerState.close()
+                    Surface {
+                        Column {
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Column(
+                                modifier = Modifier.weight(1F)
+                            ) {
+                                items.forEachIndexed { index, item ->
+                                    NavigationDrawerItem(
+                                        label = {
+                                            Text(text = item.title)
+                                        },
+                                        selected = index == selectedItemIndex,
+                                        onClick = {
+                                            selectedItemIndex = index
+                                            scope.launch {
+                                                drawerState.close()
+                                            }
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector =
+                                                if (index == selectedItemIndex)
+                                                    item.selectedIcon
+                                                else item.unselectedIcon,
+                                                contentDescription = item.title
+                                            )
+                                        },
+                                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                                    )
                                 }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector =
-                                    if (index == selectedItemIndex)
-                                        item.selectedIcon
-                                    else item.unselectedIcon,
-                                    contentDescription = item.title
-                                )
-                            },
-                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                        )
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Button(
+                                    onClick = {
+                                        logout()
+                                        NetworkConfig.logout()
+                                        AccountConfig.logout()
+                                    },
+                                ) {
+                                    Text(text = stringResource(id = R.string.logout))
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -139,17 +165,6 @@ fun MainScreen(
 
                     if (selectedItemIndex == 1)
                         RegistrationRoute()
-                }
-                Row {
-                    Button(
-                        onClick = {
-                            logout()
-                            NetworkConfig.logout()
-                            AccountConfig.logout()
-                        },
-                    ) {
-                        Text(text = stringResource(id = R.string.logout))
-                    }
                 }
             }
         }

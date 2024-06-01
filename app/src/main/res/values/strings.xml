@@ -4,6 +4,12 @@
     <string name="login_label" translatable="false">Login info</string>
     <string name="password_label" translatable="false">Password info</string>
 
+    <string name="nav_drawer_journal">Journal</string>
+    <string name="nav_drawer_registration">Registration</string>
+
+    <string name="buttom_dismiss">Dismiss</string>
+    <string name="button_confirm">Confirm</string>
+
     <string name="button_login">Login</string>
     <string name="button_account" translatable="false">Account</string>
     <string name="button_set_user" translatable="false">Set new user</string>
@@ -19,7 +25,7 @@
     <string name="journal_element_work_type">Work type: %s</string>
     <string name="journal_element_registration_date">Registration date: %s</string>
 
-    <string name="registration_pattern" translatable="false">dd/MM/yyyy HH:mm</string>
+    <string name="registration_pattern" translatable="false">dd/MM/yyyy</string>
 
     <string name="filter_element" translatable="false">%s</string>
     <string name="filter_work_type">Work type</string>
@@ -51,4 +57,9 @@
     <string name="permission_need">Camera permission required for this feature to be available. Please grant the permission.</string>
     <string name="request_permission">Request permission</string>
 
+    <string name="journal_item_discipline">Discipline</string>
+    <string name="journal_item_title">Title</string>
+    <string name="journal_item_group">Group</string>
+    <string name="journal_item_student">Student</string>
+    <string name="journal_item_teacher">Teacher</string>
 </resources>

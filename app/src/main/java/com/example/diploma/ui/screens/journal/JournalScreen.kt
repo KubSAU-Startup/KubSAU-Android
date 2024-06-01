@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -24,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.diploma.R
@@ -41,9 +44,9 @@ import com.example.diploma.ui.screens.journal.components.JournalItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun JournalScreen() {
-    val viewModel = koinViewModel<JournalVM>()
-
+fun JournalScreen(
+    viewModel: JournalVM = koinViewModel()
+) {
     var menuExpand by remember {
         mutableStateOf(false)
     }
@@ -51,6 +54,17 @@ fun JournalScreen() {
     val filterRowSize = 30.dp
     val space = 8.dp
     val filterSpace = 4.dp
+
+    val listState = rememberLazyListState()
+
+    val togglePaging by remember(viewModel.journal.size) {
+        derivedStateOf {
+            viewModel.journal.size - listState.firstVisibleItemIndex <= 10
+        }
+    }
+
+    if (togglePaging)
+        viewModel.addToJournal()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -132,14 +146,15 @@ fun JournalScreen() {
                                     menuExpand = false
                                 }, modifier = Modifier.padding(8.dp)
                             ) {
-                                Text(text = "Dismiss")
+                                Text(text = stringResource(id = R.string.buttom_dismiss))
                             }
                             TextButton(
                                 onClick = {
                                     menuExpand = false
+                                    viewModel.getJournal()
                                 }, modifier = Modifier.padding(8.dp)
                             ) {
-                                Text(text = "Confirm")
+                                Text(text = stringResource(id = R.string.button_confirm))
                             }
                         }
                     }
@@ -159,6 +174,7 @@ fun JournalScreen() {
                         selected = true,
                         onClick = {
                             viewModel.deleteFilter(it.first)
+                            viewModel.getJournal()
                         },
                         trailingIcon = {
                             Icon(
@@ -191,6 +207,7 @@ fun JournalScreen() {
             modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn(
+                state = listState,
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(viewModel.journal) {
@@ -199,4 +216,10 @@ fun JournalScreen() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun JournalScreenPreview() {
+    JournalScreen()
 }

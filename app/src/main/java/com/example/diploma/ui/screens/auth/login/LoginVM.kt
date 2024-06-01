@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.login
+package com.example.diploma.ui.screens.auth.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,8 +22,13 @@ class LoginVM(private val repo: NetworkRepo) : ViewModel() {
 
     var successfulLogin by mutableStateOf(value = false)
 
+    var buttonActive by mutableStateOf(value = true)
+
     fun auth() {
         viewModelScope.launch {
+
+            buttonActive = false
+
             if (passwordInfo == EMPTY_STRING) {
                 showError = true
                 return@launch
@@ -44,6 +49,8 @@ class LoginVM(private val repo: NetworkRepo) : ViewModel() {
             showError = !response
 
             successfulLogin = response
+
+            buttonActive = true
         }
     }
 

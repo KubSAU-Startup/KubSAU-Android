@@ -1,4 +1,4 @@
-package com.example.diploma.ui.screens.login
+package com.example.diploma.ui.screens.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +34,10 @@ import com.example.diploma.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(moveToMainRoot: () -> Unit) {
-
-    val viewModel = koinViewModel<LoginVM>()
+fun LoginScreen(
+    viewModel: LoginVM = koinViewModel(),
+    moveToMainRoot: () -> Unit
+) {
 
     if (viewModel.successfulLogin)
         moveToMainRoot()
@@ -53,7 +54,6 @@ fun LoginScreen(moveToMainRoot: () -> Unit) {
         moveToMainRoot()
 
     Surface {
-
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -125,9 +125,11 @@ fun LoginScreen(moveToMainRoot: () -> Unit) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Button(onClick = {
-                    viewModel.auth()
-                }) {
+                Button(
+                    enabled = viewModel.buttonActive,
+                    onClick = {
+                        viewModel.auth()
+                    }) {
                     Text(text = stringResource(id = R.string.button_login))
                 }
             }

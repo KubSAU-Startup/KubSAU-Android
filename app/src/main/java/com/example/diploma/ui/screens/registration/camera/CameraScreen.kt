@@ -47,7 +47,7 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
                 // permission is required
                 stringResource(id = R.string.permission_need)
             }
-            Text(textToShow)
+            Text(text = textToShow)
             Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
                 Text(text = stringResource(id = R.string.request_permission))
             }

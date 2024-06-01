@@ -14,7 +14,11 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         composable(route = Screens.Main.route) {
             MainScreen(
                 logout = {
-                    navController.navigate(AUTH_ROUTE)
+                    navController.navigate(AUTH_ROUTE) {
+                        popUpTo(AUTH_ROUTE) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

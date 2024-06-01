@@ -46,8 +46,8 @@ class NetworkRepo(private val api: Api) {
         }
     }
 
-    suspend fun getJournal(filters: Map<String, Int>): Journal {
-        return when (val response = api.journals(filters)) {
+    suspend fun getJournal(filters: Map<String, Int>, offset: Int): Journal {
+        return when (val response = api.journals(filters, offset)) {
             is NetworkResponse.ApiError -> {
                 Log.d(TAG, "Error ${response.body.error}")
                 Journal()

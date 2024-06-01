@@ -15,6 +15,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 typealias Response<T> = NetworkResponse<ResponseSuccess<T>, ResponseFail<T>>
@@ -25,7 +26,10 @@ interface Api {
     suspend fun auth(@FieldMap authInfo: Map<String, String>): Response<Account>
 
     @GET("works/latest")
-    suspend fun journals(@QueryMap searchParams: Map<String, Int>): Response<Journal>
+    suspend fun journals(
+        @QueryMap searchParams: Map<String, Int>,
+        @Query("offset") offset: Int
+    ): Response<Journal>
 
     @GET("works/latest/filters/worktypes")
     suspend fun filterWorkTypes(): Response<List<Filter>>
