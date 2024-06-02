@@ -1,7 +1,7 @@
 package com.example.diploma.common.storage
 
 import android.content.Context
-import com.example.diploma.common.EMPTY_STRING
+import com.example.diploma.common.BASE_API_URL
 import com.example.diploma.common.EMPTY_TOKEN
 import kotlin.properties.Delegates
 
@@ -20,9 +20,18 @@ object NetworkConfig {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
-    fun logout() = data.edit().clear().commit()
+    fun logout() {
+        data.edit().remove(AUTH_TOKEN).apply()
+    }
 
-    val isTokenEmpty get() = data.getString(AUTH_TOKEN, EMPTY_TOKEN) == EMPTY_TOKEN
+    fun clearUrl() {
+        data.edit().remove(URL_KEY).apply()
+    }
+
+    val isTokenEmpty: Boolean
+        get() {
+            return data.getString(AUTH_TOKEN, EMPTY_TOKEN) == EMPTY_TOKEN
+        }
 
     var token
         set(value) = data.edit().putString(AUTH_TOKEN, value).apply()
@@ -30,7 +39,7 @@ object NetworkConfig {
 
     var url
         set(value) = data.edit().putString(URL_KEY, value).apply()
-        get() = data.getString(URL_KEY, EMPTY_TOKEN).toString()
+        get() = data.getString(URL_KEY, BASE_API_URL).toString()
 
-    val isUrlEmpty get() = data.getString(URL_KEY, EMPTY_STRING) == EMPTY_STRING
+    val isUrlEmpty get() = data.getString(URL_KEY, BASE_API_URL) == BASE_API_URL
 }

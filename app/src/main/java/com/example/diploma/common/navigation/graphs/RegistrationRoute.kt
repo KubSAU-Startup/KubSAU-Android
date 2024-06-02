@@ -13,17 +13,17 @@ import com.example.diploma.ui.screens.registration.camera.CameraScreen
 @Composable
 fun RegistrationRoute(navController: NavHostController = rememberNavController()) {
     NavHost(
-        navController = navController, startDestination = Screens.Registration.route,
+        navController = navController, startDestination = Screens.Camera.route,
         route = CAMERA_ROUTE
     ) {
-        composable(Screens.Registration.route) { entry ->
-            RegistrationScreen(qrResult = entry.savedStateHandle.get<String>(QR_KEY)) {
-                navController.navigate(route = Screens.Camera.route)
+        composable(Screens.Camera.route) {
+            CameraScreen {
+                navController.navigate(Screens.Registration.route + "/$it")
             }
         }
-        composable(route = Screens.Camera.route) {
-            CameraScreen { qrContent ->
-                navController.previousBackStackEntry?.savedStateHandle?.set(key = QR_KEY, qrContent)
+
+        composable(Screens.Registration.route + "/{$QR_KEY}") { backStack ->
+            RegistrationScreen(qrResult = backStack.arguments?.getString(QR_KEY).toString()) {
                 navController.popBackStack()
             }
         }

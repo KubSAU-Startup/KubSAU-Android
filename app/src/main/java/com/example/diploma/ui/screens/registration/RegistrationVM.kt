@@ -45,6 +45,12 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
     var selectedEmployee by mutableStateOf(EMPTY_STRING)
 
+    var regButEnable by mutableStateOf(true)
+        private set
+
+    var returnToCamera by mutableStateOf(false)
+        private set
+
     fun fetchData(data: String) {
         if (needDataToGet) {
             val (departmentId, disciplineId, studentId, workTypeId) = data.toListInt()
@@ -89,6 +95,7 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
     fun registration() {
         viewModelScope.launch {
+            regButEnable = false
 
             if (employeeId == 0) {
                 getString(id = R.string.employee_id_error).toToast()
@@ -107,8 +114,9 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
             if (workTitle != null)
                 map += Pair("title", workTitle.toString().trim())
 
-            "title" to workTitle
-            repo.workRegistration(map)
+            if (repo.workRegistration(map))
+                returnToCamera = true
+
         }
     }
 }

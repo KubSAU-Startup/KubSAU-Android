@@ -4,6 +4,7 @@ import com.example.diploma.network.calladapter.NetworkResponse
 import com.example.diploma.network.models.ResponseFail
 import com.example.diploma.network.models.ResponseSuccess
 import com.example.diploma.network.models.account.Account
+import com.example.diploma.network.models.back.BackVersion
 import com.example.diploma.network.models.discipline.Discipline
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.Journal
@@ -21,39 +22,42 @@ import retrofit2.http.QueryMap
 typealias Response<T> = NetworkResponse<ResponseSuccess<T>, ResponseFail<T>>
 
 interface Api {
-    @POST("auth")
+    @GET("/")
+    suspend fun checkUrl(): BackVersion
+
+    @POST("/auth")
     @FormUrlEncoded
     suspend fun auth(@FieldMap authInfo: Map<String, String>): Response<Account>
 
-    @GET("works/latest")
+    @GET("/works/latest")
     suspend fun journals(
         @QueryMap searchParams: Map<String, Int>,
         @Query("offset") offset: Int
     ): Response<Journal>
 
-    @GET("works/latest/filters/worktypes")
+    @GET("/works/latest/filters/worktypes")
     suspend fun filterWorkTypes(): Response<List<Filter>>
 
-    @GET("works/latest/filters/disciplines")
+    @GET("/works/latest/filters/disciplines")
     suspend fun filterDisciplines(): Response<List<Filter>>
 
-    @GET("works/latest/filters/employees")
+    @GET("/works/latest/filters/employees")
     suspend fun filterEmployees(): Response<List<Filter>>
 
-    @GET("works/latest/filters/groups")
+    @GET("/works/latest/filters/groups")
     suspend fun filterGroups(): Response<List<Filter>>
 
-    @GET("disciplines/{id}")
+    @GET("/disciplines/{id}")
     suspend fun discipline(@Path("id") disciplineId: Int): Response<Discipline>
 
-    @GET("worktypes/{id}")
+    @GET("/worktypes/{id}")
     suspend fun workTypes(@Path("id") workTypeId: Int): Response<WorkType>
 
-    @GET("students/{id}")
+    @GET("/students/{id}")
     suspend fun student(@Path("id") studentID: Int): Response<X>
 
     @FormUrlEncoded
-    @POST("works")
+    @POST("/works")
     suspend fun workRegistration(
         @FieldMap map: Map<String, String>
     ): Response<Work>

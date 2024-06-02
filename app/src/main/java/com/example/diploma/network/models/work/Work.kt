@@ -12,5 +12,5 @@ data class Work(
     @Json(name = "title") val title: String? = null,
     @Json(name = "workTypeId") val workTypeId: Int,
     @Json(name = "employeeId") val employeeId: Int,
-    @Json(name = "departmentId") val departmentId: Int,
+    @Json(name = "departmentId") val departmentId: Int = 0,
 )

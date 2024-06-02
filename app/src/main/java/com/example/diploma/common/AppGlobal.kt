@@ -8,6 +8,7 @@ import com.example.diploma.common.storage.NetworkConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 class AppGlobal : Application() {
     override fun onCreate() {
@@ -15,6 +16,18 @@ class AppGlobal : Application() {
 
         instance = this
 
+        startKoinInstance()
+
+        NetworkConfig.attachContext(this)
+        AccountConfig.attachContext(this)
+    }
+
+    fun restartKoin() {
+        stopKoin()
+        startKoinInstance()
+    }
+
+    private fun startKoinInstance() {
         startKoin {
             androidLogger()
             androidContext(this@AppGlobal)
@@ -23,14 +36,12 @@ class AppGlobal : Application() {
                 viewModelModule
             )
         }
-
-        NetworkConfig.attachContext(this)
-        AccountConfig.attachContext(this)
     }
 
     companion object {
         private lateinit var instance: AppGlobal
 
         val Instance get() = instance
+
     }
 }

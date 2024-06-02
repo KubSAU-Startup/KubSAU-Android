@@ -33,100 +33,92 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RegistrationScreen(
     viewModel: RegistrationVM = koinViewModel(),
-    qrResult: String?, goToCamera: () -> Unit,
+    qrResult: String, backToCamera: () -> Unit
 ) {
+    if (viewModel.returnToCamera)
+        backToCamera()
+
     Surface(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize()
     ) {
-        if (qrResult == null) {
+        viewModel.fetchData(data = qrResult)
+
+        Log.e("Reg_screen_render", "Render occur")
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 16.dp),
-                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { goToCamera() }) {
-                    Text(text = stringResource(id = R.string.scan_qr))
+                Text(
+                    text = stringResource(
+                        id = R.string.journal_element_discipline,
+                        viewModel.discipline
+                    )
+                )
+
+                Text(
+                    text = stringResource(
+                        id = R.string.journal_element_student,
+                        viewModel.student
+                    )
+                )
+
+                if (viewModel.needTitle) {
+                    OutlinedTextField(
+                        value = viewModel.workTitle ?: EMPTY_STRING,
+                        label = {
+                            Text(text = stringResource(id = R.string.hint_work_title))
+                        },
+                        onValueChange = {
+                            viewModel.workTitle = it
+                        })
                 }
             }
-        } else {
-            viewModel.fetchData(data = qrResult)
 
-            Log.e("Reg_screen_render", "Render occur")
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
             ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.SpaceAround,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(
-                            id = R.string.journal_element_discipline,
-                            viewModel.discipline
-                        )
-                    )
-
-                    Text(
-                        text = stringResource(
-                            id = R.string.journal_element_student,
-                            viewModel.student
-                        )
-                    )
-
-                    if (viewModel.needTitle) {
-                        OutlinedTextField(
-                            value = viewModel.workTitle ?: EMPTY_STRING,
-                            label = {
-                                Text(text = stringResource(id = R.string.hint_work_title))
-                            },
-                            onValueChange = {
-                                viewModel.workTitle = it
-                            })
-                    }
-                }
-
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                ) {
-                    items(viewModel.employeeList) { employee ->
-                        Row(
-                            modifier = Modifier
-                                .clickable {
-                                    viewModel.employeeId = employee.id
-                                    viewModel.selectedEmployee = employee.title
-                                }
-                                .border(
-                                    width = 2.dp,
-                                    color = Color.Gray,
-                                    shape = RoundedCornerShape(size = 10.dp)
-                                )
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (viewModel.selectedEmployee == employee.title),
-                                onClick = {}
+                items(viewModel.employeeList) { employee ->
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.employeeId = employee.id
+                                viewModel.selectedEmployee = employee.title
+                            }
+                            .border(
+                                width = 2.dp,
+                                color = Color.Gray,
+                                shape = RoundedCornerShape(size = 10.dp)
                             )
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (viewModel.selectedEmployee == employee.title),
+                            onClick = {}
+                        )
 
-                            Text(text = employee.title)
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = employee.title)
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
+            }
 
-                Row {
-                    Button(onClick = { viewModel.registration() }) {
-                        Text(text = stringResource(id = R.string.registration))
-                    }
+            Row {
+                Button(
+                    onClick = { viewModel.registration() },
+                    enabled = viewModel.regButEnable
+                ) {
+                    Text(text = stringResource(id = R.string.registration))
                 }
             }
         }

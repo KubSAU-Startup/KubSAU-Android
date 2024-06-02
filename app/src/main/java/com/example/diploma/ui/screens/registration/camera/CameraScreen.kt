@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.diploma.R
 import com.example.diploma.ui.screens.registration.camera.components.CameraPreview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -52,5 +53,13 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
                 Text(text = stringResource(id = R.string.request_permission))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun CameraScreenPreview(){
+    CameraScreen {
+
     }
 }

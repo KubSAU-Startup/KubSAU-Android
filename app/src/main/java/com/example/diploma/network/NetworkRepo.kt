@@ -13,6 +13,17 @@ import com.example.diploma.network.models.worktype.WorkType
 class NetworkRepo(private val api: Api) {
 
     private val TAG = "CallAdapter"
+
+    suspend fun checkUrl(): Boolean {
+        return try {
+            api.checkUrl()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
     suspend fun auth(queryParams: Map<String, String>): Boolean {
         return when (val response = api.auth(queryParams)) {
             is NetworkResponse.ApiError -> {
@@ -144,25 +155,35 @@ class NetworkRepo(private val api: Api) {
 
     suspend fun workRegistration(
         map: Map<String, String>
-    ) {
-        when (val x = api.workRegistration(map)) {
+    ): Boolean {
+        return when (val x = api.workRegistration(map)) {
             is NetworkResponse.ApiError -> {
+                Log.e("RegRequest", "Api error $x")
                 "Api error $x".toToast()
+                false
             }
 
             is NetworkResponse.NetworkError -> {
                 "Network error $x".toToast()
+                Log.e("RegRequest", "Network error $x")
+                false
             }
 
             is NetworkResponse.Success -> {
-                if (x.body.success)
+                if (x.body.success) {
                     "Success reg".toToast()
-                else
+                    true
+                } else {
                     "Reg error ${x.body.error?.errorMessage}".toToast()
+                    Log.e("RegRequest", "Reg error ${x.body.error?.errorMessage}")
+                    false
+                }
             }
 
             is NetworkResponse.UnknownError -> {
                 "Unknown error $x".toToast()
+                Log.e("RegRequest", "Unknown error $x")
+                false
             }
         }
     }

@@ -74,7 +74,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -103,17 +103,16 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("io.insert-koin:koin-android:3.5.3")
-    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
-    implementation("io.insert-koin:koin-ktor:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.6")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0-RC")
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.4.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
-    implementation("com.squareup.moshi:moshi:1.15.0")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
@@ -122,7 +121,7 @@ dependencies {
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-    val camerax_version = "1.4.0-alpha04"
+    val camerax_version = "1.4.0-beta01"
     implementation("androidx.camera:camera-core:$camerax_version")
     implementation("androidx.camera:camera-camera2:$camerax_version")
     implementation("androidx.camera:camera-lifecycle:$camerax_version")
@@ -132,14 +131,7 @@ dependencies {
     implementation("androidx.camera:camera-mlkit-vision:$camerax_version")
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
-    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
-
-    implementation("me.saket.cascade:cascade:2.3.0")
-    implementation("me.saket.cascade:cascade-compose:2.3.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.1-alpha")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
-
-    val paging_version = "3.3.0"
-    implementation("androidx.paging:paging-compose:$paging_version")
-    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
 }

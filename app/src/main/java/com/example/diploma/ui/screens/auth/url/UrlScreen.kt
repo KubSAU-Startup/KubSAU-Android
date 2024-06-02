@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -35,6 +36,7 @@ fun UrlScreen(
             Text(text = "Input server url")
 
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(.75f),
                 value = viewModel.url,
                 onValueChange = {
                     viewModel.updateUrl(it)
@@ -50,7 +52,6 @@ fun UrlScreen(
 
             Button(onClick = {
                 if (viewModel.legitUrl()) {
-                    NetworkConfig.url = viewModel.url
                     goToLoginScreen()
                 }
             }) {
