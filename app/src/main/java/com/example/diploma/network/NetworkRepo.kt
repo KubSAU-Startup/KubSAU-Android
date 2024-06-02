@@ -14,16 +14,6 @@ class NetworkRepo(private val api: Api) {
 
     private val TAG = "CallAdapter"
 
-    suspend fun checkUrl(): Boolean {
-        return try {
-            api.checkUrl()
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     suspend fun auth(queryParams: Map<String, String>): Boolean {
         return when (val response = api.auth(queryParams)) {
             is NetworkResponse.ApiError -> {

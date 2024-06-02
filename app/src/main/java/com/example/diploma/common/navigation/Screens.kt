@@ -11,5 +11,5 @@ sealed class Screens(val route: String) {
 
     data object Registration : Screens("registration")
 
-    data object Url : Screens("url")
+    data object Url : Screens(URL_ROUTE)
 }

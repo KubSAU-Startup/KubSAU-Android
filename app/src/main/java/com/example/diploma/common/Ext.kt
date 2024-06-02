@@ -3,6 +3,7 @@ package com.example.diploma.common
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 
+@Deprecated("")
 fun ViewModel.getString(id: Int) = AppGlobal.Instance.getString(id)
 
 fun List<Int>.intToString() = this.toString().trim('[', ']')

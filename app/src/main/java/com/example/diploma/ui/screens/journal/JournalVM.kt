@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.diploma.common.toToast
 import com.example.diploma.network.NetworkRepo
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.inner.JournalElement

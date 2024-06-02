@@ -4,7 +4,7 @@ import com.example.diploma.network.calladapter.NetworkResponse
 import com.example.diploma.network.models.ResponseFail
 import com.example.diploma.network.models.ResponseSuccess
 import com.example.diploma.network.models.account.Account
-import com.example.diploma.network.models.back.BackVersion
+import com.example.diploma.network.models.back.BackendInfo
 import com.example.diploma.network.models.discipline.Discipline
 import com.example.diploma.network.models.filter.Filter
 import com.example.diploma.network.models.journal.Journal
@@ -22,8 +22,9 @@ import retrofit2.http.QueryMap
 typealias Response<T> = NetworkResponse<ResponseSuccess<T>, ResponseFail<T>>
 
 interface Api {
+
     @GET("/")
-    suspend fun checkUrl(): BackVersion
+    suspend fun getBackendInfo(): BackendInfo
 
     @POST("/auth")
     @FormUrlEncoded

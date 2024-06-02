@@ -98,6 +98,7 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
             regButEnable = false
 
             if (employeeId == 0) {
+                // TODO: 02/06/2024, Danil Nikolaev: тосты в ui должны выводиться, а не в vm
                 getString(id = R.string.employee_id_error).toToast()
                 return@launch
             }

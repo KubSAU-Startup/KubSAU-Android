@@ -1,6 +1,7 @@
 package com.example.diploma.common
 
 import android.app.Application
+import androidx.preference.PreferenceManager
 import com.example.diploma.common.di.networkModule
 import com.example.diploma.common.di.viewModelModule
 import com.example.diploma.common.storage.AccountConfig
@@ -8,7 +9,6 @@ import com.example.diploma.common.storage.NetworkConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
 
 class AppGlobal : Application() {
     override fun onCreate() {
@@ -18,13 +18,10 @@ class AppGlobal : Application() {
 
         startKoinInstance()
 
-        NetworkConfig.attachContext(this)
-        AccountConfig.attachContext(this)
-    }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-    fun restartKoin() {
-        stopKoin()
-        startKoinInstance()
+        NetworkConfig.init(preferences)
+        AccountConfig.init(preferences)
     }
 
     private fun startKoinInstance() {
@@ -41,7 +38,7 @@ class AppGlobal : Application() {
     companion object {
         private lateinit var instance: AppGlobal
 
+        @Deprecated("есть DI")
         val Instance get() = instance
-
     }
 }

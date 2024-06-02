@@ -7,6 +7,7 @@ import com.example.diploma.network.calladapter.NetworkResponseAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -36,8 +37,5 @@ val networkModule = module {
             )
             .build().create(Api::class.java)
     }
-
-    single {
-        NetworkRepo(get())
-    }
+    singleOf(::NetworkRepo)
 }
