@@ -24,7 +24,11 @@ fun RegistrationRoute(navController: NavHostController = rememberNavController()
 
         composable(Screens.Registration.route + "/{$QR_KEY}") { backStack ->
             RegistrationScreen(qrResult = backStack.arguments?.getString(QR_KEY).toString()) {
-                navController.popBackStack()
+                navController.navigate(CAMERA_ROUTE) {
+                    popUpTo(CAMERA_ROUTE) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }

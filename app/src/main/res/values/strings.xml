@@ -49,7 +49,8 @@
 
     <string name="hint_work_title">Work title</string>
     <string name="registration">Register</string>
-    <string name="employee_id_error">Select employee</string>
+    <string name="teacher_id_error">Select teacher</string>
+    <string name="find_a_teacher">Find a teacher</string>
 
     <string name="logout">Logout</string>
 
@@ -62,4 +63,5 @@
     <string name="journal_item_group">Group</string>
     <string name="journal_item_student">Student</string>
     <string name="journal_item_teacher">Teacher</string>
+    <string name="filter_teachers">Teachers</string>
 </resources>

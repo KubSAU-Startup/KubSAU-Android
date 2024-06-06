@@ -48,7 +48,7 @@ class JournalVM(private val repo: NetworkRepo) : ViewModel() {
 
     fun getJournal() {
         viewModelScope.launch {
-            val response = repo.getJournal(selectedFilters, offset)
+            val response = repo.getJournal(selectedFilters, offset = 0)
             journal = response.journal
             offset += response.count
         }

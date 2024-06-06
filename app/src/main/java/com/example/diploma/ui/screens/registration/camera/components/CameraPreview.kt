@@ -24,7 +24,6 @@ import androidx.core.content.ContextCompat
 import com.example.diploma.R
 import com.example.diploma.common.QR_CONTENT_FORMAT
 import com.example.diploma.common.storage.AccountConfig
-import com.example.diploma.common.toListInt
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -91,16 +90,16 @@ fun CameraPreview(
 
                 if (checkContentTemplate(barcodeResult)) {
 
-                    val (departmentId, notNeed) =
-                        barcodeResult.split(',').map { it.trim() }
+//                    val (departmentId, notNeed) =
+//                        barcodeResult.split(',').map { it.trim() }
+//
+//                    if (departmentId.toInt() in AccountConfig.departmentList!!.toListInt()) {
+//
+//                        cameraProvider?.unbindAll()
+//                        cameraProvider = null
 
-                    if (departmentId.toInt() in AccountConfig.departmentList!!.toListInt()) {
-
-                        cameraProvider?.unbindAll()
-                        cameraProvider = null
-
-                        onResult(barcodeResult)
-                    } else showDepartmentError = true
+                    onResult(barcodeResult)
+//                    } else showDepartmentError = true
 
                 } else showContentError = true
 
@@ -177,16 +176,16 @@ fun CameraPreview(
         )
     }
 
-    if (showDepartmentError) {
-        Alert(
-            onDismiss = {
-                showDepartmentError = false
-            },
-            title = stringResource(id = R.string.scan_qr_content_department_title),
-            text = stringResource(id = R.string.scan_qr_content_department_text)
-        )
-    }
-
+//    if (showDepartmentError) {
+//        Alert(
+//            onDismiss = {
+//                showDepartmentError = false
+//            },
+//            title = stringResource(id = R.string.scan_qr_content_department_title),
+//            text = stringResource(id = R.string.scan_qr_content_department_text)
+//        )
+//    }
+//
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = {

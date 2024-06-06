@@ -22,7 +22,8 @@
     <string name="scan_qr_content_department_title">Неверная кафедра</string>
     <string name="scan_qr_content_department_text">Сканирован QR-код на другую кафедру</string>
     <string name="hint_work_title">Название работы</string>
-    <string name="employee_id_error">Выберите сотрудника</string>
+    <string name="teacher_id_error">Выберите преподавателя</string>
+    <string name="find_a_teacher">Найти преподавателя</string>
     <string name="logout">Выйти</string>
     <string name="registration">Зарегистрировать</string>
     <string name="camera_permission_require">Это приложение использует камеру для сканирования QR-кода. Необходимо дать разрешение на использование камеры.</string>
@@ -31,11 +32,11 @@
     <string name="nav_drawer_journal">Журнал</string>
     <string name="nav_drawer_registration">Регистрация</string>
     <string name="buttom_dismiss">Отмена</string>
-    <string name="button_confirm">Поддтвердить</string>
+    <string name="button_confirm">Подтвердить</string>
     <string name="journal_item_discipline">Дисциплина</string>
     <string name="journal_item_title">Тема</string>
     <string name="journal_item_group">Группа</string>
     <string name="journal_item_student">Студент</string>
-    <string name="journal_item_supervisor">Руководитель</string>
     <string name="journal_item_teacher">Преподаватель</string>
+    <string name="filter_teachers">Преподаватели</string>
 </resources>

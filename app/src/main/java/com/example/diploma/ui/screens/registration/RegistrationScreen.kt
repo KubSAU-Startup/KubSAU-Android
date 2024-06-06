@@ -14,12 +14,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +46,16 @@ fun RegistrationScreen(
 ) {
     if (viewModel.returnToCamera)
         backToCamera()
+
+    val searchIcon = if (viewModel.teacherSearch.isEmpty()) {
+        Icons.Default.Search
+    } else {
+        Icons.Default.Close
+    }
+
+    var showSearch by remember {
+        mutableStateOf(false)
+    }
 
     Surface(
         modifier = Modifier
@@ -71,6 +90,7 @@ fun RegistrationScreen(
 
                 if (viewModel.needTitle) {
                     OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(.90f),
                         value = viewModel.workTitle ?: EMPTY_STRING,
                         label = {
                             Text(text = stringResource(id = R.string.hint_work_title))
@@ -81,12 +101,72 @@ fun RegistrationScreen(
                 }
             }
 
+            Row(
+                modifier = Modifier.fillMaxWidth(1f),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = stringResource(id = R.string.teacher_id_error)
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                if (!showSearch)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(1f),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(
+                            imageVector = searchIcon,
+                            contentDescription = "Search icon for teachers",
+                            modifier = Modifier.clickable {
+                                showSearch = true
+                            }
+                        )
+                    }
+
+            }
+
+            HorizontalDivider(
+                thickness = 4.dp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (showSearch) {
+                OutlinedTextField(
+                    placeholder = {
+                        Text(text = stringResource(id = R.string.find_a_teacher))
+                    },
+                    singleLine = true,
+                    value = viewModel.teacherSearch,
+                    onValueChange = {
+                        viewModel.filterTeachers(it)
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Search icon for teachers",
+                            modifier = Modifier.clickable {
+                                if (viewModel.teacherSearch.isNotEmpty()) {
+                                    viewModel.clearTeacherSearch()
+                                } else {
+                                    showSearch = false
+                                }
+                            }
+                        )
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
             ) {
-                items(viewModel.employeeList) { employee ->
+                items(viewModel.employeeListDisplayed) { employee ->
                     Row(
                         modifier = Modifier
                             .clickable {

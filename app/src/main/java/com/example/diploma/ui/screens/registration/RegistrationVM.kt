@@ -40,8 +40,10 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
     var workTitle by mutableStateOf<String?>(null)
 
-    var employeeList by mutableStateOf<List<Filter>>(emptyList())
+    var employeeListDisplayed by mutableStateOf<List<Filter>>(emptyList())
         private set
+
+    private var employeeList by mutableStateOf<List<Filter>>(emptyList())
 
     var selectedEmployee by mutableStateOf(EMPTY_STRING)
 
@@ -49,6 +51,9 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
         private set
 
     var returnToCamera by mutableStateOf(false)
+        private set
+
+    var teacherSearch by mutableStateOf(EMPTY_STRING)
         private set
 
     fun fetchData(data: String) {
@@ -86,11 +91,21 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
             viewModelScope.launch {
                 employeeList = repo.getFilterEmployee()
+                employeeListDisplayed = employeeList
                 Log.e("Reconnect employee", "For some reason its run over and over again")
             }
 
             needDataToGet = false
         }
+    }
+
+    fun filterTeachers(inline: String) {
+        teacherSearch = inline
+
+        employeeListDisplayed = employeeList.filter {
+            it.title.contains(teacherSearch)
+        }
+
     }
 
     fun registration() {
@@ -99,7 +114,7 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
 
             if (employeeId == 0) {
                 // TODO: 02/06/2024, Danil Nikolaev: тосты в ui должны выводиться, а не в vm
-                getString(id = R.string.employee_id_error).toToast()
+                getString(id = R.string.teacher_id_error).toToast()
                 return@launch
             }
 
@@ -119,5 +134,10 @@ class RegistrationVM(private val repo: NetworkRepo) : ViewModel() {
                 returnToCamera = true
 
         }
+    }
+
+    fun clearTeacherSearch() {
+        teacherSearch = EMPTY_STRING
+        employeeListDisplayed = employeeList
     }
 }
