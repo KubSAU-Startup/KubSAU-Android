@@ -41,7 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegistrationScreen(
-    viewModel: RegistrationVM = koinViewModel(),
+    viewModel: WorkRegistrationViewModel = koinViewModel(),
     qrResult: String, backToCamera: () -> Unit
 ) {
     if (viewModel.returnToCamera)

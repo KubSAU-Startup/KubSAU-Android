@@ -19,7 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UrlScreen(
-    viewModel: UrlVM = koinViewModel(),
+    viewModel: UrlViewModel = koinViewModel(),
     goToLoginScreen: () -> Unit
 ) {
     val screenState = viewModel.screenState

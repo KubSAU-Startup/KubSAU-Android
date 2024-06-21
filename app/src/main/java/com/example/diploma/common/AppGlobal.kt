@@ -6,6 +6,7 @@ import com.example.diploma.common.di.networkModule
 import com.example.diploma.common.di.viewModelModule
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
+import com.example.diploma.ui.screens.auth.di.authModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -30,7 +31,8 @@ class AppGlobal : Application() {
             androidContext(this@AppGlobal)
             modules(
                 networkModule,
-                viewModelModule
+                viewModelModule,
+                authModule
             )
         }
     }

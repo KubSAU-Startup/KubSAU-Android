@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">DataCampusHub</string>
 
-    <string name="login_label" translatable="false">Login info</string>
-    <string name="password_label" translatable="false">Password info</string>
+    <string name="login_label">Login</string>
+    <string name="password_label">Password</string>
 
     <string name="nav_drawer_journal">Journal</string>
     <string name="nav_drawer_registration">Registration</string>
 
-    <string name="buttom_dismiss">Dismiss</string>
+    <string name="button_dismiss">Dismiss</string>
     <string name="button_confirm">Confirm</string>
 
     <string name="button_login">Login</string>

@@ -1,15 +1,14 @@
 package com.example.diploma.common.di
 
-import com.example.diploma.ui.screens.auth.login.LoginVM
-import com.example.diploma.ui.screens.auth.url.UrlVM
-import com.example.diploma.ui.screens.journal.JournalVM
-import com.example.diploma.ui.screens.registration.RegistrationVM
+import com.example.diploma.ui.screens.auth.url.UrlViewModel
+import com.example.diploma.ui.screens.latestworks.LatestWorksViewModel
+import com.example.diploma.ui.screens.registration.WorkRegistrationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
+@Deprecated("use separated modules for screens")
 val viewModelModule = module {
-    viewModelOf(::LoginVM)
-    viewModelOf(::JournalVM)
-    viewModelOf(::RegistrationVM)
-    viewModelOf(::UrlVM)
+    viewModelOf(::LatestWorksViewModel)
+    viewModelOf(::WorkRegistrationViewModel)
+    viewModelOf(::UrlViewModel)
 }

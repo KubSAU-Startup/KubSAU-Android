@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.common.navigation.JOURNAL_ROUTE
 import com.example.diploma.common.navigation.Screens
-import com.example.diploma.ui.screens.journal.JournalScreen
+import com.example.diploma.ui.screens.latestworks.JournalScreen
 
 @Composable
 fun JournalRoute(navController: NavHostController = rememberNavController()) {
