@@ -56,7 +56,6 @@ class LatestWorksViewModel(private val repository: WorksRepository) : ViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val latestWorks = repository.getLatestWorks(0, null)
             if (latestWorks == null) {
-                screenState = screenState.copy(isUrlWrong = true)
                 // TODO: 21/06/2024, Danil Nikolaev: show error
             } else {
                 journal = latestWorks
