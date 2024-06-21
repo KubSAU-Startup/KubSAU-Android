@@ -9,10 +9,14 @@ import com.example.diploma.common.navigation.MAIN_ROUTE
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.ui.screens.main.MainScreen
 
-fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.mainNavGraph(
+    onError: (String) -> Unit,
+    navController: NavHostController
+) {
     navigation(startDestination = Screens.Main.route, route = MAIN_ROUTE) {
         composable(route = Screens.Main.route) {
             MainScreen(
+                onError = onError,
                 logout = {
                     navController.navigate(AUTH_ROUTE) {
                         popUpTo(AUTH_ROUTE) {

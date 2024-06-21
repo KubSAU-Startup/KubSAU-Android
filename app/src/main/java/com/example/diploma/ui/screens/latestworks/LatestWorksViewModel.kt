@@ -9,11 +9,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.diploma.model.EntryElement
 import com.example.diploma.model.Filter
 import com.example.diploma.network.works.WorksRepository
+import com.example.diploma.ui.screens.latestworks.model.LatestWorksScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class LatestWorksViewModel(private val repository: WorksRepository) : ViewModel() {
+
+    var screenState by mutableStateOf(LatestWorksScreenState.EMPTY)
+        private set
 
     var disciplines by mutableStateOf<List<Filter>>(emptyList())
         private set
@@ -52,6 +56,7 @@ class LatestWorksViewModel(private val repository: WorksRepository) : ViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val latestWorks = repository.getLatestWorks(0, null)
             if (latestWorks == null) {
+                screenState = screenState.copy(isUrlWrong = true)
                 // TODO: 21/06/2024, Danil Nikolaev: show error
             } else {
                 journal = latestWorks

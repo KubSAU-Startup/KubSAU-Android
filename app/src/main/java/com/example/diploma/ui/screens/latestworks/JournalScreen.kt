@@ -17,10 +17,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,8 +43,15 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun JournalScreen(
+    onError: (String) -> Unit,
     viewModel: LatestWorksViewModel = koinViewModel()
 ) {
+
+    val screenState = viewModel.screenState
+    if (screenState.isUrlWrong) {
+        onError("Wrong url")
+    }
+
     var menuExpand by remember {
         mutableStateOf(false)
     }
@@ -221,5 +226,5 @@ fun JournalScreen(
 @Preview
 @Composable
 fun JournalScreenPreview() {
-    JournalScreen()
+    JournalScreen({})
 }

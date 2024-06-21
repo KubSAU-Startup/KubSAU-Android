@@ -46,8 +46,6 @@ val networkModule = module {
     singleOf(::AuthInterceptor)
     single {
         OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(get<ChuckerInterceptor>())
             .followRedirects(true)

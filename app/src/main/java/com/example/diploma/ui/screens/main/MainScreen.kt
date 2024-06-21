@@ -55,6 +55,7 @@ data class NavObject(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    onError: (String)->Unit,
     logout: () -> Unit
 ) {
     val items = listOf(
@@ -161,7 +162,7 @@ fun MainScreen(
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     if (selectedItemIndex == 0)
-                        JournalRoute()
+                        JournalRoute(onError)
 
                     if (selectedItemIndex == 1)
                         RegistrationRoute()

@@ -37,5 +37,5 @@ interface WorksService {
 
     @FormUrlEncoded
     @POST("/works")
-    suspend fun registerNewWork(@FieldMap map: Map<String, Any?>): Response<Work>
+    suspend fun registerNewWork(@FieldMap map: Map<String, String>): Response<Work>
 }

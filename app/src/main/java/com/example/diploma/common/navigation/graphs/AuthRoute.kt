@@ -9,13 +9,15 @@ import com.example.diploma.common.navigation.MAIN_ROUTE
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.ui.screens.auth.login.LoginScreen
 
-fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.authNavGraph(onError: (String) -> Unit, navController: NavHostController) {
     navigation(
         startDestination = Screens.Login.route,
         route = AUTH_ROUTE
     ) {
         composable(route = Screens.Login.route) {
-            LoginScreen {
+            LoginScreen(
+                onError = onError
+            ) {
                 navController.navigate(MAIN_ROUTE) {
                     popUpTo(MAIN_ROUTE) {
                         inclusive = true

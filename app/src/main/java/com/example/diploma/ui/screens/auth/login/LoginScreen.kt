@@ -35,6 +35,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
+    onError: (String)->Unit,
     viewModel: LoginViewModel = koinViewModel(),
     moveToMainRoot: () -> Unit
 ) {

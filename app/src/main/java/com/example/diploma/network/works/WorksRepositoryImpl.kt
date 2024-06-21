@@ -39,15 +39,14 @@ class WorksRepositoryImpl(private val service: WorksService) : WorksRepository {
         workTypeId: Int,
         employeeId: Int
     ): Work? = withContext(Dispatchers.IO) {
-        val parameters =
-            hashMapOf<String, Any?>(
-                "disciplineId" to disciplineId,
-                "studentId" to studentId,
-                "workTypeId" to workTypeId,
-                "employeeId" to employeeId,
-            ).apply {
-                title?.let { this["title"] = it }
-            }
+        val parameters = mutableMapOf(
+            "disciplineId" to disciplineId.toString(),
+            "studentId" to studentId.toString(),
+            "workTypeId" to workTypeId.toString(),
+            "employeeId" to employeeId.toString(),
+        ).apply {
+            title?.let { this["title"] = it }
+        }
 
         service.registerNewWork(parameters).foldOnSuccess()
     }
