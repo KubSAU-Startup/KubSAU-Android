@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
@@ -31,12 +32,15 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.diploma.R
@@ -55,7 +59,7 @@ data class NavObject(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    onError: (String)->Unit,
+    onError: (String) -> Unit,
     logout: () -> Unit
 ) {
     val items = listOf(
@@ -80,6 +84,7 @@ fun MainScreen(
         println("Before scope")
         val scope = rememberCoroutineScope()
         println("After scope")
+
         var selectedItemIndex by rememberSaveable {
             mutableIntStateOf(value = 0)
         }
@@ -140,6 +145,13 @@ fun MainScreen(
             },
             drawerState = drawerState
         ) {
+            var isSearchActionClicked by remember {
+                mutableStateOf(false)
+            }
+            var isFilterActionClicked by remember {
+                mutableStateOf(false)
+            }
+
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -147,25 +159,61 @@ fun MainScreen(
                             Text(text = "Main screen")
                         },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    drawerState.open()
+                            IconButton(
+                                onClick = {
+                                    scope.launch { drawerState.open() }
                                 }
-                            }) {
+                            ) {
                                 Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
+                            }
+                        },
+                        actions = {
+                            if (selectedItemIndex == 0) {
+                                IconButton(
+                                    onClick = { isFilterActionClicked = true }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.baseline_filter_alt_24),
+                                        contentDescription = null
+                                    )
+                                }
+
+                                IconButton(
+                                    onClick = { isSearchActionClicked = true }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
                     )
                 }
-            ) { paddingValues ->
-                Column(
-                    modifier = Modifier.padding(paddingValues)
-                ) {
-                    if (selectedItemIndex == 0)
-                        JournalRoute(onError)
+            ) { padding ->
+                Column(modifier = Modifier.padding(padding)) {
+                    when (selectedItemIndex) {
+                        0 -> {
+                            JournalRoute(
+                                onError = onError,
+                                onActionConsumed = { action ->
+                                    when (action) {
+                                        0 -> isFilterActionClicked = false
+                                        1 -> isSearchActionClicked = false
+                                    }
 
-                    if (selectedItemIndex == 1)
-                        RegistrationRoute()
+                                },
+                                isFilterClicked = isFilterActionClicked,
+                                isSearchClicked = isSearchActionClicked
+                            )
+                        }
+
+                        1 -> {
+                            RegistrationRoute()
+                        }
+
+                        else -> Unit
+                    }
                 }
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
@@ -32,9 +33,9 @@ fun JournalItem(
     record: EntryElement
 ) {
     val dateFormat = stringResource(id = R.string.registration_pattern)
-    val sdf = SimpleDateFormat(dateFormat, Locale.getDefault())
+    val sdf = remember { SimpleDateFormat(dateFormat, Locale.getDefault()) }
 
-    val spacerHeight = 12.dp
+    val spacerHeight = remember { 12.dp }
 
     Column(
         modifier = Modifier

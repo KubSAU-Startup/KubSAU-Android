@@ -10,14 +10,25 @@ import com.example.diploma.common.navigation.Screens
 import com.example.diploma.ui.screens.latestworks.JournalScreen
 
 @Composable
-fun JournalRoute(onError: (String)->Unit,navController: NavHostController = rememberNavController()) {
+fun JournalRoute(
+    onError: (String) -> Unit,
+    onActionConsumed: (Int) -> Unit,
+    isFilterClicked: Boolean,
+    isSearchClicked: Boolean,
+    navController: NavHostController = rememberNavController()
+) {
     NavHost(
         navController = navController,
         startDestination = Screens.Journal.route,
         route = JOURNAL_ROUTE
     ) {
         composable(Screens.Journal.route) {
-            JournalScreen(onError)
+            JournalScreen(
+                onError = onError,
+                onConsumeAction = onActionConsumed,
+                isFilterClicked = isFilterClicked,
+                isSearchClicked = isSearchClicked
+            )
         }
     }
 }
