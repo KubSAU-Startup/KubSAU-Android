@@ -5,21 +5,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,34 +30,35 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.diploma.R
+import com.example.diploma.model.Account
+import com.example.diploma.network.ApiError
+import com.example.diploma.network.ApiResponse
+import com.example.diploma.network.auth.AuthRepositoryImpl
+import com.example.diploma.network.auth.AuthService
+import com.slack.eithernet.ApiResult
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    onError: (String)->Unit,
-    viewModel: LoginViewModel = koinViewModel(),
+    onError: (String) -> Unit,
+    viewModel: LoginViewModelImpl = koinViewModel(),
     moveToMainRoot: () -> Unit
 ) {
+    val screenState by viewModel.screenState.collectAsState()
 
-    if (viewModel.successfulLogin)
+    if (screenState.isNeedOpenMain) {
+        viewModel.onMainOpened()
         moveToMainRoot()
-
-    var passwordVisibility by remember {
-        mutableStateOf(false)
     }
 
-    val visibilityIcon = if (passwordVisibility)
-        painterResource(id = R.drawable.baseline_visibility_24)
-    else painterResource(id = R.drawable.baseline_visibility_off_24)
-
-    if (viewModel.successfulLogin)
-        moveToMainRoot()
-
-    Surface {
+    Scaffold { padding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -66,14 +68,15 @@ fun LoginScreen(
                 contentDescription = "university logo"
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
-                    value = viewModel.loginInfo,
-                    onValueChange = { viewModel.infoLogin(login = it) },
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    value = screenState.login,
+                    onValueChange = viewModel::onLoginInputChanged,
                     label = {
                         Text(text = stringResource(id = R.string.login_label))
                     },
@@ -82,19 +85,21 @@ fun LoginScreen(
                         imeAction = ImeAction.Next
                     ),
                     supportingText = {
-                        if (viewModel.showError)
+                        screenState.error?.let {
                             Text(
                                 text = stringResource(id = R.string.error_wrong_login_or_password),
                                 color = Color.Red
                             )
+                        }
                     }
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 OutlinedTextField(
-                    value = viewModel.passwordInfo,
-                    onValueChange = { viewModel.infoPassword(password = it) },
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    value = screenState.password,
+                    onValueChange = viewModel::onPasswordInputChanged,
                     label = {
                         Text(text = stringResource(id = R.string.password_label))
                     },
@@ -102,38 +107,64 @@ fun LoginScreen(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Go
                     ),
-                    keyboardActions = KeyboardActions(onGo = {
-                        viewModel.auth()
-                    }),
+                    keyboardActions = KeyboardActions(
+                        onGo = { viewModel.onLogInButtonClicked() }
+                    ),
                     trailingIcon = {
-                        IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                        IconButton(onClick = viewModel::onPasswordVisibilityButtonClicked) {
                             Icon(
-                                painter = visibilityIcon,
+                                painter = painterResource(
+                                    id = if (screenState.isPasswordVisible) R.drawable.baseline_visibility_off_24
+                                    else R.drawable.baseline_visibility_24
+                                ),
                                 contentDescription = "Password visibility icon"
                             )
                         }
                     },
-                    visualTransformation = if (passwordVisibility) VisualTransformation.None
+                    visualTransformation = if (screenState.isPasswordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
                     supportingText = {
-                        if (viewModel.showError)
+                        screenState.error?.let {
                             Text(
                                 text = stringResource(id = R.string.error_wrong_login_or_password),
                                 color = Color.Red
                             )
+                        }
                     }
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
-                    enabled = viewModel.buttonActive,
-                    onClick = {
-                        viewModel.auth()
-                    }) {
-                    Text(text = stringResource(id = R.string.button_login))
+                if (screenState.isLoading) {
+                    CircularProgressIndicator()
+                } else {
+                    Button(
+                        onClick = viewModel::onLogInButtonClicked,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .height(56.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.button_login))
+                    }
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun LoginScreenPreview() {
+    val viewModel = LoginViewModelImpl(
+        AuthRepositoryImpl(object : AuthService {
+            override suspend fun createNewSession(authInfo: Map<String, String>): ApiResult<ApiResponse<Account>, ApiError> =
+                ApiResult.success(ApiResponse(null, null, true))
+        })
+    )
+
+    LoginScreen(
+        onError = {},
+        viewModel = viewModel,
+        moveToMainRoot = {}
+    )
 }
