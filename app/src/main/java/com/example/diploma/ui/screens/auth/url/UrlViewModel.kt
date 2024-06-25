@@ -12,6 +12,7 @@ import com.example.diploma.network.common.ApiService
 import com.example.diploma.network.calladapter.NetworkResponseAdapterFactory
 import com.example.diploma.ui.screens.auth.url.model.UrlScreenState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -51,6 +52,7 @@ class UrlViewModel : ViewModel() {
                     screenState = screenState.copy(isLoading = false, isNeedToGoNext = true)
                 },
                 onFailure = {
+                    delay(1000)
                     screenState = screenState.copy(isLoading = false, isUrlWrong = true)
                 }
             )

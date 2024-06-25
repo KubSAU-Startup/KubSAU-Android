@@ -1,20 +1,26 @@
 package com.example.diploma.ui.screens.auth.url
 
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.diploma.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -28,44 +34,59 @@ fun UrlScreen(
         goToLoginScreen()
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.title_input_url),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(.9f),
+                    value = screenState.url,
+                    onValueChange = viewModel::onTextInputChanged,
+                    label = {
+                        Text(text = "https://domain.com")
+                    },
+                    supportingText = {
+                        val errorTextResId: Int? = when {
+                            screenState.isUrlWrong -> R.string.wrong_url
+                            screenState.isUrlFormatInvalid -> R.string.wrong_url_format
+                            else -> null
+                        }
 
-            Log.d("URLScreen", "Render")
-
-            Text(text = "Input server url")
-
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(.75f),
-                value = screenState.url,
-                onValueChange = viewModel::onTextInputChanged,
-                supportingText = {
-                    val errorText: String? = when {
-                        screenState.isUrlWrong -> "Wrong url"
-                        screenState.isUrlFormatInvalid -> "Not an url"
-                        else -> null
+                        errorTextResId?.let {
+                            Text(
+                                text = stringResource(id = errorTextResId),
+                                color = Color.Red
+                            )
+                        }
                     }
-
-                    errorText?.let {
-                        Text(
-                            text = errorText,
-                            color = Color.Red
-                        )
-                    }
-                }
-            )
+                )
+            }
 
             if (screenState.isLoading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.BottomCenter))
             } else {
-                Button(onClick = viewModel::onNextButtonClick) {
-                    Text(text = "Next")
+                Button(
+                    onClick = viewModel::onNextButtonClick,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth(.9f)
+                        .padding(bottom = 12.dp)
+                        .height(56.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.action_next))
                 }
             }
         }

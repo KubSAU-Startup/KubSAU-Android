@@ -72,4 +72,8 @@
     <string name="filter_block_disciplines">Discipline</string>
     <string name="filter_query">Query</string>
     <string name="title_filters">Filters</string>
+    <string name="title_input_url">Input server\'s url</string>
+    <string name="wrong_url">Wrong url</string>
+    <string name="wrong_url_format">Not an url</string>
+    <string name="action_next">Next</string>
 </resources>

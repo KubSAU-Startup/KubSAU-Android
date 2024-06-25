@@ -48,4 +48,8 @@
     <string name="filter_block_disciplines">Дисциплина</string>
     <string name="filter_query">Текст</string>
     <string name="title_filters">Фильтры</string>
+    <string name="title_input_url">Введите адрес сервера</string>
+    <string name="wrong_url">Неверный адрес</string>
+    <string name="wrong_url_format">Не является адрес</string>
+    <string name="action_next">Далее</string>
 </resources>
