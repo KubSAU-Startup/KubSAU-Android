@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
+import com.example.diploma.common.storage.AccountConfig
+import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.ui.screens.main.MainScreen
 
 fun NavGraphBuilder.mainNavGraph(
@@ -19,7 +21,16 @@ fun NavGraphBuilder.mainNavGraph(
         composable(route = Screens.Main.route) {
             MainScreen(
                 onError = onError,
-                onLogOut = {}
+                onLogOut = {
+                    NetworkConfig.logout()
+                    AccountConfig.logout()
+
+                    navController.navigate(Graphs.Auth.route) {
+                        popUpTo(Graphs.Auth.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

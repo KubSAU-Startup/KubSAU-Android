@@ -6,6 +6,7 @@ import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.account.AccountRepository
 import com.example.diploma.network.auth.AuthRepository
+import com.example.diploma.network.employees.EmployeeRepository
 import com.example.diploma.ui.screens.auth.model.LoginScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,8 @@ interface LoginViewModel {
 
 class LoginViewModelImpl(
     private val repository: AuthRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val employeeRepository: EmployeeRepository
 ) : LoginViewModel, ViewModel() {
 
     override val screenState = MutableStateFlow(LoginScreenState.EMPTY)
@@ -98,7 +100,7 @@ class LoginViewModelImpl(
                 screenState.update { newState }
             } else {
                 NetworkConfig.token = sessionInfo.token
-                AccountConfig.departmentList = sessionInfo.departmentIds
+                AccountConfig.departmentId = sessionInfo.departmentIds.first()
 
                 val accountInfo = accountRepository.getAccountInfo()
                 if (accountInfo == null) {
@@ -116,11 +118,33 @@ class LoginViewModelImpl(
                         )
                         screenState.update { newState }
                     } else {
-                        val newState = screenState.value.copy(
-                            isLoading = false,
-                            isNeedOpenMain = true
-                        )
-                        screenState.update { newState }
+                        AccountConfig.departmentName = accountInfo.departments.first().title
+
+                        val employee = employeeRepository.getEmployeeById(accountInfo.employeeId)
+                        if (employee == null) {
+                            // TODO: 25/06/2024, Danil Nikolaev: show error
+                            val newState = screenState.value.copy(
+                                error = "not loaded wtf",
+                                isLoading = false
+                            )
+                            screenState.update { newState }
+                        } else {
+                            AccountConfig.fullName = with(employee) {
+                                middleName?.let {
+                                    "%s %s %s".format(
+                                        lastName,
+                                        firstName,
+                                        middleName
+                                    )
+                                } ?: "%s %s".format(lastName, firstName)
+                            }
+
+                            val newState = screenState.value.copy(
+                                isLoading = false,
+                                isNeedOpenMain = true
+                            )
+                            screenState.update { newState }
+                        }
                     }
                 }
             }

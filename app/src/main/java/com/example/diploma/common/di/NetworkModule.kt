@@ -18,6 +18,9 @@ import com.example.diploma.network.common.ApiService
 import com.example.diploma.network.disciplines.DisciplinesRepository
 import com.example.diploma.network.disciplines.DisciplinesRepositoryImpl
 import com.example.diploma.network.disciplines.DisciplinesService
+import com.example.diploma.network.employees.EmployeeRepository
+import com.example.diploma.network.employees.EmployeeRepositoryImpl
+import com.example.diploma.network.employees.EmployeesService
 import com.example.diploma.network.students.StudentsRepository
 import com.example.diploma.network.students.StudentsRepositoryImpl
 import com.example.diploma.network.students.StudentsService
@@ -91,6 +94,9 @@ val networkModule = module {
 
     singleOf(::AccountRepositoryImpl) bind AccountRepository::class
     single { service(AccountService::class.java) }
+
+    singleOf(::EmployeeRepositoryImpl) bind EmployeeRepository::class
+    single { service(EmployeesService::class.java) }
 }
 
 private fun <T> Scope.service(className: Class<T>): T = get<Retrofit>().create(className)

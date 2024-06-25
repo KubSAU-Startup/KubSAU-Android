@@ -68,17 +68,6 @@ fun LatestWorksScreen(
         viewModel.onBackPressed()
     }
 
-    /*
-    NetworkConfig.logout()
-    AccountConfig.logout()
-
-    navController.navigate(AUTH_ROUTE) {
-        popUpTo(AUTH_ROUTE) {
-            inclusive = true
-        }
-    }
-     */
-
     val listState = rememberLazyListState()
 
     val isEntriesSizeSufficient by remember(screenState) {

@@ -93,12 +93,12 @@ fun CameraPreview(
         when (val type = barcode.valueType) {
             Barcode.TYPE_TEXT -> {
                 val value = barcode.displayValue ?: "null"
-                println("Departments: " + AccountConfig.departmentList)
+                println("Department: " + AccountConfig.departmentId)
                 Log.d("Camera", "Camera: result $value")
 
                 if (checkContentTemplate(value)) {
                     val departmentId = value.split(",").first().toInt()
-                    if (departmentId !in AccountConfig.departmentList) {
+                    if (departmentId != AccountConfig.departmentId) {
                         showDepartmentError = true
                     } else {
                         coroutineScope.launch {

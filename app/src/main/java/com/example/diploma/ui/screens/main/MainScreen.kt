@@ -24,9 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.example.diploma.R
+import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.graphs.LatestWorksRoute
 import com.example.diploma.common.navigation.graphs.ProfileRoute
 import com.example.diploma.common.navigation.graphs.RegistrationRoute
+import com.example.diploma.common.storage.AccountConfig
+import com.example.diploma.common.storage.NetworkConfig
 
 private sealed class BottomNavItem(
     val index: Int,
@@ -99,7 +102,14 @@ fun MainScreen(
             when (selectedItemIndex) {
                 BottomNavItem.Register.index -> RegistrationRoute(onError = onError)
                 BottomNavItem.Home.index -> LatestWorksRoute(onError = onError)
-                BottomNavItem.Profile.index -> ProfileRoute(onError = onError)
+
+                BottomNavItem.Profile.index -> {
+                    ProfileRoute(
+                        onError = onError,
+                        onLogOut = onLogOut
+                    )
+                }
+
                 else -> Unit
             }
         }

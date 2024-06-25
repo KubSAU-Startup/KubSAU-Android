@@ -61,4 +61,5 @@
     <string name="pick_teacher_error">Преподаватель не выбран</string>
     <string name="wrong_account_type_title">Неверный тип аккаунта</string>
     <string name="wrong_account_type_text">Ваш тип аккаунта не лаборант. Пожалуйста, авторизуйтесь в другой аккаунт</string>
+    <string name="department">Кафедра</string>
 </resources>
