@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diploma.common.navigation.graphs.QR_KEY
-import com.example.diploma.common.toListInt
 import com.example.diploma.model.Filter
 import com.example.diploma.network.disciplines.DisciplinesRepository
 import com.example.diploma.network.students.StudentsRepository
@@ -55,7 +54,9 @@ class WorkRegisterViewModelImpl(
             throw IllegalStateException("QR code value cannot be null")
         }
 
-        val (departmentId, disciplineId, studentId, workTypeId) = qrCodeValue.toListInt()
+        val (departmentId, disciplineId, studentId, workTypeId) = qrCodeValue
+            .split(",")
+            .map { it.toInt() }
 
         viewModelScope.launch(Dispatchers.IO) {
             var newState = screenState.value.copy(

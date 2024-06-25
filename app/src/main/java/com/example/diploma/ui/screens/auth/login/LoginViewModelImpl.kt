@@ -2,7 +2,6 @@ package com.example.diploma.ui.screens.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.diploma.common.intToString
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.auth.AuthRepository
@@ -93,7 +92,7 @@ class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewMode
                         )
                     } else {
                         NetworkConfig.token = response.token
-                        AccountConfig.departmentList = response.departmentIds.intToString()
+                        AccountConfig.departmentList = response.departmentIds
 
                         screenState.value.copy(
                             isLoading = false,

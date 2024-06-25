@@ -15,7 +15,7 @@ object AccountConfig {
 
     fun logout() = preferences.edit().clear().commit()
 
-    var departmentList
-        set(value) = preferences.edit().putString(DEPARTMENT_KEY, value).apply()
-        get() = preferences.getString(DEPARTMENT_KEY, "")
+    var departmentList: List<Int>
+        set(value) = preferences.edit().putString(DEPARTMENT_KEY, value.joinToString(",")).apply()
+        get() = preferences.getString(DEPARTMENT_KEY, "").orEmpty().split(",").map { it.toInt() }
 }

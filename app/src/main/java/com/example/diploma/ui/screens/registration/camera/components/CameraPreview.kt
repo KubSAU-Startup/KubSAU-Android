@@ -97,11 +97,16 @@ fun CameraPreview(
                 Log.d("Camera", "Camera: result $value")
 
                 if (checkContentTemplate(value)) {
-                    coroutineScope.launch {
-                        cameraProvider?.unbindAll()
-                        showPreview = false
-                        delay(250)
-                        onResult(value)
+                    val departmentId = value.split(",").first().toInt()
+                    if (departmentId !in AccountConfig.departmentList) {
+                        showDepartmentError = true
+                    } else {
+                        coroutineScope.launch {
+                            cameraProvider?.unbindAll()
+                            showPreview = false
+                            delay(250)
+                            onResult(value)
+                        }
                     }
                 } else {
                     showContentError = true
