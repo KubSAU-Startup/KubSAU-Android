@@ -6,6 +6,7 @@ data class LoginScreenState(
     val password: String,
     val error: String?,
     val isNeedOpenMain: Boolean,
+    val isNeedOpenUrl: Boolean,
     val isPasswordVisible: Boolean
 ) {
 
@@ -16,6 +17,7 @@ data class LoginScreenState(
             password = "",
             error = null,
             isNeedOpenMain = false,
+            isNeedOpenUrl = false,
             isPasswordVisible = false
         )
     }

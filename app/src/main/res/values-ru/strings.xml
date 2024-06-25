@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">DataCampusHub</string>
     <string name="button_login">Авторизация</string>
-    <string name="journal_element_student">Студент: %s</string>
+    <string name="journal_element_student">Студент</string>
     <string name="journal_element_student_status">Статус: %s</string>
-    <string name="journal_element_discipline">Дисциплина: %s</string>
+    <string name="journal_element_discipline">Дисциплина</string>
     <string name="journal_element_student_group">Группа:  %s</string>
     <string name="journal_element_teacher">Преподаватель:  %s</string>
     <string name="journal_element_work_type">Тип работы:  %s</string>
@@ -53,4 +53,10 @@
     <string name="wrong_url_format">Не является адрес</string>
     <string name="action_next">Далее</string>
     <string name="title_camera_permission">Разрешение камеры</string>
+    <string name="error_wrong_login_or_password">Неверный логин или пароль</string>
+    <string name="action_change_url">Изменить адрес сервера</string>
+    <string name="title_register">Регистрация работы</string>
+    <string name="pick_teacher">Выберите преподавателя</string>
+    <string name="input_work_title">Введите название работы</string>
+    <string name="pick_teacher_error">Преподаватель не выбран</string>
 </resources>

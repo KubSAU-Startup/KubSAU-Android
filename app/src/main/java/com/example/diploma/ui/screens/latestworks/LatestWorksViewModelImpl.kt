@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -180,11 +181,11 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
     }
 
     override fun onQueryChanged(newQuery: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            screenState.emit(
-                screenState.value.copy(query = newQuery)
-            )
-        }
+        val newValue = screenState.value.copy(
+            query = newQuery
+        )
+
+        screenState.update { newValue }
     }
 
     override fun onSearchButtonClicked() {

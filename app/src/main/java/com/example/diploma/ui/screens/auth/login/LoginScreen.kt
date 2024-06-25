@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,14 +45,20 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoginScreen(
     onError: (String) -> Unit,
-    viewModel: LoginViewModelImpl = koinViewModel(),
-    moveToMainRoot: () -> Unit
+    moveToMainRoot: () -> Unit,
+    openUrlScreen: () -> Unit,
+    viewModel: LoginViewModelImpl = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsState()
 
     if (screenState.isNeedOpenMain) {
         viewModel.onMainOpened()
         moveToMainRoot()
+    }
+
+    if (screenState.isNeedOpenUrl) {
+        viewModel.onUrlOpened()
+        openUrlScreen()
     }
 
     Scaffold { padding ->
@@ -146,6 +153,12 @@ fun LoginScreen(
                     ) {
                         Text(text = stringResource(id = R.string.button_login))
                     }
+
+                    TextButton(
+                        onClick = viewModel::onChangeUrlButtonClicked
+                    ) {
+                        Text(text = stringResource(id = R.string.action_change_url))
+                    }
                 }
             }
         }
@@ -165,6 +178,7 @@ private fun LoginScreenPreview() {
     LoginScreen(
         onError = {},
         viewModel = viewModel,
-        moveToMainRoot = {}
+        moveToMainRoot = {},
+        openUrlScreen = {}
     )
 }

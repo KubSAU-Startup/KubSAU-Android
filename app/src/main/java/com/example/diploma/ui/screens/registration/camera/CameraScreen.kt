@@ -31,7 +31,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CameraScreen(returnQrContent: (String) -> Unit) {
+fun CameraScreen(onQrContentObtained: (String) -> Unit) {
     // Camera permission state
     val cameraPermissionState = rememberPermissionState(
         Manifest.permission.CAMERA
@@ -41,7 +41,6 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
         derivedStateOf { cameraPermissionState.status.isGranted }
     }
 
-
     Scaffold(
         topBar = {
             if (!isCameraPermissionGranted) {
@@ -49,14 +48,16 @@ fun CameraScreen(returnQrContent: (String) -> Unit) {
                     title = { Text(text = stringResource(id = R.string.title_camera_permission)) }
                 )
             }
-        }
+        },
+        modifier = Modifier.fillMaxSize()
     ) { padding ->
         if (isCameraPermissionGranted) {
             CameraPreview(
-                modifier = Modifier.padding(padding)
-            ) {
-                returnQrContent(it)
-            }
+                onResult = onQrContentObtained,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            )
         } else {
             Column(
                 modifier = Modifier

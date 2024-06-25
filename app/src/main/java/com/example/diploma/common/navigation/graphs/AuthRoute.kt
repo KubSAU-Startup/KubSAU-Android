@@ -15,14 +15,22 @@ fun NavGraphBuilder.authNavGraph(onError: (String) -> Unit, navController: NavHo
     ) {
         composable(route = Screens.Login.route) {
             LoginScreen(
-                onError = onError
-            ) {
-                navController.navigate(Graphs.Main.route) {
-                    popUpTo(Graphs.Main.route) {
-                        inclusive = true
+                onError = onError,
+                moveToMainRoot = {
+                    navController.navigate(Graphs.Main.route) {
+                        popUpTo(Graphs.Main.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                openUrlScreen = {
+                    navController.navigate(Screens.Url.route) {
+                        popUpTo(Graphs.Auth.route) {
+                            inclusive = true
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }

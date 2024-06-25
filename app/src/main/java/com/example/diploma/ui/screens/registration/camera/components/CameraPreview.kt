@@ -6,13 +6,14 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -27,13 +28,14 @@ import com.example.diploma.common.storage.AccountConfig
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun CameraPreview(
+    onResult: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onResult: (String) -> Unit
 ) {
-
     var showFormatError by rememberSaveable {
         mutableStateOf(false)
     }
@@ -46,10 +48,16 @@ fun CameraPreview(
         mutableStateOf(false)
     }
 
+    var showPreview by remember {
+        mutableStateOf(true)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    var cameraProvider: ProcessCameraProvider?
+    var cameraProvider: ProcessCameraProvider? = null
 
     val cameraController = LifecycleCameraController(context)
     cameraController.bindToLifecycle(lifecycleOwner)
@@ -83,40 +91,37 @@ fun CameraPreview(
         val barcode = barcodeResult[0]
 
         when (val type = barcode.valueType) {
-
             Barcode.TYPE_TEXT -> {
                 val value = barcode.displayValue ?: "null"
                 println("Departments: " + AccountConfig.departmentList)
                 Log.d("Camera", "Camera: result $value")
 
                 if (checkContentTemplate(value)) {
-                    onResult(value)
+                    coroutineScope.launch {
+                        cameraProvider?.unbindAll()
+                        showPreview = false
+                        delay(250)
+                        onResult(value)
+                    }
                 } else {
                     showContentError = true
                 }
-
             }
 
             else -> {
                 Log.e("Camera", "Camera: result ${barcode.displayValue} $type")
                 showFormatError = true
             }
-
         }
 
         handleResult = false
-
     }
 
     val imageAnalyzer = ImageAnalysis.Builder()
         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build().also {
-            it.setAnalyzer(cameraExecutor, analyzer)
-        }
+        .build().also { analysis -> analysis.setAnalyzer(cameraExecutor, analyzer) }
 
-    cameraController.setImageAnalysisAnalyzer(
-        cameraExecutor, analyzer
-    )
+    cameraController.setImageAnalysisAnalyzer(cameraExecutor, analyzer)
 
     val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
     val addCameraProviderListener: (PreviewView) -> Unit = { previewView ->
@@ -126,9 +131,7 @@ fun CameraPreview(
 
                 val preview = Preview.Builder()
                     .build()
-                    .also {
-                        it.setSurfaceProvider(previewView.surfaceProvider)
-                    }
+                    .also { it.surfaceProvider = previewView.surfaceProvider }
 
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -148,9 +151,7 @@ fun CameraPreview(
 
     if (showFormatError) {
         Alert(
-            onDismiss = {
-                showFormatError = false
-            },
+            onDismiss = { showFormatError = false },
             title = stringResource(id = R.string.scan_qr_error_format_title),
             text = stringResource(id = R.string.scan_qr_error_format_text)
         )
@@ -158,34 +159,31 @@ fun CameraPreview(
 
     if (showContentError) {
         Alert(
-            onDismiss = {
-                showContentError = false
-            },
+            onDismiss = { showContentError = false },
             title = stringResource(id = R.string.scan_qr_content_format_title),
             text = stringResource(id = R.string.scan_qr_content_format_text)
         )
     }
 
-//    if (showDepartmentError) {
-//        Alert(
-//            onDismiss = {
-//                showDepartmentError = false
-//            },
-//            title = stringResource(id = R.string.scan_qr_content_department_title),
-//            text = stringResource(id = R.string.scan_qr_content_department_text)
-//        )
-//    }
+    if (showDepartmentError) {
+        Alert(
+            onDismiss = { showDepartmentError = false },
+            title = stringResource(id = R.string.scan_qr_content_department_title),
+            text = stringResource(id = R.string.scan_qr_content_department_text)
+        )
+    }
 
-    AndroidView(
-        modifier = modifier.fillMaxSize(),
-        factory = {
-            PreviewView(it).also {
-                it.controller = cameraController
-                addCameraProviderListener.invoke(it)
+    if (showPreview) {
+        AndroidView(
+            modifier = modifier.fillMaxSize(),
+            factory = { factoryContext ->
+                PreviewView(factoryContext).also { preview ->
+                    preview.controller = cameraController
+                    addCameraProviderListener(preview)
+                }
             }
-        }
-    )
-
+        )
+    }
 }
 
 //  departmentId, disciplineId, studentId, workTypeId

@@ -17,10 +17,10 @@
     <string name="button_get_users" translatable="false">Get all users</string>
     <string name="button_delete_user" translatable="false">Delete user</string>
 
-    <string name="error_wrong_login_or_password" translatable="false">Wrong login or password</string>
-    <string name="journal_element_student">Student: %s</string>
+    <string name="error_wrong_login_or_password">Wrong login or password</string>
+    <string name="journal_element_student">Student</string>
     <string name="journal_element_student_status">Status: %s</string>
-    <string name="journal_element_discipline">Discipline: %s</string>
+    <string name="journal_element_discipline">Discipline</string>
     <string name="journal_element_student_group">Group: %s</string>
     <string name="journal_element_teacher">Teacher: %s</string>
     <string name="journal_element_work_type">Work type: %s</string>
@@ -77,4 +77,10 @@
     <string name="wrong_url_format">Not an url</string>
     <string name="action_next">Next</string>
     <string name="title_camera_permission">Camera permission</string>
+    <string name="action_change_url">Change server url</string>
+    <string name="ok" translatable="false">@android:string/ok</string>
+    <string name="title_register">Work register</string>
+    <string name="pick_teacher">Pick a teacher</string>
+    <string name="input_work_title">Input work title</string>
+    <string name="pick_teacher_error">Teacher is not picked</string>
 </resources>

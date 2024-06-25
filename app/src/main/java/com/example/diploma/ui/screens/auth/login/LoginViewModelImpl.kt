@@ -10,6 +10,7 @@ import com.example.diploma.ui.screens.auth.model.LoginScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,8 +23,10 @@ interface LoginViewModel {
     fun onPasswordVisibilityButtonClicked()
 
     fun onLogInButtonClicked()
+    fun onChangeUrlButtonClicked()
 
     fun onMainOpened()
+    fun onUrlOpened()
 }
 
 class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewModel, ViewModel() {
@@ -31,35 +34,29 @@ class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewMode
     override val screenState = MutableStateFlow(LoginScreenState.EMPTY)
 
     override fun onLoginInputChanged(newLogin: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            screenState.emit(
-                screenState.value.copy(
-                    login = newLogin,
-                    error = null
-                )
-            )
-        }
+        val newValue = screenState.value.copy(
+            login = newLogin,
+            error = null
+        )
+
+        screenState.update { newValue }
     }
 
     override fun onPasswordInputChanged(newPassword: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            screenState.emit(
-                screenState.value.copy(
-                    password = newPassword,
-                    error = null
-                )
-            )
-        }
+        val newValue = screenState.value.copy(
+            password = newPassword,
+            error = null
+        )
+
+        screenState.update { newValue }
     }
 
     override fun onPasswordVisibilityButtonClicked() {
-        viewModelScope.launch(Dispatchers.Main) {
-            screenState.emit(
-                screenState.value.copy(
-                    isPasswordVisible = !screenState.value.isPasswordVisible
-                )
-            )
-        }
+        val newValue = screenState.value.copy(
+            isPasswordVisible = !screenState.value.isPasswordVisible
+        )
+
+        screenState.update { newValue }
     }
 
     override fun onLogInButtonClicked() {
@@ -109,9 +106,21 @@ class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewMode
         }
     }
 
+    override fun onChangeUrlButtonClicked() {
+        viewModelScope.launch(Dispatchers.Main) {
+            screenState.emit(screenState.value.copy(isNeedOpenUrl = true))
+        }
+    }
+
     override fun onMainOpened() {
         viewModelScope.launch(Dispatchers.Main) {
             screenState.emit(screenState.value.copy(isNeedOpenMain = false))
+        }
+    }
+
+    override fun onUrlOpened() {
+        viewModelScope.launch(Dispatchers.Main) {
+            screenState.emit(screenState.value.copy(isNeedOpenUrl = false))
         }
     }
 }

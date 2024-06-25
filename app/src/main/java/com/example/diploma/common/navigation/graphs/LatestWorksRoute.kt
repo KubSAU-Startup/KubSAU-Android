@@ -20,9 +20,7 @@ fun LatestWorksRoute(
         route = Graphs.LatestWorks.route
     ) {
         composable(Screens.LatestWorks.route) {
-            LatestWorksScreen(
-                onError = onError,
-            )
+            LatestWorksScreen(onError = onError)
         }
     }
 }

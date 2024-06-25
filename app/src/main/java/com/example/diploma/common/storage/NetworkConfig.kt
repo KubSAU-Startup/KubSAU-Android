@@ -1,7 +1,6 @@
 package com.example.diploma.common.storage
 
 import android.content.SharedPreferences
-import com.example.diploma.common.EMPTY_TOKEN
 import kotlin.properties.Delegates
 
 object NetworkConfig {
@@ -24,13 +23,11 @@ object NetworkConfig {
     }
 
     val isTokenEmpty: Boolean
-        get() {
-            return preferences.getString(AUTH_TOKEN, EMPTY_TOKEN) == EMPTY_TOKEN
-        }
+        get() = preferences.getString(AUTH_TOKEN, "").orEmpty().trim().isEmpty()
 
     var token
         set(value) = preferences.edit().putString(AUTH_TOKEN, value).apply()
-        get() = preferences.getString(AUTH_TOKEN, EMPTY_TOKEN).toString()
+        get() = preferences.getString(AUTH_TOKEN, "").toString()
 
     var url
         set(value) = preferences.edit().putString(URL_KEY, value).apply()

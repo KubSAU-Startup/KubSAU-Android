@@ -1,6 +1,7 @@
 package com.example.diploma.common.navigation.graphs
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,21 +22,29 @@ fun RegistrationRoute(
         route = Graphs.Camera.route
     ) {
         composable(Screens.Camera.route) {
-            CameraScreen {
-                navController.navigate(Screens.Registration.route + "/$it")
+            CameraScreen(
+                onQrContentObtained = { content ->
+                    navController.navigate(Screens.Registration.route + "/$content")
+                }
+            )
+
+            LaunchedEffect(true) {
+                navController.navigate(Screens.Registration.route + "/6,24,1,2")
             }
         }
 
-        composable(Screens.Registration.route + "/{$QR_KEY}") { backStack ->
-            RegistrationScreen(qrResult = backStack.arguments?.getString(QR_KEY).toString()) {
-                navController.navigate(Screens.Camera.route) {
-                    popUpTo(Screens.Camera.route) {
-                        inclusive = true
+        composable(Screens.Registration.route + "/{$QR_KEY}") {
+            RegistrationScreen(
+                backToCamera = {
+                    navController.navigate(Screens.Camera.route) {
+                        popUpTo(Screens.Camera.route) {
+                            inclusive = true
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }
 
-private const val QR_KEY = "qr_key"
+const val QR_KEY = "qr_key"

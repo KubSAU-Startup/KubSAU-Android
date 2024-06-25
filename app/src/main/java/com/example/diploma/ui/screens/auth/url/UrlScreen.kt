@@ -28,6 +28,8 @@ fun UrlScreen(
     viewModel: UrlViewModel = koinViewModel(),
     goToLoginScreen: () -> Unit
 ) {
+    // TODO: 25/06/2024, Danil Nikolaev: check extras for navigate back if no changes occurred
+
     val screenState = viewModel.screenState
     if (screenState.isNeedToGoNext) {
         viewModel.onWentNext()
@@ -76,7 +78,11 @@ fun UrlScreen(
             }
 
             if (screenState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.BottomCenter))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 12.dp)
+                )
             } else {
                 Button(
                     onClick = viewModel::onNextButtonClick,

@@ -1,7 +1,6 @@
 package com.example.diploma.common.storage
 
 import android.content.SharedPreferences
-import com.example.diploma.common.EMPTY_STRING
 import kotlin.properties.Delegates
 
 object AccountConfig {
@@ -18,5 +17,5 @@ object AccountConfig {
 
     var departmentList
         set(value) = preferences.edit().putString(DEPARTMENT_KEY, value).apply()
-        get() = preferences.getString(DEPARTMENT_KEY, EMPTY_STRING)
+        get() = preferences.getString(DEPARTMENT_KEY, "")
 }
