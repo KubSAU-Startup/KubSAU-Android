@@ -52,5 +52,5 @@
     <string name="wrong_url">Неверный адрес</string>
     <string name="wrong_url_format">Не является адрес</string>
     <string name="action_next">Далее</string>
-    <string name="title_camera_permission">Разрешение на ка</string>
+    <string name="title_camera_permission">Разрешение камеры</string>
 </resources>
