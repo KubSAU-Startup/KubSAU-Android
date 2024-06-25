@@ -55,7 +55,7 @@ import com.example.diploma.model.Filter
 import com.example.diploma.ui.screens.latestworks.components.EntryItem
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestWorksScreen(
     onError: (String) -> Unit,
@@ -70,19 +70,14 @@ fun LatestWorksScreen(
 
     /*
     NetworkConfig.logout()
-                    AccountConfig.logout()
+    AccountConfig.logout()
 
-                    navController.navigate(AUTH_ROUTE) {
-                        popUpTo(AUTH_ROUTE) {
-                            inclusive = true
-                        }
-                    }
+    navController.navigate(AUTH_ROUTE) {
+        popUpTo(AUTH_ROUTE) {
+            inclusive = true
+        }
+    }
      */
-
-
-//    if (screenState.isUrlWrong) {
-//        onError("Wrong url")
-//    }
 
     val listState = rememberLazyListState()
 
@@ -138,7 +133,8 @@ fun LatestWorksScreen(
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(screenState.entries) { item ->
-                                EntryItem(item)
+                                EntryItem(entry = item)
+                                Spacer(modifier = Modifier.height(16.dp))
                             }
                         }
                     }

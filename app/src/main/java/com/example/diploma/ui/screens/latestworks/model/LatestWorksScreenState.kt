@@ -1,11 +1,9 @@
 package com.example.diploma.ui.screens.latestworks.model
 
-import com.example.diploma.model.EntryElement
-
 data class LatestWorksScreenState(
     val isLoading: Boolean,
     val offset: Int,
-    val entries: List<EntryElement>,
+    val entries: List<EntryModel>,
     val isFiltersVisible: Boolean,
     val filterItems: List<FilterItem>,
     val appliedFilters: List<WorkFilter>,

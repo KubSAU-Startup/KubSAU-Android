@@ -7,6 +7,7 @@ import com.example.diploma.network.works.WorksRepository
 import com.example.diploma.ui.screens.latestworks.model.FilterItem
 import com.example.diploma.ui.screens.latestworks.model.LatestWorksScreenState
 import com.example.diploma.ui.screens.latestworks.model.WorkFilter
+import com.example.diploma.ui.screens.latestworks.model.toModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 
 interface LatestWorksViewModel {
 
@@ -34,6 +36,8 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
     LatestWorksViewModel {
 
     override val screenState = MutableStateFlow(LatestWorksScreenState.EMPTY)
+
+    private val dateFormatter = SimpleDateFormat(DATE_FORMAT)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -96,7 +100,7 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
                     newEntries.clear()
                 }
 
-                newEntries += latestWorks
+                newEntries += latestWorks.map { entry -> entry.toModel(dateFormatter) }
                 screenState.emit(
                     screenState.value.copy(
                         entries = newEntries,
@@ -198,5 +202,9 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
                 )
             )
         }
+    }
+
+    companion object {
+        const val DATE_FORMAT = "dd.MM.yyyy"
     }
 }
