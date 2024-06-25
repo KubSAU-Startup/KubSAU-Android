@@ -7,9 +7,11 @@ sealed class Screens(val route: String) {
 
     data object Camera : Screens("camera")
 
-    data object Journal : Screens("journal")
+    data object LatestWorks : Screens("journal")
 
     data object Registration : Screens("registration")
 
-    data object Url : Screens(URL_ROUTE)
+    data object Url : Screens("url")
+
+    data object Profile : Screens("profile")
 }

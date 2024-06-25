@@ -4,8 +4,9 @@
     <string name="login_label">Login</string>
     <string name="password_label">Password</string>
 
-    <string name="nav_drawer_journal">Journal</string>
-    <string name="nav_drawer_registration">Registration</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_register">Register</string>
+    <string name="nav_profile">Profile</string>
 
     <string name="button_dismiss">Dismiss</string>
     <string name="button_confirm">Confirm</string>
@@ -64,4 +65,9 @@
     <string name="journal_item_student">Student</string>
     <string name="journal_item_teacher">Teacher</string>
     <string name="filter_teachers">Teachers</string>
+
+    <string name="filter_block_work_types">Work type</string>
+    <string name="filter_block_teachers">Teacher</string>
+    <string name="filter_block_groups">Group</string>
+    <string name="filter_block_disciplines">Discipline</string>
 </resources>

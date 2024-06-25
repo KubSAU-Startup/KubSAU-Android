@@ -99,7 +99,7 @@ class WorkRegistrationViewModel(
             }
 
             viewModelScope.launch {
-                employeeList = worksRepository.getEmployeesFilters() ?: emptyList()
+                employeeList = worksRepository.getEmployeesFilters(false) ?: emptyList()
                 employeeListDisplayed = employeeList
                 Log.e("Reconnect employee", "For some reason its run over and over again")
             }

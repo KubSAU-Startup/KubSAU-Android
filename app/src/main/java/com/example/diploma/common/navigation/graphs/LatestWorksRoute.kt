@@ -5,29 +5,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.diploma.common.navigation.JOURNAL_ROUTE
+import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
-import com.example.diploma.ui.screens.latestworks.JournalScreen
+import com.example.diploma.ui.screens.latestworks.LatestWorksScreen
 
 @Composable
-fun JournalRoute(
+fun LatestWorksRoute(
     onError: (String) -> Unit,
-    onActionConsumed: (Int) -> Unit,
-    isFilterClicked: Boolean,
-    isSearchClicked: Boolean,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screens.Journal.route,
-        route = JOURNAL_ROUTE
+        startDestination = Screens.LatestWorks.route,
+        route = Graphs.LatestWorks.route
     ) {
-        composable(Screens.Journal.route) {
-            JournalScreen(
+        composable(Screens.LatestWorks.route) {
+            LatestWorksScreen(
                 onError = onError,
-                onConsumeAction = onActionConsumed,
-                isFilterClicked = isFilterClicked,
-                isSearchClicked = isSearchClicked
             )
         }
     }

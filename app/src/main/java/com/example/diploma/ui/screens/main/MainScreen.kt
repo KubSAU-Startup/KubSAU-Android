@@ -2,218 +2,107 @@ package com.example.diploma.ui.screens.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material3.Button
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.example.diploma.R
-import com.example.diploma.common.navigation.graphs.JournalRoute
+import com.example.diploma.common.navigation.graphs.LatestWorksRoute
+import com.example.diploma.common.navigation.graphs.ProfileRoute
 import com.example.diploma.common.navigation.graphs.RegistrationRoute
-import com.example.diploma.common.storage.AccountConfig
-import com.example.diploma.common.storage.NetworkConfig
-import kotlinx.coroutines.launch
 
-data class NavObject(
-    val title: String,
+private sealed class BottomNavItem(
+    val index: Int,
     val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
-)
+    val defaultIcon: ImageVector,
+    val labelResId: Int
+) {
+    data object Register : BottomNavItem(
+        index = 0,
+        selectedIcon = Icons.Filled.AccountBox,
+        defaultIcon = Icons.Outlined.AccountBox,
+        labelResId = R.string.nav_register
+    )
 
-@OptIn(ExperimentalMaterial3Api::class)
+    data object Home : BottomNavItem(
+        index = 1,
+        selectedIcon = Icons.Filled.Home,
+        defaultIcon = Icons.Outlined.Home,
+        labelResId = R.string.nav_home
+    )
+
+    data object Profile : BottomNavItem(
+        index = 2,
+        selectedIcon = Icons.Filled.AccountCircle,
+        defaultIcon = Icons.Outlined.AccountCircle,
+        labelResId = R.string.nav_profile
+    )
+
+    companion object {
+        fun values() = listOf(Register, Home, Profile)
+    }
+}
+
 @Composable
 fun MainScreen(
     onError: (String) -> Unit,
-    logout: () -> Unit
+    onLogOut: () -> Unit
 ) {
-    val items = listOf(
-        NavObject(
-            title = stringResource(id = R.string.nav_drawer_journal),
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home
-        ),
-        NavObject(
-            title = stringResource(id = R.string.nav_drawer_registration),
-            selectedIcon = Icons.Filled.AccountBox,
-            unselectedIcon = Icons.Outlined.AccountBox
-        )
-    )
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        println("Before scope")
-        val scope = rememberCoroutineScope()
-        println("After scope")
-
         var selectedItemIndex by rememberSaveable {
-            mutableIntStateOf(value = 0)
+            mutableIntStateOf(value = BottomNavItem.Home.index)
         }
 
-        ModalNavigationDrawer(
-            drawerContent = {
-                ModalDrawerSheet {
-                    Surface {
-                        Column {
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Column(
-                                modifier = Modifier.weight(1F)
-                            ) {
-                                items.forEachIndexed { index, item ->
-                                    NavigationDrawerItem(
-                                        label = {
-                                            Text(text = item.title)
-                                        },
-                                        selected = index == selectedItemIndex,
-                                        onClick = {
-                                            selectedItemIndex = index
-                                            scope.launch {
-                                                drawerState.close()
-                                            }
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector =
-                                                if (index == selectedItemIndex)
-                                                    item.selectedIcon
-                                                else item.unselectedIcon,
-                                                contentDescription = item.title
-                                            )
-                                        },
-                                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                                    )
-                                }
-                            }
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Button(
-                                    onClick = {
-                                        logout()
-                                        NetworkConfig.logout()
-                                        AccountConfig.logout()
-                                    },
-                                ) {
-                                    Text(text = stringResource(id = R.string.logout))
-                                }
-                            }
-                        }
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    BottomNavItem.values().forEach { item ->
+                        val isSelected = selectedItemIndex == item.index
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = { selectedItemIndex = item.index },
+                            icon = {
+                                Icon(
+                                    imageVector = if (isSelected) item.selectedIcon
+                                    else item.defaultIcon,
+                                    contentDescription = null
+                                )
+                            },
+                            label = { Text(text = stringResource(id = item.labelResId)) }
+                        )
                     }
                 }
-            },
-            drawerState = drawerState
-        ) {
-            var isSearchActionClicked by remember {
-                mutableStateOf(false)
             }
-            var isFilterActionClicked by remember {
-                mutableStateOf(false)
-            }
-
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = "Main screen")
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    scope.launch { drawerState.open() }
-                                }
-                            ) {
-                                Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
-                            }
-                        },
-                        actions = {
-                            if (selectedItemIndex == 0) {
-                                IconButton(
-                                    onClick = { isFilterActionClicked = true }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.baseline_filter_alt_24),
-                                        contentDescription = null
-                                    )
-                                }
-
-                                IconButton(
-                                    onClick = { isSearchActionClicked = true }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                        }
-                    )
-                }
-            ) { padding ->
-                Column(modifier = Modifier.padding(padding)) {
-                    when (selectedItemIndex) {
-                        0 -> {
-                            JournalRoute(
-                                onError = onError,
-                                onActionConsumed = { action ->
-                                    when (action) {
-                                        0 -> isFilterActionClicked = false
-                                        1 -> isSearchActionClicked = false
-                                    }
-
-                                },
-                                isFilterClicked = isFilterActionClicked,
-                                isSearchClicked = isSearchActionClicked
-                            )
-                        }
-
-                        1 -> {
-                            RegistrationRoute()
-                        }
-
-                        else -> Unit
-                    }
+        ) { padding ->
+            Column(modifier = Modifier.padding(padding)) {
+                when (selectedItemIndex) {
+                    BottomNavItem.Register.index -> RegistrationRoute(onError = onError)
+                    BottomNavItem.Home.index -> LatestWorksRoute(onError = onError)
+                    BottomNavItem.Profile.index -> ProfileRoute(onError = onError)
+                    else -> Unit
                 }
             }
         }

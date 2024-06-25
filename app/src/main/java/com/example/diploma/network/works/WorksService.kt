@@ -30,7 +30,7 @@ interface WorksService {
     suspend fun getDisciplinesFilters(): Response<List<Filter>>
 
     @GET("/works/latest/filters/employees")
-    suspend fun getEmployeesFilters(): Response<List<Filter>>
+    suspend fun getEmployeesFilters(@Query("shrinkNames") shrinkNames: Boolean): Response<List<Filter>>
 
     @GET("/works/latest/filters/groups")
     suspend fun getGroupsFilters(): Response<List<Filter>>

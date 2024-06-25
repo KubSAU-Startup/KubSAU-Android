@@ -14,9 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.diploma.common.navigation.AUTH_ROUTE
-import com.example.diploma.common.navigation.MAIN_ROUTE
-import com.example.diploma.common.navigation.ROOT_GRAPH
+import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.ui.screens.auth.url.UrlScreen
@@ -66,10 +64,10 @@ fun RootGraph(
         navController = navController,
         startDestination = when {
             NetworkConfig.url.isEmpty() -> Screens.Url.route
-            NetworkConfig.isTokenEmpty -> AUTH_ROUTE
-            else -> MAIN_ROUTE
+            NetworkConfig.isTokenEmpty -> Graphs.Auth.route
+            else -> Graphs.Main.route
         },
-        route = ROOT_GRAPH
+        route = Graphs.Root.route
     ) {
         composable(route = Screens.Url.route) {
             UrlScreen {

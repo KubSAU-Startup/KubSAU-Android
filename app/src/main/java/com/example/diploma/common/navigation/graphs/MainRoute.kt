@@ -4,8 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.diploma.common.navigation.AUTH_ROUTE
-import com.example.diploma.common.navigation.MAIN_ROUTE
+import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.ui.screens.main.MainScreen
 
@@ -13,17 +12,14 @@ fun NavGraphBuilder.mainNavGraph(
     onError: (String) -> Unit,
     navController: NavHostController
 ) {
-    navigation(startDestination = Screens.Main.route, route = MAIN_ROUTE) {
+    navigation(
+        startDestination = Screens.Main.route,
+        route = Graphs.Main.route
+    ) {
         composable(route = Screens.Main.route) {
             MainScreen(
                 onError = onError,
-                logout = {
-                    navController.navigate(AUTH_ROUTE) {
-                        popUpTo(AUTH_ROUTE) {
-                            inclusive = true
-                        }
-                    }
-                }
+                onLogOut = {}
             )
         }
     }

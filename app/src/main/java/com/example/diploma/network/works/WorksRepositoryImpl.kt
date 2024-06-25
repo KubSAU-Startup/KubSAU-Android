@@ -4,6 +4,7 @@ import com.example.diploma.common.foldOnSuccess
 import com.example.diploma.model.EntryElement
 import com.example.diploma.model.Filter
 import com.example.diploma.model.Work
+import com.example.diploma.ui.screens.latestworks.model.WorkFilter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,9 +12,10 @@ class WorksRepositoryImpl(private val service: WorksService) : WorksRepository {
 
     override suspend fun getLatestWorks(
         offset: Int?,
-        filters: Map<String, Int>?
+        filters: List<WorkFilter>?
     ): List<EntryElement>? = withContext(Dispatchers.IO) {
-        service.getLatestWorks(offset, filters ?: mapOf()).foldOnSuccess()?.entries
+        val mapOfFilters = filters?.associate { filter -> filter.title to filter.value } ?: mapOf()
+        service.getLatestWorks(offset, mapOfFilters).foldOnSuccess()?.entries
     }
 
     override suspend fun getWorkTypesFilters(): List<Filter>? = withContext(Dispatchers.IO) {
@@ -24,9 +26,10 @@ class WorksRepositoryImpl(private val service: WorksService) : WorksRepository {
         service.getDisciplinesFilters().foldOnSuccess()
     }
 
-    override suspend fun getEmployeesFilters(): List<Filter>? = withContext(Dispatchers.IO) {
-        service.getEmployeesFilters().foldOnSuccess()
-    }
+    override suspend fun getEmployeesFilters(shrinkNames: Boolean): List<Filter>? =
+        withContext(Dispatchers.IO) {
+            service.getEmployeesFilters(shrinkNames).foldOnSuccess()
+        }
 
     override suspend fun getGroupsFilters(): List<Filter>? = withContext(Dispatchers.IO) {
         service.getGroupsFilters().foldOnSuccess()

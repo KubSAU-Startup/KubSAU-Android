@@ -31,8 +31,9 @@
     <string name="request_permission">Запросить разрешение</string>
     <string name="login_label">Логин</string>
     <string name="password_label">Пароль</string>
-    <string name="nav_drawer_journal">Журнал</string>
-    <string name="nav_drawer_registration">Регистрация</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_register">Регистрация</string>
+    <string name="nav_profile">Профиль</string>
     <string name="button_dismiss">Отмена</string>
     <string name="button_confirm">Подтвердить</string>
     <string name="journal_item_discipline">Дисциплина</string>
@@ -41,4 +42,8 @@
     <string name="journal_item_student">Студент</string>
     <string name="journal_item_teacher">Преподаватель</string>
     <string name="filter_teachers">Преподаватели</string>
+    <string name="filter_block_work_types">Тип работ</string>
+    <string name="filter_block_teachers">Преподаватель</string>
+    <string name="filter_block_groups">Группа</string>
+    <string name="filter_block_disciplines">Дисциплина</string>
 </resources>
