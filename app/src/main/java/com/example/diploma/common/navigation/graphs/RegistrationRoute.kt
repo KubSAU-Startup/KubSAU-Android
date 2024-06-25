@@ -1,7 +1,6 @@
 package com.example.diploma.common.navigation.graphs
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,10 +26,6 @@ fun RegistrationRoute(
                     navController.navigate(Screens.Registration.route + "/$content")
                 }
             )
-
-            LaunchedEffect(true) {
-                navController.navigate(Screens.Registration.route + "/6,24,1,2")
-            }
         }
 
         composable(Screens.Registration.route + "/{$QR_KEY}") {
