@@ -8,7 +8,8 @@ data class LatestWorksScreenState(
     val entries: List<EntryElement>,
     val isFiltersVisible: Boolean,
     val filterItems: List<FilterItem>,
-    val appliedFilters: List<WorkFilter>
+    val appliedFilters: List<WorkFilter>,
+    val query: String
 ) {
 
     companion object {
@@ -18,7 +19,8 @@ data class LatestWorksScreenState(
             entries = emptyList(),
             isFiltersVisible = false,
             filterItems = emptyList(),
-            appliedFilters = emptyList()
+            appliedFilters = emptyList(),
+            query = ""
         )
     }
 }

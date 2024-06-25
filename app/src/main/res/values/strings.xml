@@ -70,4 +70,6 @@
     <string name="filter_block_teachers">Teacher</string>
     <string name="filter_block_groups">Group</string>
     <string name="filter_block_disciplines">Discipline</string>
+    <string name="filter_query">Query</string>
+    <string name="title_filters">Filters</string>
 </resources>

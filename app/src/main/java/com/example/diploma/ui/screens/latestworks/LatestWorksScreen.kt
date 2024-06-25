@@ -35,6 +35,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -51,7 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.diploma.R
 import com.example.diploma.model.Filter
-import com.example.diploma.ui.screens.latestworks.components.JournalItem
+import com.example.diploma.ui.screens.latestworks.components.EntryItem
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -137,7 +138,7 @@ fun LatestWorksScreen(
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(screenState.entries) { item ->
-                                JournalItem(item)
+                                EntryItem(item)
                             }
                         }
                     }
@@ -159,7 +160,7 @@ fun LatestWorksScreen(
                     .background(MaterialTheme.colorScheme.surface)
             ) {
                 TopAppBar(
-                    title = { Text(text = "Filters") },
+                    title = { Text(text = stringResource(id = R.string.title_filters)) },
                     navigationIcon = {
                         IconButton(onClick = viewModel::onBackPressed) {
                             Icon(
@@ -189,6 +190,19 @@ fun LatestWorksScreen(
                     }
                 )
 
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    value = screenState.query,
+                    onValueChange = { newText ->
+                        viewModel.onQueryChanged(newText)
+                    },
+                    label = { Text(text = stringResource(id = R.string.filter_query)) }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 LazyColumn {
                     itemsIndexed(screenState.filterItems) { blockIndex, item ->
                         FilterBlock(
@@ -203,13 +217,18 @@ fun LatestWorksScreen(
                                 )
                             }
                         )
+
+                        val isSpacerNeeded by remember {
+                            derivedStateOf { blockIndex < screenState.filterItems.size - 1 }
+                        }
+
+                        if (isSpacerNeeded) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
                 }
-
-
-                Spacer(modifier = Modifier.height(8.dp))
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

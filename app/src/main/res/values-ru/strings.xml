@@ -42,8 +42,10 @@
     <string name="journal_item_student">Студент</string>
     <string name="journal_item_teacher">Преподаватель</string>
     <string name="filter_teachers">Преподаватели</string>
-    <string name="filter_block_work_types">Тип работ</string>
+    <string name="filter_block_work_types">Тип работы</string>
     <string name="filter_block_teachers">Преподаватель</string>
     <string name="filter_block_groups">Группа</string>
     <string name="filter_block_disciplines">Дисциплина</string>
+    <string name="filter_query">Текст</string>
+    <string name="title_filters">Фильтры</string>
 </resources>

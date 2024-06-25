@@ -20,7 +20,7 @@ interface WorksService {
     @GET("/works/latest")
     suspend fun getLatestWorks(
         @Query("offset") offset: Int?,
-        @QueryMap searchParams: Map<String, Int>,
+        @QueryMap searchParams: Map<String, String>,
     ): Response<GetLatestWorksResponse>
 
     @GET("/works/latest/filters/worktypes")

@@ -26,6 +26,7 @@ interface LatestWorksViewModel {
     fun onFilterClicked(blockIndex: Int, filterIndex: Int)
     fun onClearFiltersButtonClicked()
     fun onApplyFiltersButtonClicked()
+    fun onQueryChanged(newQuery: String)
 }
 
 class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewModel(),
@@ -139,7 +140,12 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            screenState.emit(screenState.value.copy(filterItems = newFilterItems))
+            screenState.emit(
+                screenState.value.copy(
+                    filterItems = newFilterItems,
+                    query = ""
+                )
+            )
         }
     }
 
@@ -148,20 +154,37 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
             .map { block ->
                 WorkFilter(
                     title = "${block.filterGroup}Id",
-                    value = block.filters[block.selectedFilterIndex].id
+                    value = block.filters[block.selectedFilterIndex].id.toString()
                 )
-            }
+            }.toMutableList()
+
+        val query = screenState.value.query.trim()
+        if (query.isNotEmpty()) {
+            newFilters += WorkFilter(
+                title = "query",
+                value = query
+            )
+        }
 
         viewModelScope.launch(Dispatchers.Main) {
             screenState.emit(
                 screenState.value.copy(
                     isFiltersVisible = false,
-                    appliedFilters = newFilters
+                    appliedFilters = newFilters,
+                    query = query.trim()
                 )
             )
         }
 
         loadLatestWorks(0, newFilters)
+    }
+
+    override fun onQueryChanged(newQuery: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            screenState.emit(
+                screenState.value.copy(query = newQuery)
+            )
+        }
     }
 
     override fun onSearchButtonClicked() {

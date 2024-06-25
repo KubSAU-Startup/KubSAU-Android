@@ -29,7 +29,7 @@ import com.example.diploma.model.EntryElement
 import java.util.Locale
 
 @Composable
-fun JournalItem(
+fun EntryItem(
     record: EntryElement
 ) {
     val dateFormat = stringResource(id = R.string.registration_pattern)
