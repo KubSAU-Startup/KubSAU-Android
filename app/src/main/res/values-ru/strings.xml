@@ -59,4 +59,6 @@
     <string name="pick_teacher">Выберите преподавателя</string>
     <string name="input_work_title">Введите название работы</string>
     <string name="pick_teacher_error">Преподаватель не выбран</string>
+    <string name="wrong_account_type_title">Неверный тип аккаунта</string>
+    <string name="wrong_account_type_text">Ваш тип аккаунта не лаборант. Пожалуйста, авторизуйтесь в другой аккаунт</string>
 </resources>

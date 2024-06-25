@@ -7,7 +7,8 @@ data class LoginScreenState(
     val error: String?,
     val isNeedOpenMain: Boolean,
     val isNeedOpenUrl: Boolean,
-    val isPasswordVisible: Boolean
+    val isPasswordVisible: Boolean,
+    val showWrongAccountTypeError: Boolean
 ) {
 
     companion object {
@@ -18,7 +19,8 @@ data class LoginScreenState(
             error = null,
             isNeedOpenMain = false,
             isNeedOpenUrl = false,
-            isPasswordVisible = false
+            isPasswordVisible = false,
+            showWrongAccountTypeError = false
         )
     }
 }

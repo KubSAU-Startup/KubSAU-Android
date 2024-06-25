@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
+import com.example.diploma.network.account.AccountRepository
 import com.example.diploma.network.auth.AuthRepository
 import com.example.diploma.ui.screens.auth.model.LoginScreenState
 import kotlinx.coroutines.Dispatchers
@@ -26,9 +27,14 @@ interface LoginViewModel {
 
     fun onMainOpened()
     fun onUrlOpened()
+
+    fun wrongAccountTypeAlertDismissed()
 }
 
-class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewModel, ViewModel() {
+class LoginViewModelImpl(
+    private val repository: AuthRepository,
+    private val accountRepository: AccountRepository
+) : LoginViewModel, ViewModel() {
 
     override val screenState = MutableStateFlow(LoginScreenState.EMPTY)
 
@@ -73,34 +79,50 @@ class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewMode
             return
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 screenState.emit(screenState.value.copy(isLoading = true))
             }
 
-            val response = repository.createNewSession(
+            val sessionInfo = repository.createNewSession(
                 login = login,
                 password = password
             )
 
-            withContext(Dispatchers.Main) {
-                val newScreenState: LoginScreenState =
-                    if (response == null) {
-                        screenState.value.copy(
-                            error = "Wrong credentials",
+            if (sessionInfo == null) {
+                // TODO: 25/06/2024, Danil Nikolaev: show error
+                val newState = screenState.value.copy(
+                    error = "Wrong credentials",
+                    isLoading = false
+                )
+                screenState.update { newState }
+            } else {
+                NetworkConfig.token = sessionInfo.token
+                AccountConfig.departmentList = sessionInfo.departmentIds
+
+                val accountInfo = accountRepository.getAccountInfo()
+                if (accountInfo == null) {
+                    // TODO: 25/06/2024, Danil Nikolaev: show error
+                    val newState = screenState.value.copy(
+                        error = "not loaded wtf",
+                        isLoading = false
+                    )
+                    screenState.update { newState }
+                } else {
+                    if (accountInfo.type != 3) {
+                        val newState = screenState.value.copy(
+                            showWrongAccountTypeError = true,
                             isLoading = false
                         )
+                        screenState.update { newState }
                     } else {
-                        NetworkConfig.token = response.token
-                        AccountConfig.departmentList = response.departmentIds
-
-                        screenState.value.copy(
+                        val newState = screenState.value.copy(
                             isLoading = false,
                             isNeedOpenMain = true
                         )
+                        screenState.update { newState }
                     }
-
-                screenState.emit(newScreenState)
+                }
             }
         }
     }
@@ -121,5 +143,12 @@ class LoginViewModelImpl(private val repository: AuthRepository) : LoginViewMode
         viewModelScope.launch(Dispatchers.Main) {
             screenState.emit(screenState.value.copy(isNeedOpenUrl = false))
         }
+    }
+
+    override fun wrongAccountTypeAlertDismissed() {
+        val newState = screenState.value.copy(
+            showWrongAccountTypeError = false
+        )
+        screenState.update { newState }
     }
 }

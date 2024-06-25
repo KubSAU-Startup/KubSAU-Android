@@ -83,4 +83,6 @@
     <string name="pick_teacher">Pick a teacher</string>
     <string name="input_work_title">Input work title</string>
     <string name="pick_teacher_error">Teacher is not picked</string>
+    <string name="wrong_account_type_title">Wrong account type</string>
+    <string name="wrong_account_type_text">Your account type is not laborant. Please log in to another account</string>
 </resources>

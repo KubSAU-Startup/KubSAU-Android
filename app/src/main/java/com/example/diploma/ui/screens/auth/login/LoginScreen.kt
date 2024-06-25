@@ -34,12 +34,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.diploma.R
-import com.example.diploma.model.Account
-import com.example.diploma.network.ApiError
-import com.example.diploma.network.ApiResponse
-import com.example.diploma.network.auth.AuthRepositoryImpl
-import com.example.diploma.network.auth.AuthService
-import com.slack.eithernet.ApiResult
+import com.example.diploma.ui.screens.registration.camera.components.Alert
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -50,6 +45,14 @@ fun LoginScreen(
     viewModel: LoginViewModelImpl = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsState()
+
+    if (screenState.showWrongAccountTypeError) {
+        Alert(
+            onDismiss = viewModel::wrongAccountTypeAlertDismissed,
+            title = stringResource(id = R.string.wrong_account_type_title),
+            text = stringResource(id = R.string.wrong_account_type_text)
+        )
+    }
 
     if (screenState.isNeedOpenMain) {
         viewModel.onMainOpened()
@@ -168,16 +171,8 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    val viewModel = LoginViewModelImpl(
-        AuthRepositoryImpl(object : AuthService {
-            override suspend fun createNewSession(authInfo: Map<String, String>): ApiResult<ApiResponse<Account>, ApiError> =
-                ApiResult.success(ApiResponse(null, null, true))
-        })
-    )
-
     LoginScreen(
         onError = {},
-        viewModel = viewModel,
         moveToMainRoot = {},
         openUrlScreen = {}
     )

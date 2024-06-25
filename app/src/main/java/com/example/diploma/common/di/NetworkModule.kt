@@ -6,6 +6,9 @@ import com.example.diploma.common.AuthInterceptor
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.MoshiConverter
 import com.example.diploma.network.ResponseConverterFactory
+import com.example.diploma.network.account.AccountRepository
+import com.example.diploma.network.account.AccountRepositoryImpl
+import com.example.diploma.network.account.AccountService
 import com.example.diploma.network.auth.AuthRepository
 import com.example.diploma.network.auth.AuthRepositoryImpl
 import com.example.diploma.network.auth.AuthService
@@ -35,7 +38,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 
 @Deprecated("use separated modules for repo's and services")
 val networkModule = module {
@@ -86,6 +88,9 @@ val networkModule = module {
 
     singleOf(::WorkTypesRepositoryImpl) bind WorkTypesRepository::class
     single { service(WorkTypesService::class.java) }
+
+    singleOf(::AccountRepositoryImpl) bind AccountRepository::class
+    single { service(AccountService::class.java) }
 }
 
 private fun <T> Scope.service(className: Class<T>): T = get<Retrofit>().create(className)

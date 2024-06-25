@@ -5,8 +5,10 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Account(
-    @Json(name = "userId") val id: Int,
-    @Json(name = "accessToken") val token: String,
-    @Json(name = "facultyId") val facultyId: Int? = null,
-    @Json(name = "departmentIds") val departmentIds: List<Int>
+    @Json(name = "id") val id: Int,
+    @Json(name = "type") val type: Int,
+    @Json(name = "login") val login: String,
+    @Json(name = "selectedDepartmentId") val selectedDepartmentId: Int?,
+    @Json(name = "faculty") val faculty: Filter?,
+    @Json(name = "departments") val departments: List<DepartmentEntry>
 )
