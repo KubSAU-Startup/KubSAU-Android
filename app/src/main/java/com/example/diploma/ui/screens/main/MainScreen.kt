@@ -1,6 +1,5 @@
 package com.example.diploma.ui.screens.main
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -67,43 +65,42 @@ fun MainScreen(
     onError: (String) -> Unit,
     onLogOut: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        var selectedItemIndex by rememberSaveable {
-            mutableIntStateOf(value = BottomNavItem.Home.index)
-        }
+    var selectedItemIndex by rememberSaveable {
+        mutableIntStateOf(value = BottomNavItem.Home.index)
+    }
 
-        Scaffold(
-            bottomBar = {
-                NavigationBar {
-                    BottomNavItem.values().forEach { item ->
-                        val isSelected = selectedItemIndex == item.index
-                        NavigationBarItem(
-                            selected = isSelected,
-                            onClick = { selectedItemIndex = item.index },
-                            icon = {
-                                Icon(
-                                    imageVector = if (isSelected) item.selectedIcon
-                                    else item.defaultIcon,
-                                    contentDescription = null
-                                )
-                            },
-                            label = { Text(text = stringResource(id = item.labelResId)) }
-                        )
-                    }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            NavigationBar {
+                BottomNavItem.values().forEach { item ->
+                    val isSelected = selectedItemIndex == item.index
+                    NavigationBarItem(
+                        selected = isSelected,
+                        onClick = {
+                            if (selectedItemIndex != item.index) {
+                                selectedItemIndex = item.index
+                            }
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = if (isSelected) item.selectedIcon
+                                else item.defaultIcon,
+                                contentDescription = null
+                            )
+                        },
+                        label = { Text(text = stringResource(id = item.labelResId)) }
+                    )
                 }
             }
-        ) { padding ->
-            Column(modifier = Modifier.padding(padding)) {
-                when (selectedItemIndex) {
-                    BottomNavItem.Register.index -> RegistrationRoute(onError = onError)
-                    BottomNavItem.Home.index -> LatestWorksRoute(onError = onError)
-                    BottomNavItem.Profile.index -> ProfileRoute(onError = onError)
-                    else -> Unit
-                }
+        }
+    ) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            when (selectedItemIndex) {
+                BottomNavItem.Register.index -> RegistrationRoute(onError = onError)
+                BottomNavItem.Home.index -> LatestWorksRoute(onError = onError)
+                BottomNavItem.Profile.index -> ProfileRoute(onError = onError)
+                else -> Unit
             }
         }
     }

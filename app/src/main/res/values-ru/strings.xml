@@ -26,8 +26,8 @@
     <string name="find_a_teacher">Найти преподавателя</string>
     <string name="logout">Выйти</string>
     <string name="registration">Зарегистрировать</string>
-    <string name="camera_permission_require">Это приложение использует камеру для сканирования QR-кода. Необходимо дать разрешение на использование камеры.</string>
-    <string name="permission_need">Для того чтобы эта функция была доступна, требуется разрешение камеры. Пожалуйста, предоставьте это разрешение.</string>
+    <string name="camera_permission_require">Это приложение использует камеру для сканирования QR-кода.\nНеобходимо дать разрешение на использование камеры.</string>
+    <string name="permission_need">Для того чтобы эта функция была доступна, требуется разрешение камеры.\nПожалуйста, предоставьте это разрешение.</string>
     <string name="request_permission">Запросить разрешение</string>
     <string name="login_label">Логин</string>
     <string name="password_label">Пароль</string>
@@ -52,4 +52,5 @@
     <string name="wrong_url">Неверный адрес</string>
     <string name="wrong_url_format">Не является адрес</string>
     <string name="action_next">Далее</string>
+    <string name="title_camera_permission">Разрешение на ка</string>
 </resources>

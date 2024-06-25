@@ -17,10 +17,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.diploma.R
 import com.example.diploma.common.QR_CONTENT_FORMAT
 import com.example.diploma.common.storage.AccountConfig
@@ -30,6 +30,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 
 @Composable
 fun CameraPreview(
+    modifier: Modifier = Modifier,
     onResult: (String) -> Unit
 ) {
 
@@ -48,7 +49,7 @@ fun CameraPreview(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    var cameraProvider: ProcessCameraProvider? = null
+    var cameraProvider: ProcessCameraProvider?
 
     val cameraController = LifecycleCameraController(context)
     cameraController.bindToLifecycle(lifecycleOwner)
@@ -65,7 +66,7 @@ fun CameraPreview(
 
     val analyzer = MlKitAnalyzer(
         listOf(barcodeScanner),
-        CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED,
+        ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
         cameraExecutor
     ) { result: MlKitAnalyzer.Result? ->
 
@@ -84,31 +85,20 @@ fun CameraPreview(
         when (val type = barcode.valueType) {
 
             Barcode.TYPE_TEXT -> {
-                val barcodeResult = barcode.displayValue ?: "null"
+                val value = barcode.displayValue ?: "null"
                 println("Departments: " + AccountConfig.departmentList)
-                Log.d("Camera", "Camera: result $barcodeResult")
+                Log.d("Camera", "Camera: result $value")
 
-                if (checkContentTemplate(barcodeResult)) {
-
-//                    val (departmentId, notNeed) =
-//                        barcodeResult.split(',').map { it.trim() }
-//
-//                    if (departmentId.toInt() in AccountConfig.departmentList!!.toListInt()) {
-//
-//                        cameraProvider?.unbindAll()
-//                        cameraProvider = null
-
-                    onResult(barcodeResult)
-//                    } else showDepartmentError = true
-
-                } else showContentError = true
+                if (checkContentTemplate(value)) {
+                    onResult(value)
+                } else {
+                    showContentError = true
+                }
 
             }
 
             else -> {
-                val barcodeResult = barcode.displayValue ?: "null"
-                Log.e("Camera", "Camera: result $barcodeResult $type")
-
+                Log.e("Camera", "Camera: result ${barcode.displayValue} $type")
                 showFormatError = true
             }
 
@@ -185,9 +175,9 @@ fun CameraPreview(
 //            text = stringResource(id = R.string.scan_qr_content_department_text)
 //        )
 //    }
-//
+
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         factory = {
             PreviewView(it).also {
                 it.controller = cameraController
