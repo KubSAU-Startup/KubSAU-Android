@@ -24,12 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.example.diploma.R
-import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.graphs.LatestWorksRoute
 import com.example.diploma.common.navigation.graphs.ProfileRoute
 import com.example.diploma.common.navigation.graphs.RegistrationRoute
-import com.example.diploma.common.storage.AccountConfig
-import com.example.diploma.common.storage.NetworkConfig
 
 private sealed class BottomNavItem(
     val index: Int,
@@ -66,6 +63,7 @@ private sealed class BottomNavItem(
 @Composable
 fun MainScreen(
     onError: (String) -> Unit,
+    openUrlScreen: () -> Unit,
     onLogOut: () -> Unit
 ) {
     var selectedItemIndex by rememberSaveable {
@@ -106,6 +104,7 @@ fun MainScreen(
                 BottomNavItem.Profile.index -> {
                     ProfileRoute(
                         onError = onError,
+                        openUrlScreen = openUrlScreen,
                         onLogOut = onLogOut
                     )
                 }

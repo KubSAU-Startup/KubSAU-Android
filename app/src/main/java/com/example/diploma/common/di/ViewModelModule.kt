@@ -1,6 +1,6 @@
 package com.example.diploma.common.di
 
-import com.example.diploma.ui.screens.auth.url.UrlViewModel
+import com.example.diploma.ui.screens.auth.url.UrlViewModelImpl
 import com.example.diploma.ui.screens.latestworks.LatestWorksViewModelImpl
 import com.example.diploma.ui.screens.profile.ProfileViewModelImpl
 import com.example.diploma.ui.screens.registration.WorkRegisterViewModelImpl
@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModelOf(::LatestWorksViewModelImpl)
     viewModelOf(::WorkRegisterViewModelImpl)
-    viewModelOf(::UrlViewModel)
+    viewModelOf(::UrlViewModelImpl)
 
     viewModelOf(::ProfileViewModelImpl)
 }

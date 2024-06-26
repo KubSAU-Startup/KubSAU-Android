@@ -12,6 +12,7 @@ import com.example.diploma.ui.screens.main.MainScreen
 
 fun NavGraphBuilder.mainNavGraph(
     onError: (String) -> Unit,
+    openUrlScreen: () -> Unit,
     navController: NavHostController
 ) {
     navigation(
@@ -21,6 +22,7 @@ fun NavGraphBuilder.mainNavGraph(
         composable(route = Screens.Main.route) {
             MainScreen(
                 onError = onError,
+                openUrlScreen = openUrlScreen,
                 onLogOut = {
                     NetworkConfig.logout()
                     AccountConfig.logout()

@@ -62,4 +62,6 @@
     <string name="wrong_account_type_title">Неверный тип аккаунта</string>
     <string name="wrong_account_type_text">Ваш тип аккаунта не лаборант. Пожалуйста, авторизуйтесь в другой аккаунт</string>
     <string name="department">Кафедра</string>
+    <string name="restart_after_url_title">Необходима перезагрузка приложения</string>
+    <string name="restart_after_url_text">Пожалуйста, вручную закройте и снова откройте приложение, чтобы применить изменение адреса сервера</string>
 </resources>

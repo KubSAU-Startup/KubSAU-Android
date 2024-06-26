@@ -8,7 +8,11 @@ import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.ui.screens.auth.login.LoginScreen
 
-fun NavGraphBuilder.authNavGraph(onError: (String) -> Unit, navController: NavHostController) {
+fun NavGraphBuilder.authNavGraph(
+    onError: (String) -> Unit,
+    openChangeUrl: () -> Unit,
+    navController: NavHostController
+) {
     navigation(
         startDestination = Screens.Login.route,
         route = Graphs.Auth.route
@@ -23,13 +27,7 @@ fun NavGraphBuilder.authNavGraph(onError: (String) -> Unit, navController: NavHo
                         }
                     }
                 },
-                openUrlScreen = {
-                    navController.navigate(Screens.Url.route) {
-                        popUpTo(Graphs.Auth.route) {
-                            inclusive = true
-                        }
-                    }
-                }
+                openUrlScreen = openChangeUrl
             )
         }
     }

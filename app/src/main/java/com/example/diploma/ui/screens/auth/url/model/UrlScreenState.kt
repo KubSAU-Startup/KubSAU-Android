@@ -5,7 +5,9 @@ data class UrlScreenState(
     val isUrlFormatInvalid: Boolean,
     val isUrlWrong: Boolean,
     val url: String,
-    val isNeedToGoNext: Boolean
+    val isNeedToGoNext: Boolean,
+    val showBackButton: Boolean,
+    val restart: Boolean
 ) {
     companion object {
         val EMPTY: UrlScreenState = UrlScreenState(
@@ -13,7 +15,9 @@ data class UrlScreenState(
             isUrlFormatInvalid = false,
             isUrlWrong = false,
             url = "",
-            isNeedToGoNext = false
+            isNeedToGoNext = false,
+            showBackButton = false,
+            restart = false
         )
     }
 }

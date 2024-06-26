@@ -36,12 +36,28 @@ fun RootGraph(
         mutableStateOf(false)
     }
 
+    val openUrlScreen: (currentRoute: String?, popBackStack: Boolean) -> Unit = remember {
+        { currentRoute, popBackStack ->
+            val routePostfix = if (currentRoute == null) "" else "?prevRoute=$currentRoute"
+            navController.navigate(route = Screens.Url.route + routePostfix) {
+                if (popBackStack) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
+    }
+
     if (needToChangeUrl) {
         needToChangeUrl = false
-        navController.navigate(route = Screens.Url.route) {
-            navController.currentDestination?.route?.let { route ->
-                popUpTo(route) { inclusive = true }
-            }
+        openUrlScreen(null, true)
+    }
+
+    val justOpenUrlScreen = remember {
+        {
+            val currentRoute = navController.currentDestination?.route
+            openUrlScreen(currentRoute, false)
         }
     }
 
@@ -69,17 +85,28 @@ fun RootGraph(
         },
         route = Graphs.Root.route
     ) {
-        composable(route = Screens.Url.route) {
-            UrlScreen {
-                navController.navigate(route = Screens.Login.route) {
-                    popUpTo(Screens.Url.route) {
-                        inclusive = true
+        composable(route = Screens.Url.route + "?prevRoute={prevRoute}") {
+            UrlScreen(
+                goToLoginScreen = {
+                    navController.navigate(route = Screens.Login.route) {
+                        popUpTo(Screens.Url.route) {
+                            inclusive = true
+                        }
                     }
-                }
-            }
+                },
+                goToPreviousScreen = navController::navigateUp
+            )
         }
-        authNavGraph(onError = onError, navController = navController)
-        mainNavGraph(onError = onError, navController = navController)
+        authNavGraph(
+            onError = onError,
+            openChangeUrl = justOpenUrlScreen,
+            navController = navController
+        )
+        mainNavGraph(
+            onError = onError,
+            openUrlScreen = justOpenUrlScreen,
+            navController = navController
+        )
     }
 
     if (showErrorAlert) {

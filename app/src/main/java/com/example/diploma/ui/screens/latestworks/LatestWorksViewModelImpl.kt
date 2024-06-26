@@ -30,6 +30,7 @@ interface LatestWorksViewModel {
     fun onClearFiltersButtonClicked()
     fun onApplyFiltersButtonClicked()
     fun onQueryChanged(newQuery: String)
+    fun onRefreshButtonClicked()
 }
 
 class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewModel(),
@@ -40,6 +41,11 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
     private val dateFormatter = SimpleDateFormat(DATE_FORMAT)
 
     init {
+        loadFilters()
+        loadLatestWorks(0)
+    }
+
+    private fun loadFilters() {
         viewModelScope.launch(Dispatchers.IO) {
             val disciplines = async { repository.getDisciplinesFilters() }.await() ?: emptyList()
             val workTypes = async { repository.getWorkTypesFilters() }.await() ?: emptyList()
@@ -81,8 +87,6 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
                 )
             )
         }
-
-        loadLatestWorks(0)
     }
 
     private fun loadLatestWorks(offset: Int, filters: List<WorkFilter>? = null) {
@@ -190,6 +194,11 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
         )
 
         screenState.update { newValue }
+    }
+
+    override fun onRefreshButtonClicked() {
+        loadFilters()
+        loadLatestWorks(0)
     }
 
     override fun onSearchButtonClicked() {

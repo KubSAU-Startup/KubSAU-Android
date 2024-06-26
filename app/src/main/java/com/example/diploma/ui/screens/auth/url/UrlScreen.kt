@@ -7,36 +7,82 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.diploma.MainActivity
 import com.example.diploma.R
+import com.example.diploma.ui.screens.registration.camera.components.Alert
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UrlScreen(
-    viewModel: UrlViewModel = koinViewModel(),
-    goToLoginScreen: () -> Unit
+    goToLoginScreen: () -> Unit,
+    goToPreviousScreen: () -> Unit,
+    viewModel: UrlViewModel = koinViewModel<UrlViewModelImpl>(),
 ) {
-    // TODO: 25/06/2024, Danil Nikolaev: check extras for navigate back if no changes occurred
+    val context = LocalContext.current
+    val screenState by viewModel.screenState.collectAsState()
 
-    val screenState = viewModel.screenState
-    if (screenState.isNeedToGoNext) {
-        viewModel.onWentNext()
-        goToLoginScreen()
+    if (screenState.restart) {
+        Alert(
+            onDismiss = viewModel::consumeRestart,
+            title = stringResource(id = R.string.restart_after_url_title),
+            text = stringResource(id = R.string.restart_after_url_text),
+            confirmClick = { (context as? MainActivity)?.finish() },
+            concealable = false
+        )
     }
 
-    Scaffold { padding ->
+    if (screenState.isNeedToGoNext) {
+        viewModel.onWentNext()
+
+        if (screenState.showBackButton) {
+            goToPreviousScreen()
+        } else {
+            goToLoginScreen()
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    if (screenState.showBackButton) {
+                        IconButton(
+                            onClick = { goToPreviousScreen() }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -85,7 +131,7 @@ fun UrlScreen(
                 )
             } else {
                 Button(
-                    onClick = viewModel::onNextButtonClick,
+                    onClick = viewModel::onNextButtonClicked,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .fillMaxWidth(.9f)
@@ -102,5 +148,8 @@ fun UrlScreen(
 @Preview
 @Composable
 fun UrlScreenPreview() {
-    UrlScreen {}
+    UrlScreen(
+        goToLoginScreen = {},
+        goToPreviousScreen = {}
+    )
 }

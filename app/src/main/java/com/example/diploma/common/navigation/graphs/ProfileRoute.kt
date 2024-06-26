@@ -13,6 +13,7 @@ import com.example.diploma.ui.screens.profile.ProfileScreen
 fun ProfileRoute(
     onError: (String) -> Unit,
     onLogOut: () -> Unit,
+    openUrlScreen: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -23,9 +24,7 @@ fun ProfileRoute(
         composable(Screens.Profile.route) {
             ProfileScreen(
                 onLogOut = onLogOut,
-                openChangeUrl = {
-                    // TODO: 25/06/2024, Danil Nikolaev: navigate to change url screen
-                },
+                openChangeUrl = openUrlScreen,
                 onError = onError,
             )
         }

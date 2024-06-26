@@ -86,4 +86,6 @@
     <string name="wrong_account_type_title">Wrong account type</string>
     <string name="wrong_account_type_text">Your account type is not laborant. Please log in to another account</string>
     <string name="department">Department</string>
+    <string name="restart_after_url_title">Application restart is required</string>
+    <string name="restart_after_url_text">Please manually close and reopen the application to apply the server address change</string>
 </resources>
