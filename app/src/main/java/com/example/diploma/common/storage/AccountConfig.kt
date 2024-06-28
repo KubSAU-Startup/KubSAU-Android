@@ -10,6 +10,7 @@ object AccountConfig {
     private const val DEPARTMENT_NAME_KEY = "department_name"
     private const val FULL_NAME_KEY = "full_name"
     private const val FIRST_LAUNCH_KEY = "first_launch"
+    private const val GREEN_THEME = "green_theme"
 
     private var preferences: SharedPreferences by Delegates.notNull()
 
@@ -40,4 +41,8 @@ object AccountConfig {
     var isFirstLaunch: Boolean
         set(value) = preferences.edit { putBoolean(FIRST_LAUNCH_KEY, value) }
         get() = preferences.getBoolean(FIRST_LAUNCH_KEY, true)
+
+    var greenThemeEnabled: Boolean
+        set(value) = preferences.edit { putBoolean(GREEN_THEME, value) }
+        get() = preferences.getBoolean(GREEN_THEME, true)
 }

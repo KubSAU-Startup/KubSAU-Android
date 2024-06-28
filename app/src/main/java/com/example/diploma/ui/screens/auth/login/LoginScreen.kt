@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.diploma.R
 import com.example.diploma.ui.screens.registration.camera.components.Alert
 import org.koin.androidx.compose.koinViewModel
@@ -44,7 +45,7 @@ fun LoginScreen(
     openUrlScreen: () -> Unit,
     viewModel: LoginViewModelImpl = koinViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsState()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     if (screenState.showWrongAccountTypeError) {
         Alert(

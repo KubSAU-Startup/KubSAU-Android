@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.diploma.MainActivity
 import com.example.diploma.R
 import com.example.diploma.ui.screens.registration.camera.components.Alert
@@ -42,7 +43,7 @@ fun UrlScreen(
     viewModel: UrlViewModel = koinViewModel<UrlViewModelImpl>(),
 ) {
     val context = LocalContext.current
-    val screenState by viewModel.screenState.collectAsState()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     if (screenState.restart) {
         Alert(
