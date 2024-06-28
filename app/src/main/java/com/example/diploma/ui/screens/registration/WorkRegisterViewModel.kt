@@ -31,7 +31,7 @@ interface WorkRegisterViewModel {
 
     fun onCameraOpened()
 
-    fun errorToastShown()
+    fun teacherErrorShown()
 }
 
 class WorkRegisterViewModelImpl(
@@ -124,7 +124,7 @@ class WorkRegisterViewModelImpl(
         val teacherId = screenState.value.selectedTeacherId
 
         if (teacherId == null) {
-            val newState = screenState.value.copy(showPickTeacherToast = true)
+            val newState = screenState.value.copy(showPickTeacherError = true)
             screenState.update { newState }
             return
         }
@@ -162,9 +162,9 @@ class WorkRegisterViewModelImpl(
         screenState.update { newState }
     }
 
-    override fun errorToastShown() {
+    override fun teacherErrorShown() {
         val newState = screenState.value.copy(
-            showPickTeacherToast = false
+            showPickTeacherError = false
         )
         screenState.update { newState }
     }

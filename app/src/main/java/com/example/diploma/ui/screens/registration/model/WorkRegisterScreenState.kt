@@ -15,7 +15,7 @@ data class WorkRegisterScreenState(
     val workTypeId: Int,
     val studentId: Int,
     val disciplineId: Int,
-    val showPickTeacherToast: Boolean
+    val showPickTeacherError: Boolean
 ) {
     companion object {
 
@@ -34,7 +34,7 @@ data class WorkRegisterScreenState(
             workTypeId = -1,
             studentId = -1,
             disciplineId = -1,
-            showPickTeacherToast = false
+            showPickTeacherError = false
         )
     }
 }
