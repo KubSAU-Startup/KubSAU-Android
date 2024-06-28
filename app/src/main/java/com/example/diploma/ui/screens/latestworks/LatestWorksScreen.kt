@@ -184,20 +184,21 @@ fun LatestWorksScreen(
                     }
                 )
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    value = screenState.query,
-                    onValueChange = { newText ->
-                        viewModel.onQueryChanged(newText)
-                    },
-                    label = { Text(text = stringResource(id = R.string.filter_query)) }
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 LazyColumn {
+                    item {
+                        OutlinedTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            value = screenState.query,
+                            onValueChange = { newText ->
+                                viewModel.onQueryChanged(newText)
+                            },
+                            label = { Text(text = stringResource(id = R.string.filter_query)) }
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                     itemsIndexed(screenState.filterItems) { blockIndex, item ->
                         FilterBlock(
                             iconResId = item.iconResId,

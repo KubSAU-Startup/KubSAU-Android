@@ -133,8 +133,10 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
 
     override fun onFilterClicked(blockIndex: Int, filterIndex: Int) {
         val newFilterItems = screenState.value.filterItems.toMutableList()
-        newFilterItems[blockIndex] = newFilterItems[blockIndex].copy(
-            selectedFilterIndex = filterIndex
+        val currentBlock = newFilterItems[blockIndex]
+        newFilterItems[blockIndex] = currentBlock.copy(
+            selectedFilterIndex = if (currentBlock.selectedFilterIndex == filterIndex) -1
+            else filterIndex
         )
 
         viewModelScope.launch(Dispatchers.Main) {
