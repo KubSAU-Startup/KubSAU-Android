@@ -89,7 +89,8 @@ class WorkRegisterViewModelImpl(
 
     override fun onWorkTitleInputChanged(newTitle: String) {
         val newState = screenState.value.copy(
-            workTitle = newTitle
+            workTitle = newTitle,
+            showTitleError = false
         )
         screenState.update { newState }
     }
@@ -129,7 +130,13 @@ class WorkRegisterViewModelImpl(
             return
         }
 
-        val workTitle = screenState.value.workTitle
+        val workTitle = screenState.value.workTitle.orEmpty().trim()
+
+        if (screenState.value.needTitle && workTitle.isEmpty()) {
+            val newState = screenState.value.copy(showTitleError = true)
+            screenState.update { newState }
+            return
+        }
 
         viewModelScope.launch(Dispatchers.IO) {
             var newState = screenState.value.copy(isLoading = true)
@@ -138,7 +145,7 @@ class WorkRegisterViewModelImpl(
             val registeredWork = worksRepository.registerNewWork(
                 disciplineId = disciplineId,
                 studentId = studentId,
-                title = workTitle?.trim(),
+                title = workTitle,
                 workTypeId = workTypeId,
                 employeeId = teacherId
             )

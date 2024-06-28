@@ -66,4 +66,5 @@
     <string name="restart_after_url_text">Пожалуйста, вручную закройте и снова откройте приложение, чтобы применить изменение адреса сервера</string>
     <string name="pick_teacher_error_title">Внимание</string>
     <string name="action_open_app_permissions">Открыть разрешения приложения</string>
+    <string name="error_title_required">Название обязательно</string>
 </resources>

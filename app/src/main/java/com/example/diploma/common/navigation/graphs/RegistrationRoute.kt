@@ -13,6 +13,7 @@ import com.example.diploma.ui.screens.registration.camera.CameraScreen
 @Composable
 fun RegistrationRoute(
     onError: (String) -> Unit,
+    onSuccessRegistration: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -30,12 +31,13 @@ fun RegistrationRoute(
 
         composable(Screens.Registration.route + "/{$QR_KEY}") {
             RegistrationScreen(
-                backToCamera = {
-                    navController.navigate(Screens.Camera.route) {
-                        popUpTo(Screens.Camera.route) {
+                onSuccessRegistration = {
+                    navController.navigate(Graphs.Camera.route) {
+                        popUpTo(Graphs.Camera.route) {
                             inclusive = true
                         }
                     }
+                    onSuccessRegistration()
                 }
             )
         }

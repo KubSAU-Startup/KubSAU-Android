@@ -98,7 +98,15 @@ fun MainScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             when (selectedItemIndex) {
-                BottomNavItem.Register.index -> RegistrationRoute(onError = onError)
+                BottomNavItem.Register.index -> {
+                    RegistrationRoute(
+                        onError = onError,
+                        onSuccessRegistration = {
+                            selectedItemIndex = BottomNavItem.Home.index
+                        }
+                    )
+                }
+
                 BottomNavItem.Home.index -> LatestWorksRoute(onError = onError)
 
                 BottomNavItem.Profile.index -> {

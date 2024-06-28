@@ -101,9 +101,10 @@ fun CameraPreview(
                     if (departmentId != AccountConfig.departmentId) {
                         showDepartmentError = true
                     } else {
+                        showPreview = false
+
                         coroutineScope.launch {
                             cameraProvider?.unbindAll()
-                            showPreview = false
                             delay(250)
                             onResult(value)
                         }

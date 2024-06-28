@@ -121,7 +121,5 @@ fun CameraScreen(onQrContentObtained: (String) -> Unit) {
 @Preview
 @Composable
 fun CameraScreenPreview() {
-    CameraScreen {
-
-    }
+    CameraScreen {}
 }
