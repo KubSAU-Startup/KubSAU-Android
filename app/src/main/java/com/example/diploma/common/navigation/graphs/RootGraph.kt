@@ -1,10 +1,14 @@
 package com.example.diploma.common.navigation.graphs
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,15 +18,29 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.diploma.BuildConfig
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.ui.screens.auth.url.UrlScreen
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 
+@SuppressLint("InlinedApi")
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun RootGraph(
     navController: NavHostController = rememberNavController()
 ) {
+    val notificationsPermissionState =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+    LaunchedEffect(true) {
+        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationsPermissionState.launchPermissionRequest()
+        }
+    }
+
     val context = LocalContext.current
 
     var showErrorAlert by remember {
