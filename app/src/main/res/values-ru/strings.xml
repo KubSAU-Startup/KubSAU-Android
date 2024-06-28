@@ -68,4 +68,6 @@
     <string name="action_open_app_permissions">Открыть разрешения приложения</string>
     <string name="error_title_required">Название обязательно</string>
     <string name="no_items">Нет данных</string>
+    <string name="use_green_theme">Использовать зелёную тему</string>
+    <string name="filters_show_less">Меньше</string>
 </resources>

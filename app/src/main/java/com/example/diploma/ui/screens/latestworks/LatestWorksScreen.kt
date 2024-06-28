@@ -6,8 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ContextualFlowRowOverflow
+import androidx.compose.foundation.layout.ContextualFlowRowOverflowScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -43,7 +46,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -264,35 +269,54 @@ fun FilterBlock(
     }
 
     Spacer(modifier = Modifier.height(8.dp))
-    FlowRow(
+
+    val totalCount by remember(filters) {
+        derivedStateOf { filters.size }
+    }
+    var maxLines by remember {
+        mutableIntStateOf(2)
+    }
+
+    val moreOrCollapseIndicator = @Composable { scope: ContextualFlowRowOverflowScope ->
+        val remainingItems = totalCount - scope.shownItemCount
+        AssistChip(
+            onClick = {
+                if (remainingItems == 0) {
+                    maxLines = 2
+                } else {
+                    maxLines += 5
+                }
+            },
+            label = {
+                Text(
+                    text = if (remainingItems == 0) stringResource(id = R.string.filters_show_less)
+                    else "+$remainingItems"
+                )
+            }
+        )
+    }
+
+    ContextualFlowRow(
+        itemCount = totalCount,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        filters.forEachIndexed { index, filter ->
-            FilterChip(
-                selected = selectedFilterIndex == index,
-                onClick = { onFilterClicked(index) },
-                label = filter.title
-            )
-        }
-    }
-}
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
+            minRowsToShowCollapse = 3,
+            expandIndicator = moreOrCollapseIndicator,
+            collapseIndicator = moreOrCollapseIndicator
+        ),
+        maxLines = maxLines
+    ) { index ->
+        val filter = filters[index]
 
-@Composable
-fun FilterChip(
-    selected: Boolean,
-    onClick: () -> Unit,
-    label: String,
-    modifier: Modifier = Modifier
-) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = { Text(text = label) },
-        modifier = modifier
-    )
+        FilterChip(
+            selected = selectedFilterIndex == index,
+            onClick = { onFilterClicked(index) },
+            label = { Text(text = filter.title) }
+        )
+    }
 }
 
 @Preview

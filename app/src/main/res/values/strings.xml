@@ -93,4 +93,5 @@
     <string name="error_title_required">Title is required</string>
     <string name="no_items">No items</string>
     <string name="use_green_theme">Use green theme</string>
+    <string name="filters_show_less">Less</string>
 </resources>
