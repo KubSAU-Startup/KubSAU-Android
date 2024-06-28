@@ -9,6 +9,7 @@ object AccountConfig {
     private const val DEPARTMENT_ID_KEY = "department_id"
     private const val DEPARTMENT_NAME_KEY = "department_name"
     private const val FULL_NAME_KEY = "full_name"
+    private const val FIRST_LAUNCH_KEY = "first_launch"
 
     private var preferences: SharedPreferences by Delegates.notNull()
 
@@ -35,4 +36,8 @@ object AccountConfig {
     var departmentName: String
         set(value) = preferences.edit().putString(DEPARTMENT_NAME_KEY, value).apply()
         get() = preferences.getString(DEPARTMENT_NAME_KEY, "").orEmpty()
+
+    var isFirstLaunch: Boolean
+        set(value) = preferences.edit { putBoolean(FIRST_LAUNCH_KEY, value) }
+        get() = preferences.getBoolean(FIRST_LAUNCH_KEY, true)
 }

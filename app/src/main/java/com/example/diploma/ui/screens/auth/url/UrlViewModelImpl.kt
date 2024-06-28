@@ -4,6 +4,7 @@ import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
 import com.example.diploma.network.calladapter.NetworkResponseAdapterFactory
 import com.example.diploma.network.common.ApiService
@@ -59,6 +60,16 @@ class UrlViewModelImpl(savedStateHandle: SavedStateHandle) : ViewModel(), UrlVie
         }
     }
 
+    override fun onWentNext() {
+        val newState = screenState.value.copy(isNeedToGoNext = false)
+        screenState.update { newState }
+    }
+
+    override fun consumeRestart() {
+        val newState = screenState.value.copy(restart = false)
+        screenState.update { newState }
+    }
+
     private fun checkBackendVersion() {
         var newState = screenState.value.copy(isLoading = true)
         screenState.update { newState }
@@ -70,11 +81,17 @@ class UrlViewModelImpl(savedStateHandle: SavedStateHandle) : ViewModel(), UrlVie
                 onSuccess = {
                     newState = screenState.value.copy(isLoading = false)
 
-                    if (NetworkConfig.url != screenState.value.url) {
+                    if (AccountConfig.isFirstLaunch) {
+                        AccountConfig.isFirstLaunch = false
                         NetworkConfig.url = screenState.value.url
-                        newState = newState.copy(restart = true)
-                    } else {
                         newState = newState.copy(isNeedToGoNext = true)
+                    } else {
+                        if (NetworkConfig.url != screenState.value.url) {
+                            NetworkConfig.url = screenState.value.url
+                            newState = newState.copy(restart = true)
+                        } else {
+                            newState = newState.copy(isNeedToGoNext = true)
+                        }
                     }
 
                     screenState.update { newState }
@@ -97,15 +114,5 @@ class UrlViewModelImpl(savedStateHandle: SavedStateHandle) : ViewModel(), UrlVie
                     .build()
             )
             .build().create(ApiService::class.java)
-    }
-
-    override fun onWentNext() {
-        val newState = screenState.value.copy(isNeedToGoNext = false)
-        screenState.update { newState }
-    }
-
-    override fun consumeRestart() {
-        val newState = screenState.value.copy(restart = false)
-        screenState.update { newState }
     }
 }
