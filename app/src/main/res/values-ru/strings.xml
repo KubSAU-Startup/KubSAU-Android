@@ -28,7 +28,7 @@
     <string name="registration">Зарегистрировать</string>
     <string name="camera_permission_require">Это приложение использует камеру для сканирования QR-кода.\nНеобходимо дать разрешение на использование камеры.</string>
     <string name="permission_need">Для того чтобы эта функция была доступна, требуется разрешение камеры.\nПожалуйста, предоставьте это разрешение.</string>
-    <string name="request_permission">Запросить разрешение</string>
+    <string name="action_request_permission">Запросить разрешение</string>
     <string name="login_label">Логин</string>
     <string name="password_label">Пароль</string>
     <string name="nav_home">Главная</string>
@@ -58,10 +58,12 @@
     <string name="title_register">Регистрация работы</string>
     <string name="pick_teacher">Выберите преподавателя</string>
     <string name="input_work_title">Введите название работы</string>
-    <string name="pick_teacher_error">Преподаватель не выбран</string>
+    <string name="pick_teacher_error_text">Преподаватель не выбран</string>
     <string name="wrong_account_type_title">Неверный тип аккаунта</string>
     <string name="wrong_account_type_text">Ваш тип аккаунта не лаборант. Пожалуйста, авторизуйтесь в другой аккаунт</string>
     <string name="department">Кафедра</string>
     <string name="restart_after_url_title">Необходима перезагрузка приложения</string>
     <string name="restart_after_url_text">Пожалуйста, вручную закройте и снова откройте приложение, чтобы применить изменение адреса сервера</string>
+    <string name="pick_teacher_error_title">Внимание</string>
+    <string name="action_open_app_permissions">Открыть разрешения приложения</string>
 </resources>

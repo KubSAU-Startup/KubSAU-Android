@@ -1,6 +1,9 @@
 package com.example.diploma.ui.screens.registration.camera
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +36,8 @@ import com.google.accompanist.permissions.shouldShowRationale
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(onQrContentObtained: (String) -> Unit) {
-    // Camera permission state
+    val context = LocalContext.current
+
     val cameraPermissionState = rememberPermissionState(
         Manifest.permission.CAMERA
     )
@@ -82,12 +87,31 @@ fun CameraScreen(onQrContentObtained: (String) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(36.dp))
                 Button(
-                    onClick = { cameraPermissionState.launchPermissionRequest() },
+                    onClick = {
+                        if (cameraPermissionState.status.shouldShowRationale) {
+                            context.startActivity(
+                                Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.packageName, null)
+                                )
+                            )
+                        } else {
+                            cameraPermissionState.launchPermissionRequest()
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth(.9f)
                         .height(56.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.request_permission))
+                    Text(
+                        text = stringResource(
+                            id = if (cameraPermissionState.status.shouldShowRationale) {
+                                R.string.action_open_app_permissions
+                            } else {
+                                R.string.action_request_permission
+                            }
+                        )
+                    )
                 }
             }
         }
