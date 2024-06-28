@@ -91,4 +91,5 @@
     <string name="restart_after_url_title">Application restart is required</string>
     <string name="restart_after_url_text">Please manually close and reopen the application to apply the server address change</string>
     <string name="error_title_required">Title is required</string>
+    <string name="no_items">No items</string>
 </resources>

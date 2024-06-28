@@ -53,6 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.diploma.R
 import com.example.diploma.model.Filter
+import com.example.diploma.ui.components.NoItemsBlock
 import com.example.diploma.ui.screens.latestworks.components.EntryItem
 import org.koin.androidx.compose.koinViewModel
 
@@ -123,6 +124,10 @@ fun LatestWorksScreen(
                 when {
                     screenState.isLoading && screenState.entries.isEmpty() -> {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+
+                    screenState.entries.isEmpty() -> {
+                        NoItemsBlock()
                     }
 
                     else -> {
