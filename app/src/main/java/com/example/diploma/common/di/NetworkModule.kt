@@ -9,9 +9,13 @@ import com.example.diploma.network.ResponseConverterFactory
 import com.example.diploma.network.account.AccountRepository
 import com.example.diploma.network.account.AccountRepositoryImpl
 import com.example.diploma.network.account.AccountService
+import com.example.diploma.network.account.AccountUseCase
+import com.example.diploma.network.account.AccountUseCaseImpl
 import com.example.diploma.network.auth.AuthRepository
 import com.example.diploma.network.auth.AuthRepositoryImpl
 import com.example.diploma.network.auth.AuthService
+import com.example.diploma.network.auth.AuthUseCase
+import com.example.diploma.network.auth.AuthUseCaseImpl
 import com.example.diploma.network.common.ApiRepository
 import com.example.diploma.network.common.ApiRepositoryImpl
 import com.example.diploma.network.common.ApiService
@@ -20,6 +24,8 @@ import com.example.diploma.network.disciplines.DisciplinesRepositoryImpl
 import com.example.diploma.network.disciplines.DisciplinesService
 import com.example.diploma.network.employees.EmployeeRepository
 import com.example.diploma.network.employees.EmployeeRepositoryImpl
+import com.example.diploma.network.employees.EmployeeUseCase
+import com.example.diploma.network.employees.EmployeeUseCaseImpl
 import com.example.diploma.network.employees.EmployeesService
 import com.example.diploma.network.students.StudentsRepository
 import com.example.diploma.network.students.StudentsRepositoryImpl
@@ -74,6 +80,7 @@ val networkModule = module {
     }
 
     // TODO: 21/06/2024, Danil Nikolaev: use separated modules
+    singleOf(::AuthUseCaseImpl) bind AuthUseCase::class
     singleOf(::AuthRepositoryImpl) bind AuthRepository::class
     single { service(AuthService::class.java) }
 
@@ -92,9 +99,11 @@ val networkModule = module {
     singleOf(::WorkTypesRepositoryImpl) bind WorkTypesRepository::class
     single { service(WorkTypesService::class.java) }
 
+    singleOf(::AccountUseCaseImpl) bind AccountUseCase::class
     singleOf(::AccountRepositoryImpl) bind AccountRepository::class
     single { service(AccountService::class.java) }
 
+    singleOf(::EmployeeUseCaseImpl) bind EmployeeUseCase::class
     singleOf(::EmployeeRepositoryImpl) bind EmployeeRepository::class
     single { service(EmployeesService::class.java) }
 }

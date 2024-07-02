@@ -4,11 +4,13 @@ data class LoginScreenState(
     val isLoading: Boolean,
     val login: String,
     val password: String,
-    val error: String?,
     val isNeedOpenMain: Boolean,
     val isNeedOpenUrl: Boolean,
     val isPasswordVisible: Boolean,
-    val showWrongAccountTypeError: Boolean
+    val showFillLoginError: Boolean,
+    val showFillPasswordError: Boolean,
+    val showWrongAccountTypeError: Boolean,
+    val showWrongCredentialsError: Boolean
 ) {
 
     companion object {
@@ -16,11 +18,13 @@ data class LoginScreenState(
             isLoading = false,
             login = "",
             password = "",
-            error = null,
             isNeedOpenMain = false,
             isNeedOpenUrl = false,
             isPasswordVisible = false,
-            showWrongAccountTypeError = false
+            showFillLoginError = false,
+            showFillPasswordError = false,
+            showWrongAccountTypeError = false,
+            showWrongCredentialsError = false
         )
     }
 }

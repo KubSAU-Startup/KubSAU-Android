@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.diploma.R
 import com.example.diploma.common.SettingsController
+import com.example.diploma.network.ErrorDomain
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     onLogOut: () -> Unit,
     openChangeUrl: () -> Unit,
     viewModel: ProfileViewModel = koinViewModel<ProfileViewModelImpl>()

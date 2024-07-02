@@ -18,6 +18,9 @@
     <string name="button_delete_user" translatable="false">Delete user</string>
 
     <string name="error_wrong_login_or_password">Wrong login or password</string>
+    <string name="error_fill_login">Fill login</string>
+    <string name="error_fill_password">Fill password</string>
+
     <string name="journal_element_student">Student</string>
     <string name="journal_element_student_status">Status: %s</string>
     <string name="journal_element_discipline">Discipline</string>
@@ -94,4 +97,10 @@
     <string name="no_items">No items</string>
     <string name="use_green_theme">Use green theme</string>
     <string name="filters_show_less">Less</string>
+
+    <string name="wrong_credentials_title">Wrong credentials</string>
+    <string name="wrong_credentials_text">Login or password is incorrect</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="wrong_token_format_error">Wrong token format. Need to re-authorize</string>
+    <string name="wrong_url_error">Server url is no longer accessible. You need to change it</string>
 </resources>

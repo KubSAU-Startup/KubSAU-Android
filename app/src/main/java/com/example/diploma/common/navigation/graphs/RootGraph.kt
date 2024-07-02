@@ -4,9 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import android.widget.Toast
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,15 +11,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.BuildConfig
+import com.example.diploma.R
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.common.storage.NetworkConfig
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.auth.url.UrlScreen
+import com.example.diploma.ui.screens.registration.camera.components.Alert
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 
@@ -42,13 +43,6 @@ fun RootGraph(
     }
 
     val context = LocalContext.current
-
-    var showErrorAlert by remember {
-        mutableStateOf(false)
-    }
-    var currentError: String? by remember {
-        mutableStateOf(null)
-    }
 
     var needToChangeUrl: Boolean by remember {
         mutableStateOf(false)
@@ -79,17 +73,44 @@ fun RootGraph(
         }
     }
 
-    val onError = { error: String ->
+    var errorText: String? by remember {
+        mutableStateOf(null)
+    }
+    var showError: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    if (showError) {
+        Alert(
+            onDismiss = {
+                showError = false
+                errorText = null
+            },
+            title = stringResource(id = R.string.error_occurred),
+            text = errorText.orEmpty()
+        )
+    }
+
+    val onError = { error: ErrorDomain ->
         when (error) {
-            "Wrong url" -> {
+            ErrorDomain.WrongUrlError -> {
                 needToChangeUrl = true
                 NetworkConfig.clearUrl()
-                Toast.makeText(context, "Url is wrong. Change it", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.wrong_url_error, Toast.LENGTH_LONG).show()
+            }
+
+            ErrorDomain.WrongTokenFormat -> {
+                navController.navigate(Graphs.Auth.route) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+                Toast.makeText(context, R.string.wrong_token_format_error, Toast.LENGTH_LONG).show()
             }
 
             else -> {
-                currentError = error
-                showErrorAlert = true
+                errorText = error.description
+                showError = true
             }
         }
     }
@@ -124,22 +145,6 @@ fun RootGraph(
             onError = onError,
             openUrlScreen = justOpenUrlScreen,
             navController = navController
-        )
-    }
-
-    if (showErrorAlert) {
-        AlertDialog(
-            onDismissRequest = {
-                showErrorAlert = false
-                currentError = null
-            },
-            confirmButton = {
-                Button(onClick = {}) {
-                    Text(text = "OK")
-                }
-            },
-            title = { Text(text = "Error") },
-            text = { Text(text = "Error occurred: $currentError") }
         )
     }
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
-import com.example.diploma.network.calladapter.NetworkResponseAdapterFactory
 import com.example.diploma.network.common.ApiService
 import com.example.diploma.ui.screens.auth.url.model.UrlScreenState
 import kotlinx.coroutines.Dispatchers
@@ -107,7 +106,6 @@ class UrlViewModelImpl(savedStateHandle: SavedStateHandle) : ViewModel(), UrlVie
     private fun buildRetrofitApi(url: String): ApiService {
         return Retrofit.Builder().baseUrl(url)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

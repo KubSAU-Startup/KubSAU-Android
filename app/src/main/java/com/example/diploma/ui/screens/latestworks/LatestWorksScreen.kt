@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.diploma.R
 import com.example.diploma.model.Filter
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.components.NoItemsBlock
 import com.example.diploma.ui.screens.latestworks.components.EntryItem
 import org.koin.androidx.compose.koinViewModel
@@ -65,7 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatestWorksScreen(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     viewModel: LatestWorksViewModel = koinViewModel<LatestWorksViewModelImpl>()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()

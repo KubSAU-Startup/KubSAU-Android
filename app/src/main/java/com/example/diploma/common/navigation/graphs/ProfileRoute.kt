@@ -7,11 +7,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.profile.ProfileScreen
 
 @Composable
 fun ProfileRoute(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     onLogOut: () -> Unit,
     openUrlScreen: () -> Unit,
     navController: NavHostController = rememberNavController()

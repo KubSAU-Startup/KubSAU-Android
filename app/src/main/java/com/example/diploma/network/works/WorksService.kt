@@ -3,8 +3,8 @@ package com.example.diploma.network.works
 import com.example.diploma.model.Filter
 import com.example.diploma.model.GetLatestWorksResponse
 import com.example.diploma.model.Work
-import com.example.diploma.network.ApiError
-import com.example.diploma.network.ApiResponse
+import com.example.diploma.network.ErrorModel
+import com.example.diploma.network.ResponseModel
 import com.slack.eithernet.ApiResult
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
-typealias Response<T> = ApiResult<ApiResponse<T>, ApiError>
+typealias Response<T> = ApiResult<ResponseModel<T>, ErrorModel>
 
 interface WorksService {
 

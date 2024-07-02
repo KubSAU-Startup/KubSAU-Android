@@ -7,11 +7,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.latestworks.LatestWorksScreen
 
 @Composable
 fun LatestWorksRoute(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(

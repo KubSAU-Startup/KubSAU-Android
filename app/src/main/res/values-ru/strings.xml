@@ -70,4 +70,8 @@
     <string name="no_items">Нет данных</string>
     <string name="use_green_theme">Использовать зелёную тему</string>
     <string name="filters_show_less">Меньше</string>
+    <string name="error_fill_login">Заполните логин</string>
+    <string name="error_fill_password">Заполните пароль</string>
+    <string name="wrong_credentials_title">Неверные учётные данные</string>
+    <string name="wrong_credentials_text">Логин или пароль неверны</string>
 </resources>

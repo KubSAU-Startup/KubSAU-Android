@@ -3,6 +3,7 @@ package com.example.diploma.ui.screens.latestworks
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diploma.R
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.network.works.WorksRepository
 import com.example.diploma.ui.screens.latestworks.model.FilterItem
 import com.example.diploma.ui.screens.latestworks.model.LatestWorksScreenState
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat
 interface LatestWorksViewModel {
 
     val screenState: StateFlow<LatestWorksScreenState>
+    val apiError: StateFlow<ErrorDomain?>
 
     fun onSearchButtonClicked()
     fun onNeedToLoadMoreItems()
@@ -37,6 +39,8 @@ class LatestWorksViewModelImpl(private val repository: WorksRepository) : ViewMo
     LatestWorksViewModel {
 
     override val screenState = MutableStateFlow(LatestWorksScreenState.EMPTY)
+
+    override val apiError = MutableStateFlow<ErrorDomain?>(null)
 
     private val dateFormatter = SimpleDateFormat(DATE_FORMAT)
 

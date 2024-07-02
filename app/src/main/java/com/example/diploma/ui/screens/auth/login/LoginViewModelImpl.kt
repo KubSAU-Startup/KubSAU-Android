@@ -4,19 +4,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
-import com.example.diploma.network.account.AccountRepository
-import com.example.diploma.network.auth.AuthRepository
-import com.example.diploma.network.employees.EmployeeRepository
+import com.example.diploma.network.CODE_WRONG_CREDENTIALS
+import com.example.diploma.network.ErrorDomain
+import com.example.diploma.network.State
+import com.example.diploma.network.auth.AuthUseCase
+import com.example.diploma.network.listenValue
+import com.example.diploma.network.processState
+import com.example.diploma.network.setValue
+import com.example.diploma.ui.screens.auth.LoginUseCase
 import com.example.diploma.ui.screens.auth.model.LoginScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 interface LoginViewModel {
     val screenState: StateFlow<LoginScreenState>
+    val errorDomain: StateFlow<ErrorDomain?>
 
     fun onLoginInputChanged(newLogin: String)
     fun onPasswordInputChanged(newPassword: String)
@@ -30,20 +35,24 @@ interface LoginViewModel {
     fun onUrlOpened()
 
     fun wrongAccountTypeAlertDismissed()
+    fun wrongCredentialsErrorShown()
+
+    fun apiErrorConsumed()
 }
 
 class LoginViewModelImpl(
-    private val repository: AuthRepository,
-    private val accountRepository: AccountRepository,
-    private val employeeRepository: EmployeeRepository
+    private val useCase: AuthUseCase,
+    private val loginUseCase: LoginUseCase
 ) : LoginViewModel, ViewModel() {
 
     override val screenState = MutableStateFlow(LoginScreenState.EMPTY)
 
+    override val errorDomain = MutableStateFlow<ErrorDomain?>(null)
+
     override fun onLoginInputChanged(newLogin: String) {
         val newValue = screenState.value.copy(
             login = newLogin,
-            error = null
+            showWrongCredentialsError = false
         )
 
         screenState.update { newValue }
@@ -52,7 +61,7 @@ class LoginViewModelImpl(
     override fun onPasswordInputChanged(newPassword: String) {
         val newValue = screenState.value.copy(
             password = newPassword,
-            error = null
+            showWrongCredentialsError = false
         )
 
         screenState.update { newValue }
@@ -70,85 +79,67 @@ class LoginViewModelImpl(
         val login = screenState.value.login.trim()
         val password = screenState.value.password.trim()
 
-        if (login.isEmpty() || password.isEmpty()) {
-            viewModelScope.launch(Dispatchers.Main) {
-                screenState.emit(
-                    screenState.value.copy(
-                        error = "Fill the fields"
-                    )
-                )
-            }
+        if (login.isEmpty()) {
+            val newState = screenState.value.copy(
+                showFillLoginError = true
+            )
+            screenState.update { newState }
+        }
+
+        if (password.isEmpty()) {
+            val newState = screenState.value.copy(
+                showFillPasswordError = true
+            )
+            screenState.update { newState }
+        }
+
+        if (screenState.value.showFillLoginError ||
+            screenState.value.showFillPasswordError
+        ) {
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                screenState.emit(screenState.value.copy(isLoading = true))
-            }
+        loginUseCase.getSessionInfo(login, password)
+            .listenValue { state ->
+                state.processState(
+                    error = { error ->
+                        if (error is State.Error.ApiError) {
+                            if (error.errorCode == CODE_WRONG_CREDENTIALS) {
+                                screenState.setValue { old ->
+                                    old.copy(showWrongCredentialsError = true)
+                                }
+                            } else {
+                                val newError = ErrorDomain.parse(
+                                    error.errorCode,
+                                    error.errorMessage
+                                )
 
-            val sessionInfo = repository.createNewSession(
-                login = login,
-                password = password
-            )
-
-            if (sessionInfo == null) {
-                // TODO: 25/06/2024, Danil Nikolaev: show error
-                val newState = screenState.value.copy(
-                    error = "Wrong credentials",
-                    isLoading = false
-                )
-                screenState.update { newState }
-            } else {
-                NetworkConfig.token = sessionInfo.token
-                AccountConfig.departmentId = sessionInfo.departmentIds.first()
-
-                val accountInfo = accountRepository.getAccountInfo()
-                if (accountInfo == null) {
-                    // TODO: 25/06/2024, Danil Nikolaev: show error
-                    val newState = screenState.value.copy(
-                        error = "not loaded wtf",
-                        isLoading = false
-                    )
-                    screenState.update { newState }
-                } else {
-                    if (accountInfo.type != 3) {
-                        val newState = screenState.value.copy(
-                            showWrongAccountTypeError = true,
-                            isLoading = false
-                        )
-                        screenState.update { newState }
-                    } else {
-                        AccountConfig.departmentName = accountInfo.departments.first().title
-
-                        val employee = employeeRepository.getEmployeeById(accountInfo.employeeId)
-                        if (employee == null) {
-                            // TODO: 25/06/2024, Danil Nikolaev: show error
-                            val newState = screenState.value.copy(
-                                error = "not loaded wtf",
-                                isLoading = false
-                            )
-                            screenState.update { newState }
-                        } else {
-                            AccountConfig.fullName = with(employee) {
-                                middleName?.let {
-                                    "%s %s %s".format(
-                                        lastName,
-                                        firstName,
-                                        middleName
-                                    )
-                                } ?: "%s %s".format(lastName, firstName)
+                                errorDomain.update { newError }
                             }
+                        } else {
+                            errorDomain.update { ErrorDomain.UnknownError }
+                        }
+                    },
+                    success = { result ->
+                        if (!result.wrongType) {
+                            NetworkConfig.token = result.token
+                            AccountConfig.departmentId = result.departmentId
+                            AccountConfig.departmentName = result.departmentName
+                        }
 
-                            val newState = screenState.value.copy(
-                                isLoading = false,
-                                isNeedOpenMain = true
+                        screenState.setValue { old ->
+                            old.copy(
+                                isNeedOpenMain = !result.wrongType,
+                                showWrongAccountTypeError = result.wrongType
                             )
-                            screenState.update { newState }
                         }
                     }
+                )
+
+                screenState.setValue { old ->
+                    old.copy(isLoading = state.isLoading())
                 }
             }
-        }
     }
 
     override fun onChangeUrlButtonClicked() {
@@ -174,5 +165,16 @@ class LoginViewModelImpl(
             showWrongAccountTypeError = false
         )
         screenState.update { newState }
+    }
+
+    override fun wrongCredentialsErrorShown() {
+        val newState = screenState.value.copy(
+            showWrongCredentialsError = false
+        )
+        screenState.update { newState }
+    }
+
+    override fun apiErrorConsumed() {
+        errorDomain.update { null }
     }
 }

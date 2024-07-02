@@ -7,12 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.registration.RegistrationScreen
 import com.example.diploma.ui.screens.registration.camera.CameraScreen
 
 @Composable
 fun RegistrationRoute(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     onSuccessRegistration: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {

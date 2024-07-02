@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ApiResponse<T>(
-    @Json(name = "error") val error: ApiError?,
+data class ResponseModel<T>(
+    @Json(name = "error") val error: ErrorModel?,
     @Json(name = "response") val response: T?,
     @Json(name = "success") val success: Boolean
 ) {

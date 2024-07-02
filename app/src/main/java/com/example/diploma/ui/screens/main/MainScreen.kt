@@ -27,6 +27,7 @@ import com.example.diploma.R
 import com.example.diploma.common.navigation.graphs.LatestWorksRoute
 import com.example.diploma.common.navigation.graphs.ProfileRoute
 import com.example.diploma.common.navigation.graphs.RegistrationRoute
+import com.example.diploma.network.ErrorDomain
 
 private sealed class BottomNavItem(
     val index: Int,
@@ -62,7 +63,7 @@ private sealed class BottomNavItem(
 
 @Composable
 fun MainScreen(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     openUrlScreen: () -> Unit,
     onLogOut: () -> Unit
 ) {

@@ -1,7 +1,7 @@
 package com.example.diploma.network.auth
 
-import com.example.diploma.network.ApiError
-import com.example.diploma.network.ApiResponse
+import com.example.diploma.network.ErrorModel
+import com.example.diploma.network.ResponseModel
 import com.example.diploma.model.SessionInfo
 import com.slack.eithernet.ApiResult
 import retrofit2.http.FieldMap
@@ -12,5 +12,5 @@ interface AuthService {
 
     @POST("/auth")
     @FormUrlEncoded
-    suspend fun createNewSession(@FieldMap authInfo: Map<String, String>): ApiResult<ApiResponse<SessionInfo>, ApiError>
+    suspend fun createNewSession(@FieldMap authInfo: Map<String, String>): ApiResult<ResponseModel<SessionInfo>, ErrorModel>
 }

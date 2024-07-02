@@ -8,10 +8,11 @@ import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
 import com.example.diploma.common.storage.AccountConfig
 import com.example.diploma.common.storage.NetworkConfig
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.main.MainScreen
 
 fun NavGraphBuilder.mainNavGraph(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     openUrlScreen: () -> Unit,
     navController: NavHostController
 ) {

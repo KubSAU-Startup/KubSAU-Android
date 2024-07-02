@@ -6,10 +6,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.diploma.common.navigation.Graphs
 import com.example.diploma.common.navigation.Screens
+import com.example.diploma.network.ErrorDomain
 import com.example.diploma.ui.screens.auth.login.LoginScreen
 
 fun NavGraphBuilder.authNavGraph(
-    onError: (String) -> Unit,
+    onError: (ErrorDomain) -> Unit,
     openChangeUrl: () -> Unit,
     navController: NavHostController
 ) {
