@@ -2,7 +2,8 @@ name: Android CI
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches:
+      - "**"
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
