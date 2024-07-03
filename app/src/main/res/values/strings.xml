@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DataCampusHub</string>
+    <string name="app_name">RegRab</string>
 
     <string name="login_label">Login</string>
     <string name="password_label">Password</string>

@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.diploma"
+    namespace = "com.kubsau.regrab"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.diploma"
+        applicationId = "com.kubsau.regrab"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
