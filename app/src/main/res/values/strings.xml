@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">DataCampusHub</string>
+    <string name="app_name">RegRab</string>
 
-    <string name="login_label" translatable="false">Login info</string>
-    <string name="password_label" translatable="false">Password info</string>
+    <string name="login_label">Login</string>
+    <string name="password_label">Password</string>
 
-    <string name="nav_drawer_journal">Journal</string>
-    <string name="nav_drawer_registration">Registration</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_register">Register</string>
+    <string name="nav_profile">Profile</string>
 
-    <string name="buttom_dismiss">Dismiss</string>
+    <string name="button_dismiss">Dismiss</string>
     <string name="button_confirm">Confirm</string>
 
     <string name="button_login">Login</string>
@@ -16,10 +17,13 @@
     <string name="button_get_users" translatable="false">Get all users</string>
     <string name="button_delete_user" translatable="false">Delete user</string>
 
-    <string name="error_wrong_login_or_password" translatable="false">Wrong login or password</string>
-    <string name="journal_element_student">Student: %s</string>
+    <string name="error_wrong_login_or_password">Wrong login or password</string>
+    <string name="error_fill_login">Fill login</string>
+    <string name="error_fill_password">Fill password</string>
+
+    <string name="journal_element_student">Student</string>
     <string name="journal_element_student_status">Status: %s</string>
-    <string name="journal_element_discipline">Discipline: %s</string>
+    <string name="journal_element_discipline">Discipline</string>
     <string name="journal_element_student_group">Group: %s</string>
     <string name="journal_element_teacher">Teacher: %s</string>
     <string name="journal_element_work_type">Work type: %s</string>
@@ -54,9 +58,10 @@
 
     <string name="logout">Logout</string>
 
-    <string name="camera_permission_require">This application uses the camera to scan the QR code. You must give permission to use the camera.</string>
-    <string name="permission_need">Camera permission required for this feature to be available. Please grant the permission.</string>
-    <string name="request_permission">Request permission</string>
+    <string name="camera_permission_require">This application uses the camera to scan the QR code.\nYou must give permission to use the camera.</string>
+    <string name="permission_need">Camera permission required for this feature to be available.\nPlease grant the permission.</string>
+    <string name="action_request_permission">Request permission</string>
+    <string name="action_open_app_permissions">Open app permissions</string>
 
     <string name="journal_item_discipline">Discipline</string>
     <string name="journal_item_title">Title</string>
@@ -64,4 +69,38 @@
     <string name="journal_item_student">Student</string>
     <string name="journal_item_teacher">Teacher</string>
     <string name="filter_teachers">Teachers</string>
+
+    <string name="filter_block_work_types">Work type</string>
+    <string name="filter_block_teachers">Teacher</string>
+    <string name="filter_block_groups">Group</string>
+    <string name="filter_block_disciplines">Discipline</string>
+    <string name="filter_query">Query</string>
+    <string name="title_filters">Filters</string>
+    <string name="title_input_url">Input server\'s url</string>
+    <string name="wrong_url">Wrong url</string>
+    <string name="wrong_url_format">Not an url</string>
+    <string name="action_next">Next</string>
+    <string name="title_camera_permission">Camera permission</string>
+    <string name="action_change_url">Change server url</string>
+    <string name="ok" translatable="false">@android:string/ok</string>
+    <string name="title_register">Work register</string>
+    <string name="pick_teacher">Pick a teacher</string>
+    <string name="input_work_title">Input work title</string>
+    <string name="pick_teacher_error_title">Warning</string>
+    <string name="pick_teacher_error_text">Pick any teacher</string>
+    <string name="wrong_account_type_title">Wrong account type</string>
+    <string name="wrong_account_type_text">Your account type is not laborant. Please log in to another account</string>
+    <string name="department">Department</string>
+    <string name="restart_after_url_title">Application restart is required</string>
+    <string name="restart_after_url_text">Please manually close and reopen the application to apply the server address change</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="no_items">No items</string>
+    <string name="use_green_theme">Use green theme</string>
+    <string name="filters_show_less">Less</string>
+
+    <string name="wrong_credentials_title">Wrong credentials</string>
+    <string name="wrong_credentials_text">Login or password is incorrect</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="wrong_token_format_error">Wrong token format. Need to re-authorize</string>
+    <string name="wrong_url_error">Server url is no longer accessible. You need to change it</string>
 </resources>
