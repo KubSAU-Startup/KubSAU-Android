@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Diploma"
+rootProject.name = "KubSAU-Android"
 include(":app")
- 
